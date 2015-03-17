@@ -1,0 +1,4 @@
+inc/simple
+	any.h				modified from	third/any.h
+	ptr.h				modified from	third/any_ptr.h
+	define_improved_enum.inc	modified from	third/DefineImprovedEnum.inc
