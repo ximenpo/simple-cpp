@@ -59,7 +59,7 @@ bool	stringify_to_xml_stream(stringify_data& data, std::ostream& os, const std::
     stringify_data_xml_visitor	visitor(os, anonymous_tag_name);
     return	data.accept(visitor);
 }
-#include	<iostream>
+
 struct stringify_from_xml_stream_walker {
 public:
     stringify_from_xml_stream_walker(stringify_data& data, const std::string& anonymous)
