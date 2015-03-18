@@ -14,7 +14,7 @@ struct	stringify_data_ini_visitor	:	public stringify_data_visitor {
     }
     virtual		bool	visit_value(const std::string& value, const std::string* name) {
         if(last_level_ > sections_.size()) {
-            os_	<<	"["	<<	string_join(sections_.begin(), sections_.end(), delimeter_)	<<	"]\n";
+            os_	<<	"["	<<	string_join(sections_.begin(), sections_.end(), delimeter_.substr(0, 1))	<<	"]\n";
         }
         if(0 != name) {
             os_	<<	(*name)	<<	"="	;
@@ -27,7 +27,7 @@ struct	stringify_data_ini_visitor	:	public stringify_data_visitor {
         if(!sections_.empty() || 0 != name) {
             sections_.push_back(0 == name ? "" : *name);
         }
-        os_	<<	"["	<<	string_join(sections_.begin(), sections_.end(), "/")	<<	"]\n";
+        os_	<<	"["	<<	string_join(sections_.begin(), sections_.end(), delimeter_.substr(0, 1))	<<	"]\n";
         return	true;
     }
     virtual		bool	visit_array_end() {
@@ -40,7 +40,7 @@ struct	stringify_data_ini_visitor	:	public stringify_data_visitor {
         if(!sections_.empty() || 0 != name) {
             sections_.push_back(0 == name ? "" : *name);
         }
-        os_	<<	"["	<<	string_join(sections_.begin(), sections_.end(), "/")	<<	"]\n";
+        os_	<<	"["	<<	string_join(sections_.begin(), sections_.end(), delimeter_.substr(0, 1))	<<	"]\n";
         return	true;
     }
     virtual		bool	visit_object_end() {
@@ -71,7 +71,6 @@ bool	stringify_to_ini_stream(stringify_data& data, std::ostream& os, const std::
 bool	stringify_from_ini_stream(stringify_data& data, std::istream& is, const std::string& path_delimeter) {
     using	namespace	stringify;
     std::string		line;
-    std::string		section = "";
     node_container*	container	= 0;
     node_id			container_id= data.root;
     // root container.
@@ -86,10 +85,24 @@ bool	stringify_from_ini_stream(stringify_data& data, std::istream& is, const std
         }
         // section
         if(line[0]=='['&& *(--line.end())==']') {
-            section	= line.substr(1, line.size() - 2);
-            string_trim(section);
-            if(!data.add_container(section, &container, &container_id, path_delimeter)) {
+            std::string	full_section	= line.substr(1, line.size() - 2);
+            string_trim(full_section);
+            //	[object/array//] means object:{array:[[[1,2,3]...],
+            size_t	pos	= full_section.find_last_not_of(path_delimeter);
+            std::string	section			= full_section.substr(0, pos + 1);
+            std::string	nonleaf_arrays	= full_section.substr(pos + 1);
+            if(!nonleaf_arrays.empty()) {
+                // non-leaf array is not support.
                 return	false;
+            }
+            if(!data.fetch(section, &container_id, path_delimeter)) {
+                if(!data.add_container(section, &container, &container_id, path_delimeter)) {
+                    return	false;
+                }
+            } else {
+                if(!data.fetch(container_id, &container, 0)) {
+                    return	false;
+                }
             }
             continue;
         }

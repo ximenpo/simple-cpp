@@ -120,7 +120,7 @@ public:
     ///	遍历
     bool			accept(stringify_data_visitor& visitor);
 
-    ///	获取节点ID[split by '/', eg: a1/b1/c1 ]
+    ///	获取带名字节点ID[split by '/', eg: a1/b1/c1 ]
     bool			fetch(const std::string& path, stringify::node_id* node_id, const std::string& path_delimiter = "/");
     ///	获取值，成功返回true
     bool			fetch(stringify::node_id node_id, std::string** value, std::string** name);
@@ -135,7 +135,7 @@ public:
     bool			fetch(stringify::node_id node_id, const std::string& child_name, std::string** value);
     bool			fetch(stringify::node_id node_id, const std::string& child_name, stringify::node_container** container);
 
-    ///	添加根、容器、值
+    ///	添加根、容器、值[path为带名字节点]
     bool			add_root(stringify::node_value** new_root, stringify::node_id* new_id);
     bool			add_root(stringify::node_container** new_root, stringify::node_id* new_id);
     bool			add_container(stringify::node_id container_id, stringify::node_container** new_container, stringify::node_id* new_id);
