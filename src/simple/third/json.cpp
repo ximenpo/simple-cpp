@@ -16,7 +16,11 @@
 #endif
 
 #ifdef _MSC_VER
-#define snprintf sprintf_s
+#	if	_MSC_VER >= 1400
+#		define snprintf sprintf_s
+#	else
+#		define snprintf _snprintf
+#	endif
 #endif
 
 using namespace json;
@@ -687,7 +691,7 @@ static std::string UnescapeJSONString(const std::string& str) {
             case 'u' :
                 skip_ahead = 5;
                 hex_str = str.substr(i + 4, 2);
-                hex = (unsigned int)std::strtoul(hex_str.c_str(), nullptr, 16);
+                hex = (unsigned int)std::strtoul(hex_str.c_str(), 0, 16);
                 s.push_back((char)hex);
                 break;
 
