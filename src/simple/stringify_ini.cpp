@@ -69,6 +69,8 @@ bool	stringify_to_ini_stream(stringify_data& data, std::ostream& os, const std::
 }
 
 bool	stringify_from_ini_stream(stringify_data& data, std::istream& is, const std::string& path_delimeter) {
+    data.clear();
+
     using	namespace	stringify;
     std::string		line;
     node_container*	container	= 0;

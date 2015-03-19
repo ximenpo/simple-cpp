@@ -149,6 +149,8 @@ public:
 };
 
 bool	stringify_from_xml_stream(stringify_data& data, std::istream& is, const std::string& anonymous_tag_name) {
+    data.clear();
+
     pugi::xml_document doc;
     try {
         if(doc.load(is, pugi::parse_default).status != pugi::status_ok) {
