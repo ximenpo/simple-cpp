@@ -73,9 +73,11 @@ public:
             return	false;
         }
 
-        if(!data_.add_container("", 0, 0, "/")) {
+        stringify::node_container*	container	= 0;
+        if(!data_.add_container("", &container, 0, "/")) {
             return	false;
         }
+        container->is_array	= (anonymous_ == node.first_child().name());
 
         stack_.push_back(data_.root);
         return	true;
@@ -157,14 +159,27 @@ bool	stringify_from_xml_stream(stringify_data& data, std::istream& is, const std
     }
 
     using	namespace	pugi;
-    stringify_from_xml_stream_walker	walker(data, anonymous_tag_name);
+    xml_node root = doc.first_child();
+    if(root.name() != anonymous_tag_name) {
+        return	false;
+    }
 
-    xml_node the_node = doc.first_child();
-    if (!walker.begin(the_node)) {
+    //	简单值的简单处理
+    if(root.type() == pugi::node_element && root.first_child().type() != pugi::node_element) {
+        stringify::node_value*	node;
+        if(!data.add_root(&node, 0)) {
+            return	false;
+        }
+        node->value	= root.first_child().value();
+        return	true;
+    }
+
+    stringify_from_xml_stream_walker	walker(data, anonymous_tag_name);
+    if (!walker.begin(root)) {
         return false;
     }
 
-    xml_node cur = the_node.first_child();
+    xml_node cur = root.first_child();
     if (cur) {
         walker.before(cur);
         do {
@@ -181,19 +196,19 @@ bool	stringify_from_xml_stream(stringify_data& data, std::istream& is, const std
                 walker.before(cur);
             } else {
                 // Borland C++ workaround
-                while (!cur.next_sibling() && cur != the_node && !cur.parent().empty()) {
+                while (!cur.next_sibling() && cur != root && !cur.parent().empty()) {
                     walker.after(cur);
                     cur = cur.parent();
                 }
 
-                if (cur != the_node) {
+                if (cur != root) {
                     walker.after(cur);
                     cur = cur.next_sibling();
                     walker.before(cur);
                 }
             }
-        } while (cur && cur != the_node);
+        } while (cur && cur != root);
     }
 
-    return walker.end(the_node);
+    return walker.end(root);
 }

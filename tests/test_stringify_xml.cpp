@@ -10,6 +10,34 @@ Context(stringify_xml_context) {
         data.clear();
     }
 
+    Spec(simple_value_to_xml_1) {
+        stringify_data_builder(data).begin()
+        .value(int(34))
+        .end();
+
+        std::ostringstream	os;
+        AssertThat(stringify_to_xml_stream(data, os),	IsTrue());
+        AssertThat(os.str(),	Equals(
+                       "<_>"
+                       "34"
+                       "</_>"
+                   ));
+    }
+
+    Spec(simple_value_to_xml_2) {
+        stringify_data_builder(data).begin()
+        .value("XiMenPo")
+        .end();
+
+        std::ostringstream	os;
+        AssertThat(stringify_to_xml_stream(data, os),	IsTrue());
+        AssertThat(os.str(),	Equals(
+                       "<_>"
+                       "XiMenPo"
+                       "</_>"
+                   ));
+    }
+
     Spec(to_xml_usage) {
         stringify_data_builder(data).begin()
         .object_begin()
@@ -134,6 +162,49 @@ Context(stringify_xml_context) {
             "<name>XiMenPo</name>"
             "<empty></empty>"
             "<object></object>"
+            "</_>"
+            ;
+
+        std::istringstream	is(xml);
+        std::ostringstream	os;
+        AssertThat(stringify_from_xml_stream(data, is),	IsTrue());
+        AssertThat(stringify_to_xml_stream(data, os),	IsTrue());
+        AssertThat(os.str(),	Equals(xml));
+    }
+
+    Spec(from_xml_null) {
+        std::string	xml	=
+            "<_>"
+            "</_>"
+            ;
+
+        std::istringstream	is(xml);
+        std::ostringstream	os;
+        AssertThat(stringify_from_xml_stream(data, is),	IsTrue());
+        AssertThat(stringify_to_xml_stream(data, os),	IsTrue());
+        AssertThat(os.str(),	Equals(xml));
+    }
+
+    Spec(from_xml_simple_value) {
+        std::string	xml	=
+            "<_>"
+            "34"
+            "</_>"
+            ;
+
+        std::istringstream	is(xml);
+        std::ostringstream	os;
+        AssertThat(stringify_from_xml_stream(data, is),	IsTrue());
+        AssertThat(stringify_to_xml_stream(data, os),	IsTrue());
+        AssertThat(os.str(),	Equals(xml));
+    }
+
+    Spec(from_xml_simple_array) {
+        std::string	xml	=
+            "<_>"
+            "<_>34</_>"
+            "<_>35</_>"
+            "<_>36</_>"
             "</_>"
             ;
 
