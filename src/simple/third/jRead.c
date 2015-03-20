@@ -121,20 +121,20 @@
 //------------------------------------------------------
 // Internal Functions
 
-char *	jReadSkipWhitespace( char *sp );
-char *	jReadFindTok( char *sp, int *tokType );
-char *	jReadGetString( char *pJson, struct jReadElement *pElem, char quote );
+const char *	jReadSkipWhitespace( const char *sp );
+const char *	jReadFindTok( const char *sp, int *tokType );
+const char *	jReadGetString( const char *pJson, struct jReadElement *pElem, char quote );
 int   	jReadTextLen( char *pJson );
 int   	jReadStrcmp( struct jReadElement *j1, struct jReadElement *j2 );
-char *	jReadCountObject( char *pJson, struct jReadElement *pResult, int keyIndex );
-char *	jReadCountArray( char *pJson, struct jReadElement *pResult );
-char *	jRead_atoi( char *p, unsigned int *result );
-char *	jRead_atol( char *p, long *result );
-char *	jRead_atof( char *p, double *result);
+const char *	jReadCountObject( const char *pJson, struct jReadElement *pResult, int keyIndex );
+const char *	jReadCountArray( const char *pJson, struct jReadElement *pResult );
+const char *	jRead_atoi( const char *p, unsigned int *result );
+const char *	jRead_atol( const char *p, long *result );
+const char *	jRead_atof( const char *p, double *result);
 
 //=======================================================
 
-char *jReadSkipWhitespace( char *sp ) {
+const char *jReadSkipWhitespace( const char *sp ) {
     while( (*sp != '\0') && (*sp <= ' ') )
         sp++;
     return sp;
@@ -145,7 +145,7 @@ char *jReadSkipWhitespace( char *sp ) {
 // - returns pointer to start of next token or element
 //   returns type via tokType
 //
-char *jReadFindTok( char *sp, int *tokType ) {
+const char *jReadFindTok( const char *sp, int *tokType ) {
     char c;
     sp= jReadSkipWhitespace(sp);
     c= *sp;
@@ -175,7 +175,7 @@ char *jReadFindTok( char *sp, int *tokType ) {
 // returns: pointer into pJson after the string (char after the " terminator)
 //			pElem contains pointer and length of string (or dataType=JREAD_ERROR)
 //
-char * jReadGetString( char *pJson, struct jReadElement *pElem, char quote ) {
+const char * jReadGetString( const char *pJson, struct jReadElement *pElem, char quote ) {
     short skipch;
     pElem->dataType= JREAD_ERROR;
     pElem->elements= 1;
@@ -208,7 +208,7 @@ char * jReadGetString( char *pJson, struct jReadElement *pElem, char quote ) {
 // - returns no. of chars from pJson upto a terminator
 // - terminators: ' ' , } ]
 //
-int jReadTextLen( char *pJson ) {
+int jReadTextLen( const char *pJson ) {
     int len= 0;
     while(	(*pJson >  ' ' ) &&		// any ctrl char incl '\0'
             (*pJson != ',' ) &&
@@ -237,7 +237,7 @@ int jReadStrcmp( struct jReadElement *j1, struct jReadElement *j2 ) {
 }
 
 // read unsigned int from string
-char *	jRead_atoi( char *p, unsigned int *result ) {
+const char *	jRead_atoi( const char *p, unsigned int *result ) {
     unsigned int x = 0;
     while (*p >= '0' && *p <= '9') {
         x = (x*10) + (*p - '0');
@@ -249,7 +249,7 @@ char *	jRead_atoi( char *p, unsigned int *result ) {
 
 // read long int from string
 //
-char * jRead_atol( char *p, long *result ) {
+const char * jRead_atol( const char *p, long *result ) {
     long x = 0;
     int neg = 0;
     if (*p == '-') {
@@ -274,7 +274,7 @@ char * jRead_atol( char *p, long *result ) {
 // *CAUTION* does not handle exponents
 //
 //
-char * jRead_atof( char *p, double *result) {
+const char * jRead_atof( const char *p, double *result) {
     double sign, value;
 
     // Get sign, if any.
@@ -315,7 +315,7 @@ char *jRead_strcpy( char *destBuffer, int destLength, struct jReadElement *pElem
     int i;
     int len= pElement->bytelen;
     char *pdest= destBuffer;
-    char *psrc= (char *)pElement->pValue;
+    const char *psrc= (char *)pElement->pValue;
     if( pElement->error == 0 ) {
         if( len >= destLength )
             len= destLength;
@@ -333,7 +333,7 @@ char *jRead_strcpy( char *destBuffer, int destLength, struct jReadElement *pElem
 // - keyIndex normally passed as -1 unless we're looking for the nth "key" value
 //   in which case keyIndex is the index of the key we want
 //
-char * jReadCountObject( char *pJson, struct jReadElement *pResult, int keyIndex ) {
+const char * jReadCountObject( const char *pJson, struct jReadElement *pResult, int keyIndex ) {
     struct jReadElement jElement;
     int jTok;
     pResult->dataType= JREAD_OBJECT;
@@ -387,7 +387,7 @@ char * jReadCountObject( char *pJson, struct jReadElement *pResult, int keyIndex
 // - on entry pJson -> "[... "
 // - used to skip unwanted values which are arrays
 //
-char * jReadCountArray( char *pJson, struct jReadElement *pResult ) {
+const char * jReadCountArray( const char *pJson, struct jReadElement *pResult ) {
     struct jReadElement jElement;
     int jTok;
     pResult->dataType= JREAD_ARRAY;
@@ -417,7 +417,7 @@ char * jReadCountArray( char *pJson, struct jReadElement *pResult ) {
 // - reads one value from an array
 // - assumes pJsonArray points at the start of an array or array element
 //
-char *jReadArrayStep( char *pJsonArray, struct jReadElement *pResult ) {
+const char *jReadArrayStep( const char *pJsonArray, struct jReadElement *pResult ) {
     int jTok;
 
     pJsonArray= jReadFindTok( pJsonArray, &jTok );
@@ -445,11 +445,11 @@ char *jReadArrayStep( char *pJsonArray, struct jReadElement *pResult ) {
 //
 // Note: is recursive
 //
-char * jRead( char *pJson, char *pQuery, struct jReadElement *pResult ) {
+const char * jRead( const char *pJson, const char *pQuery, struct jReadElement *pResult ) {
     return jReadParam( pJson, pQuery, pResult, NULL );
 }
 
-char * jReadParam( char *pJson, char *pQuery, struct jReadElement *pResult, int *queryParams ) {
+const char * jReadParam( const char *pJson, const char *pQuery, struct jReadElement *pResult, int *queryParams ) {
     int qTok, jTok, bytelen;
     unsigned int index, count;
     struct jReadElement qElement, jElement;
@@ -609,7 +609,7 @@ char * jReadParam( char *pJson, char *pQuery, struct jReadElement *pResult, int 
 //   returns 1 or 0 from BOOL elements
 //   otherwise returns 0
 //
-long jRead_long( char *pJson, char *pQuery, int *queryParams ) {
+long jRead_long( const char *pJson, const char *pQuery, int *queryParams ) {
     struct jReadElement elem;
     long result;
     jReadParam( pJson, pQuery, &elem, queryParams );
@@ -622,7 +622,7 @@ long jRead_long( char *pJson, char *pQuery, int *queryParams ) {
     return result;
 }
 
-int jRead_int( char *pJson, char *pQuery, int *queryParams ) {
+int jRead_int( const char *pJson, const char *pQuery, int *queryParams ) {
     return (int)jRead_long( pJson, pQuery, queryParams );
 }
 
@@ -631,7 +631,7 @@ int jRead_int( char *pJson, char *pQuery, int *queryParams ) {
 // - returns number from NUMBER or STRING elements
 //   otherwise returns 0.0
 //
-double jRead_double( char *pJson, char *pQuery, int *queryParams ) {
+double jRead_double( const char *pJson, const char *pQuery, int *queryParams ) {
     struct jReadElement elem;
     double result;
     jReadParam( pJson, pQuery, &elem, queryParams );
@@ -647,7 +647,7 @@ double jRead_double( char *pJson, char *pQuery, int *queryParams ) {
 //
 // Note: any element can be returned as a string
 //
-int jRead_string( char *pJson, char *pQuery, char *pDest, int destlen, int *queryParams ) {
+int jRead_string( const char *pJson, const char *pQuery, char *pDest, int destlen, int *queryParams ) {
     struct jReadElement elem;
     int i;
 
@@ -665,7 +665,7 @@ int jRead_string( char *pJson, char *pQuery, char *pDest, int destlen, int *quer
 //-------------------------------------------------
 // Optional String output Functions
 //
-char *jReadTypeStrings[]= {
+static const char *jReadTypeStrings[]= {
     "Error",			// 0
     "Object",			// 1
     "Array",			// 2
@@ -682,11 +682,11 @@ char *jReadTypeStrings[]= {
     "* parameter"		// 13
 };
 
-char *jReadTypeToString( int dataType ) {
+const char *jReadTypeToString( int dataType ) {
     return jReadTypeStrings[ dataType ];
 };
 
-char * jReadErrorStrings[]= {
+static const char * jReadErrorStrings[]= {
     "Ok",                                       // 0
     "JSON does not match Query",                // 1
     "Error reading JSON value",                 // 2
@@ -703,7 +703,7 @@ char * jReadErrorStrings[]= {
     "End of array found",						// 13
     "End of object found"						// 14
 };
-char * jReadErrorToString( int error ) {
+const char * jReadErrorToString( int error ) {
     if( (error >=0 ) && (error <= 14))
         return jReadErrorStrings[ error ];
     return "Unknown error";

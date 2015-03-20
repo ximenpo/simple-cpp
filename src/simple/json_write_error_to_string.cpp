@@ -5,7 +5,7 @@
 // jwErrorToString
 // - returns string describing error code
 //
-char *jwErrorToString( int err ) {
+const char *jwErrorToString( int err ) {
     switch( err ) {
     case JWRITE_OK:
         return "OK";

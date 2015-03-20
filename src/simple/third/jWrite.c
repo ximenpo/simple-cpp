@@ -47,8 +47,8 @@ struct jWriteControl g_jWriteControl;			// global control struct
 // Internal functions
 //
 static	void jwPutch( JWC_DECL char c );
-static	void jwPutstr( JWC_DECL char *str );
-static	void jwPutraw( JWC_DECL char *str );
+static	void jwPutstr( JWC_DECL const char *str );
+static	void jwPutraw( JWC_DECL const char *str );
 static	void modp_itoa10(int32_t value, char* str);
 static	void modp_dtoa2(double value, char* str, int prec);
 static	void jwPretty( JWC_DECL0 );
@@ -124,43 +124,43 @@ int jwErrorPos( JWC_DECL0 ) {
 //------------------------------------------
 // Object insert functions
 //
-int _jwObj( JWC_DECL char *key );
+int _jwObj( JWC_DECL const char *key );
 
 // put raw string to object (i.e. contents of rawtext without quotes)
 //
-void jwObj_raw( JWC_DECL char *key, char *rawtext ) {
+void jwObj_raw( JWC_DECL const char *key, const char *rawtext ) {
     if(_jwObj( JWC_PARAM key ) == JWRITE_OK)
         jwPutraw( JWC_PARAM rawtext);
 }
 
 // put "quoted" string to object
 //
-void jwObj_string( JWC_DECL char *key, char *value ) {
+void jwObj_string( JWC_DECL const char *key, const char *value ) {
     if(_jwObj( JWC_PARAM key ) == JWRITE_OK)
         jwPutstr( JWC_PARAM value );
 }
 
-void jwObj_int( JWC_DECL char *key, int value ) {
+void jwObj_int( JWC_DECL const char *key, int value ) {
     modp_itoa10( value, JWC(tmpbuf) );
     jwObj_raw( JWC_PARAM key, JWC(tmpbuf) );
 }
 
-void jwObj_double( JWC_DECL char *key, double value ) {
+void jwObj_double( JWC_DECL const char *key, double value ) {
     modp_dtoa2( value, JWC(tmpbuf), 6 );
     jwObj_raw( JWC_PARAM key, JWC(tmpbuf) );
 }
 
-void jwObj_bool( JWC_DECL char *key, int oneOrZero ) {
+void jwObj_bool( JWC_DECL const char *key, int oneOrZero ) {
     jwObj_raw( JWC_PARAM key, (char*)((oneOrZero) ? "true" : "false") );
 }
 
-void jwObj_null( JWC_DECL char *key ) {
+void jwObj_null( JWC_DECL const char *key ) {
     jwObj_raw( JWC_PARAM key, "null" );
 }
 
 // put Object in Object
 //
-void jwObj_object( JWC_DECL char *key ) {
+void jwObj_object( JWC_DECL const char *key ) {
     if(_jwObj( JWC_PARAM key ) == JWRITE_OK) {
         jwPutch( JWC_PARAM '{' );
         jwPush( JWC_PARAM JW_OBJECT );
@@ -169,7 +169,7 @@ void jwObj_object( JWC_DECL char *key ) {
 
 // put Array in Object
 //
-void jwObj_array( JWC_DECL char *key ) {
+void jwObj_array( JWC_DECL const char *key ) {
     if(_jwObj( JWC_PARAM key ) == JWRITE_OK) {
         jwPutch( JWC_PARAM '[' );
         jwPush( JWC_PARAM JW_ARRAY );
@@ -183,14 +183,14 @@ int _jwArr( JWC_DECL0 );
 
 // put raw string to array (i.e. contents of rawtext without quotes)
 //
-void jwArr_raw( JWC_DECL char *rawtext ) {
+void jwArr_raw( JWC_DECL const char *rawtext ) {
     if(_jwArr( JWC_PARAM0 ) == JWRITE_OK)
         jwPutraw( JWC_PARAM rawtext);
 }
 
 // put "quoted" string to array
 //
-void jwArr_string( JWC_DECL char *value ) {
+void jwArr_string( JWC_DECL const char *value ) {
     if(_jwArr( JWC_PARAM0 ) == JWRITE_OK)
         jwPutstr( JWC_PARAM value );
 }
@@ -232,7 +232,7 @@ void jwArr_array( JWC_DECL0 ) {
 // jwErrorToString
 // - returns string describing error code
 //
-char *jwErrorToString( int err ) {
+const char *jwErrorToString( int err ) {
     switch( err ) {
     case JWRITE_OK:
         return "OK";
@@ -294,7 +294,7 @@ void jwPutch( JWC_DECL char c ) {
 
 // put string enclosed in quotes
 //
-void jwPutstr( JWC_DECL char *str ) {
+void jwPutstr( JWC_DECL const char *str ) {
     jwPutch( JWC_PARAM '\"' );
     while( *str != '\0' )
         jwPutch( JWC_PARAM *str++ );
@@ -303,7 +303,7 @@ void jwPutstr( JWC_DECL char *str ) {
 
 // put raw string
 //
-void jwPutraw( JWC_DECL char *str ) {
+void jwPutraw( JWC_DECL const char *str ) {
     while( *str != '\0' )
         jwPutch( JWC_PARAM *str++ );
 }
@@ -315,7 +315,7 @@ void jwPutraw( JWC_DECL char *str ) {
 // - adds comma if reqd
 // - adds "key" :
 //
-int _jwObj( JWC_DECL char *key ) {
+int _jwObj( JWC_DECL const char *key ) {
     if(JWC(error) == JWRITE_OK) {
         JWC(callNo)++;
         if( JWC(nodeStack)[JWC(stackpos)].nodeType != JW_OBJECT )
