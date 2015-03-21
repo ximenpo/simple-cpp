@@ -242,4 +242,16 @@ Context(buffer_context) {
         AssertThat(r2,		!Equals(r3));
         AssertThat(r3,		!Equals(r4));
     }
+
+    Spec(dump_usage) {
+        buffer	buf;
+        for(size_t i = 0; i < 32; ++i) {
+            buf	<<	i;
+        }
+
+        std::ostringstream	os;
+        buf.dump(os);
+        AssertThat(os.str(),	EqualsContainer(buf.dump()));
+    }
+
 };

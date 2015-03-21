@@ -2,6 +2,7 @@
 #define BUFFER_H_66BC65DB_AFF6_43C8_8654_D1A2801635E2
 
 #include <cassert>
+#include <iosfwd>
 
 #include <map>
 #include <string>
@@ -78,6 +79,7 @@ public:
 public:
     // 将数据包内容以十六进制的方式输出为文本内容
     std::string		dump();
+    std::ostream&	dump(std::ostream& os);
 
 private:
     bool				buf_owner_;

@@ -3,6 +3,7 @@
 #include <climits>
 #include <cstdio>
 #include <cstring>
+#include <ostream>
 #include <memory>
 
 #if	defined(_WIN32)
@@ -303,18 +304,41 @@ std::string buffer::dump() {
     std::string line;
     line.reserve(1024 * 4);
     for(unsigned long i = 0; i < size; ++i) {
+        if(i > 0 && i % NUMBER_SUM_PER_LINE == 0) {
+            line	+= "\n";
+        }
 #if		defined(_WIN32)
         _snprintf(buf, sizeof(buf), "%02X ", pBuffer[i]);
 #else
         snprintf(buf, sizeof(buf), "%02X ", pBuffer[i]);
 #endif
         line	+= buf;
-        if(i % NUMBER_SUM_PER_LINE == NUMBER_SUM_PER_LINE - 1) {
-            line	+= "\n";
-        }
     }
 
     return line;
+}
+
+std::ostream& buffer::dump(std::ostream& os) {
+    const	int	NUMBER_SUM_PER_LINE	= 16;
+
+    unsigned long			size	= this->size();
+    const unsigned char*	pBuffer	= static_cast<const unsigned char*>(this->data());
+
+    char buf[16];
+    std::string line;
+    for(unsigned long i = 0; i < size; ++i) {
+        if(i > 0 && i % NUMBER_SUM_PER_LINE == 0) {
+            os	<<	"\n";
+        }
+#if		defined(_WIN32)
+        _snprintf(buf, sizeof(buf), "%02X ", pBuffer[i]);
+#else
+        snprintf(buf, sizeof(buf), "%02X ", pBuffer[i]);
+#endif
+        os	<<	buf;
+    }
+
+    return os;
 }
 
 bool buffer::write(const void* pData, unsigned long nLen) {
