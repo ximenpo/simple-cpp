@@ -4,7 +4,6 @@
 
 #include	"simple/string.h"
 #include	"simple/stringify.h"
-#include	"simple/stringify_json.h"
 
 #include	"simple/third/json.h"
 

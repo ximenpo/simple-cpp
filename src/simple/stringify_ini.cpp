@@ -4,7 +4,6 @@
 
 #include	"simple/string.h"
 #include	"simple/stringify.h"
-#include	"simple/stringify_ini.h"
 
 struct	stringify_data_ini_visitor	:	public stringify_data_visitor {
     virtual		bool	visit_begin() {

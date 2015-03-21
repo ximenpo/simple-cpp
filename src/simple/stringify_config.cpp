@@ -1,6 +1,6 @@
 
-#include	"simple/stringify_config.h"
 #include	"simple/string.h"
+#include	"simple/stringify.h"
 
 stringify_config::stringify_config(stringify_data* data, const std::string& id, const std::string& group, const std::string& type, const std::string& path_delimeter)
     : data_(data), id_(id), group_(group), type_(type), delimeter_(path_delimeter) {

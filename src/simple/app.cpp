@@ -1,7 +1,7 @@
 
 #include	<string>
 
-#if	defined(_MSC_VER)
+#if	defined(_WIN32)
 
 #include	<cstdlib>
 extern	"C"	unsigned long	__stdcall	GetModuleFileNameA(void* hModule, const char* lpFilename, unsigned long nSize);

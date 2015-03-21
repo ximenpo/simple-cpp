@@ -2,7 +2,6 @@
 using namespace igloo;
 
 #include "simple/stringify.h"
-#include "simple/stringify_ini.h"
 
 Context(stringify_ini_context) {
     stringify_data	data;

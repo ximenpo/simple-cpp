@@ -2,7 +2,7 @@
 using namespace igloo;
 
 #include	"simple/string.h"
-#include	"simple/stringify_config.h"
+#include	"simple/stringify.h"
 
 #include	<stdexcept>
 

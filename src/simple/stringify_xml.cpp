@@ -4,7 +4,6 @@
 
 #include	"simple/string.h"
 #include	"simple/stringify.h"
-#include	"simple/stringify_xml.h"
 
 #include	"simple/third/pugixml.hpp"
 

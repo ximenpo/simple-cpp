@@ -2,7 +2,6 @@
 using namespace igloo;
 
 #include "simple/stringify.h"
-#include "simple/stringify_json.h"
 
 Context(stringify_json_context) {
     stringify_data	data;
