@@ -120,4 +120,74 @@ Context(stringify_config_context) {
         AssertThat(cfg.get("v3", 0),		Equals(13));
         AssertThat(cfg.get("v4", 0),		Equals(4));
     }
+
+    Spec(basic_root_section_usage) {
+        stringify_data_builder(data).begin()
+        .object_begin()
+        .value(1, "v1")
+        .value(2, "v2")
+        .value(3, "v3")
+        .value(4, "v4")
+
+        .object_begin("type")
+        .value(11,	"v1")
+        .value(12,	"v2")
+        .value(13,	"v3")
+        .object_end()
+
+        .object_begin("group")
+        .value(101,	"v1")
+        .value(102,	"v2")
+        .object_end()
+
+        .object_begin("id")
+        .value(1001,"v1")
+        .object_end()
+
+        .object_end()
+        .end();
+
+        stringify_config	cfg(&data, "id", "group", "type");
+        AssertThat(cfg.has_section(""),		IsTrue());
+        AssertThat(cfg.get_section(""),		Equals(data.get_container("id")));
+
+        AssertThat(cfg.has_section("type"),		IsTrue());
+        AssertThat(cfg.get_section("type"),		Equals(data.get_container("type")));
+    }
+
+    Spec(basic_section_usage) {
+        stringify_data_builder(data).begin()
+        .object_begin()
+        .object_begin("obj")
+        .value(1, "v1")
+        .value(2, "v2")
+        .value(3, "v3")
+        .value(4, "v4")
+
+        .object_begin("type")
+        .value(11,	"v1")
+        .value(12,	"v2")
+        .value(13,	"v3")
+        .object_end()
+
+        .object_begin("group")
+        .value(101,	"v1")
+        .value(102,	"v2")
+        .object_end()
+
+        .object_begin("id")
+        .value(1001,"v1")
+        .object_end()
+        .object_end()
+
+        .object_end()
+        .end();
+
+        stringify_config	cfg(&data, "id", "group", "type");
+        AssertThat(cfg.has_section(""),		IsTrue());
+        AssertThat(cfg.get_section(""),		Equals(data.get_container("")));
+
+        AssertThat(cfg.has_section("obj"),		IsTrue());
+        AssertThat(cfg.get_section("obj"),		Equals(data.get_container("obj/id")));
+    }
 };

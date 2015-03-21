@@ -37,6 +37,60 @@ const std::string&	stringify_config::get_config_path_delimeter() {
     return	delimeter_;
 }
 
+bool	stringify_config::has_section(const std::string& path) {
+    return	0 == data_ ? false
+            :	!id_.empty()	&& data_->has_container(path + delimeter_ + id_)
+            ||	!group_.empty()	&& data_->has_container(path + delimeter_ + group_)
+            ||	!type_.empty()	&& data_->has_container(path + delimeter_ + type_)
+            ||	data_->has_container(path)
+            ;
+}
+
+bool	stringify_config::has_section(const std::string& path, const std::string& child_name) {
+    return	0 == data_ ? false
+            :	!id_.empty()	&& data_->has_container(path + delimeter_ + id_, child_name)
+            ||	!group_.empty()	&& data_->has_container(path + delimeter_ + group_, child_name)
+            ||	!type_.empty()	&& data_->has_container(path + delimeter_ + type_, child_name)
+            ||	data_->has_container(path, child_name)
+            ;
+}
+
+bool	stringify_config::has_section(const std::string& path, unsigned long child_index) {
+    return	0 == data_ ? false
+            :	!id_.empty()	&& data_->has_container(path + delimeter_ + id_, child_index)
+            ||	!group_.empty() && data_->has_container(path + delimeter_ + group_, child_index)
+            ||	!type_.empty()	&& data_->has_container(path + delimeter_ + type_, child_index)
+            ||	data_->has_container(path, child_index)
+            ;
+}
+
+stringify::node_container*	stringify_config::get_section(const std::string& path) {
+    return	0 == data_ ? 0
+            :	!id_.empty()	&& data_->has_container(path + delimeter_ + id_)	?	data_->get_container(path + delimeter_ + id_)
+            :	!group_.empty()	&& data_->has_container(path + delimeter_ + group_)	?	data_->get_container(path + delimeter_ + group_)
+            :	!type_.empty()	&& data_->has_container(path + delimeter_ + type_)	?	data_->get_container(path + delimeter_ + type_)
+            :	data_->get_container(path)
+            ;
+}
+
+stringify::node_container*	stringify_config::get_section(const std::string& path, const std::string& child_name) {
+    return	0 == data_ ? 0
+            :	!id_.empty()	&& data_->has_container(path + delimeter_ + id_, child_name)	?	data_->get_container(path + delimeter_ + id_,	child_name)
+            :	!group_.empty()	&& data_->has_container(path + delimeter_ + group_, child_name)	?	data_->get_container(path + delimeter_ + group_,child_name)
+            :	!type_.empty()	&& data_->has_container(path + delimeter_ + type_, child_name)	?	data_->get_container(path + delimeter_ + type_,	child_name)
+            :	data_->get_container(path,	child_name)
+            ;
+}
+
+stringify::node_container*	stringify_config::get_section(const std::string& path, unsigned long child_index) {
+    return	0 == data_ ? 0
+            :	!id_.empty()	&& data_->has_container(path + delimeter_ + id_, child_index)	?	data_->get_container(path + delimeter_ + id_,	child_index)
+            :	!group_.empty()	&& data_->has_container(path + delimeter_ + group_, child_index)?	data_->get_container(path + delimeter_ + group_,child_index)
+            :	!type_.empty()	&& data_->has_container(path + delimeter_ + type_, child_index)	?	data_->get_container(path + delimeter_ + type_,	child_index)
+            :	data_->get_container(path,	child_index)
+            ;
+}
+
 bool	stringify_config::has(const std::string& path) {
     size_t	dpos	= path.find_last_of(delimeter_);
     return	(std::string::npos == dpos)

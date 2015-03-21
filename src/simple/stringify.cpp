@@ -615,6 +615,56 @@ bool	stringify_data::set_value(const std::string& path, unsigned long child_inde
     return	true;
 }
 
+bool	stringify_data::has_container(const std::string& path) {
+    stringify::node_id	id;
+    return	this->fetch(path, &id) && (get_node_type(id) == NODE_CONTAINER || get_node_type(id) == NODE_NAMED_CONTAINER);
+}
+
+bool	stringify_data::has_container(const std::string& path, const std::string& child_name) {
+    stringify::node_id	id;
+    return	this->fetch(path, &id) && this->fetch(id, child_name, &id) && (get_node_type(id) == NODE_CONTAINER || get_node_type(id) == NODE_NAMED_CONTAINER);
+}
+
+bool	stringify_data::has_container(const std::string& path, unsigned long child_index) {
+    stringify::node_id	id;
+    return	this->fetch(path, &id) && this->fetch(id, child_index, &id) && (get_node_type(id) == NODE_CONTAINER || get_node_type(id) == NODE_NAMED_CONTAINER);
+}
+
+stringify::node_container*	stringify_data::get_container(const std::string& path) {
+    stringify::node_id	id;
+    stringify::node_container*	ret	= 0;
+    if(		this->fetch(path, &id)
+            && (get_node_type(id) == NODE_CONTAINER || get_node_type(id) == NODE_NAMED_CONTAINER)
+            &&	fetch(id, &ret, 0)) {
+        return	ret;
+    }
+    return	0;
+}
+
+stringify::node_container*	stringify_data::get_container(const std::string& path, const std::string& child_name) {
+    stringify::node_id	id;
+    stringify::node_container*	ret	= 0;
+    if(		this->fetch(path, &id)
+            &&	this->fetch(id, child_name, &id)
+            &&	(get_node_type(id) == NODE_CONTAINER || get_node_type(id) == NODE_NAMED_CONTAINER)
+            &&	fetch(id, &ret, 0)) {
+        return	ret;
+    }
+    return	0;
+}
+
+stringify::node_container*	stringify_data::get_container(const std::string& path, unsigned long child_index) {
+    stringify::node_id	id;
+    stringify::node_container*	ret	= 0;
+    if(		this->fetch(path, &id)
+            &&	this->fetch(id, child_index, &id)
+            &&	(get_node_type(id) == NODE_CONTAINER || get_node_type(id) == NODE_NAMED_CONTAINER)
+            &&	fetch(id, &ret, 0)) {
+        return	ret;
+    }
+    return	0;
+}
+
 void	stringify_data_builder::do_before_add_value(const char* err_msg) {
     if(stack_.empty()) {
         throw	std::invalid_argument("found empty context when add_value");

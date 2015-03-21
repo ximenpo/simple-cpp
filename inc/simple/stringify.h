@@ -149,6 +149,7 @@ public:
     bool			has(const std::string& path);
     bool			has(const std::string& path, const std::string& child_name);
     bool			has(const std::string& path, unsigned long child_index);
+
     bool			has_value(const std::string& path);
     bool			has_value(const std::string& path, const std::string& child_name);
     bool			has_value(const std::string& path, unsigned long child_index);
@@ -158,6 +159,13 @@ public:
     bool			set_value(const std::string& path, const std::string& value);
     bool			set_value(const std::string& path, const std::string& child_name, const std::string& value);
     bool			set_value(const std::string& path, unsigned long child_index, const std::string& value);
+
+    bool						has_container(const std::string& path);
+    bool						has_container(const std::string& path, const std::string& child_name);
+    bool						has_container(const std::string& path, unsigned long child_index);
+    stringify::node_container*	get_container(const std::string& path);
+    stringify::node_container*	get_container(const std::string& path, const std::string& child_name);
+    stringify::node_container*	get_container(const std::string& path, unsigned long child_index);
 };
 
 //
@@ -508,16 +516,27 @@ public:
     //	methods.
     //
 
-    ///
-    ///	判断是否存在
-    ///
+    //
+    //	容器访问方法
+    //
+    bool			has_section(const std::string& path);
+    bool			has_section(const std::string& path, const std::string& child_name);
+    bool			has_section(const std::string& path, unsigned long child_index);
+
+    stringify::node_container*	get_section(const std::string& path);
+    stringify::node_container*	get_section(const std::string& path, const std::string& child_name);
+    stringify::node_container*	get_section(const std::string& path, unsigned long child_index);
+
+    //
+    //	判断值是否存在
+    //
     bool			has(const std::string& path);
     bool			has(const std::string& path, const std::string& child_name);
     bool			has(const std::string& path, unsigned long child_index);
 
-    ///
-    ///	简单值访问方法[从root开始]
-    ///
+    //
+    //	值访问方法[从root开始]
+    //
     //	string
     std::string		get(const std::string& path, const std::string& default_value);
     std::string		get(const std::string& path, const std::string& child_name, const std::string& default_value);
