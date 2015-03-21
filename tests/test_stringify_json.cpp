@@ -85,7 +85,7 @@ Context(stringify_json_context) {
                                    ));
     }
 
-    Spec(array_of_array_to_xml_usage) {
+    Spec(array_of_array_to_json_usage) {
         stringify_data_builder(data).begin()
         .object_begin()
         .field("age",	int(34))
@@ -163,61 +163,61 @@ Context(stringify_json_context) {
     }
 
     Spec(from_json_empty_object) {
-        std::string	xml	=
+        std::string	json	=
             "{"
             "}"
             ;
 
-        std::istringstream	is(xml);
+        std::istringstream	is(json);
         std::ostringstream	os;
         AssertThat(stringify_from_json_stream(data, is),	IsTrue());
         AssertThat(stringify_to_json_stream(data, os),	IsTrue());
-        AssertThat(os.str(),	Equals(xml));
+        AssertThat(os.str(),	Equals(json));
     }
 
     Spec(from_json_empty_array) {
-        std::string	xml	=
+        std::string	json	=
             "["
             "]"
             ;
 
-        std::istringstream	is(xml);
+        std::istringstream	is(json);
         std::ostringstream	os;
         AssertThat(stringify_from_json_stream(data, is),	IsTrue());
         AssertThat(stringify_to_json_stream(data, os),	IsTrue());
-        AssertThat(os.str(),	Equals(xml));
+        AssertThat(os.str(),	Equals(json));
     }
 
     Spec(faile_from_json_null) {
-        std::string	xml	=
+        std::string	json	=
             "null"
             ;
 
-        std::istringstream	is(xml);
+        std::istringstream	is(json);
         std::ostringstream	os;
         AssertThat(stringify_from_json_stream(data, is),	IsFalse());
     }
 
     Spec(faile_from_json_simple_value) {
-        std::string	xml	=
+        std::string	json	=
             "34"
             ;
 
-        std::istringstream	is(xml);
+        std::istringstream	is(json);
         std::ostringstream	os;
         AssertThat(stringify_from_json_stream(data, is),	IsFalse());
     }
 
     Spec(from_json_simple_array) {
-        std::string	xml	=
+        std::string	json	=
             "[34,35,36]"
             ;
 
-        std::istringstream	is(xml);
+        std::istringstream	is(json);
         std::ostringstream	os;
         AssertThat(stringify_from_json_stream(data, is),	IsTrue());
         AssertThat(stringify_to_json_stream(data, os),	IsTrue());
-        AssertThat(os.str(),	Equals(xml));
+        AssertThat(os.str(),	Equals(json));
     }
 
 };

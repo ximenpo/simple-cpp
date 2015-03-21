@@ -602,6 +602,9 @@ bool	stringify_from_json_stream(stringify_data& data, std::istream& is);
 bool	stringify_to_xml_stream(stringify_data& data, std::ostream& os, const std::string& anonymous_tag_name = "_");
 bool	stringify_from_xml_stream(stringify_data& data, std::istream& is, const std::string& anonymous_tag_name = "_");
 
+///	lua
+bool	stringify_to_lua_stream(stringify_data& data, std::ostream& os);
+
 //
 /////////////////////////////////////////////////////////////////////////////////
 
