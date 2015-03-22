@@ -1,0 +1,19 @@
+
+igloo			http://igloo-testing.org/
+any			http://www.codeproject.com/Articles/11250/High-Performance-Dynamic-Typing-in-C-using-a-Repla
+any_ptr			http://www.codeproject.com/Articles/11250/High-Performance-Dynamic-Typing-in-C-using-a-Repla
+combination		http://www.codeproject.com/Articles/4675/Combinations-in-C
+			http://www.codeproject.com/Articles/21335/Combinations-in-C-Part
+*ConvertUTF[retired]	ftp://ftp.unicode.org/Public/PROGRAMS/CVTUTF/
+cppformat		https://github.com/cppformat/cppformat/
+CSVParser		http://www.mayukhbose.com/freebies/c-code.php
+DefineImprovedEnum	http://www.codeproject.com/Articles/32000/Improving-C-Enums-Adding-Serialization-Inheritance
+DEIntegrator		http://www.codeproject.com/Articles/31550/Fast-Numerical-Integration
+FastDelegate		http://www.codeproject.com/Articles/7150/Member-Function-Pointers-and-the-Fastest-Possible
+pugixml			http://pugixml.org/
+rapidxml		http://rapidxml.sourceforge.net/
+switch_flags		http://www.codeproject.com/Articles/141327/Switching-on-Boolean-Conditions-and-Flags
+tCNode			http://www.codeproject.com/Articles/837746/Cplusplus-tCNode-template-An-Indexed-Multi-node-Da
+jRead			http://www.codeproject.com/Articles/885389/jRead-an-in-place-JSON-element-reader
+jWrite			http://www.codeproject.com/Articles/887604/jWrite-a-really-simple-JSON-writer-in-C
+SuperEasyJson		http://www.sourceforge.net/p/supereasyjson
