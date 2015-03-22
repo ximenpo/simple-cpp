@@ -11,175 +11,173 @@ main(argc,argv)
 int argc;
 char *argv[];
 {
-	int c,cnt,encrypt,decrypt,hexflag,tripflag;
-	register int i;
-	char key[8],*akey,*akey1,*getpass();
-	extern char *optarg;
+    int c,cnt,encrypt,decrypt,hexflag,tripflag;
+    register int i;
+    char key[8],*akey,*akey1,*getpass();
+    extern char *optarg;
 
-	tripflag = hexflag = block = encrypt = decrypt = 0;
-	akey = NULL;
-	while((c = getopt(argc,argv,"3hedk:b")) != EOF){
-		switch(c){
-		case '3':
-			tripflag++;
-			break;
-		case 'h':
-			hexflag++;
-			break;
-		case 'e':
-			encrypt++;
-			break;
-		case 'd':
-			decrypt++;
-			break;
-		case 'k':
-			akey = optarg;
-			break;
-		case 'b':
-			block++;
-			break;
-		}
-	}
-	if(encrypt == 0 && decrypt == 0){
-		fprintf(stderr,"Usage: des -e|-d [-3] [-h] [-k key]\n");
-		exit(2);
-	}
-	if(akey == NULL){
-		/* No key on command line, prompt for it */
-		for(;;){
-			akey = strdup(getpass("Enter key: "));
-			akey1 = strdup(getpass("Enter key again: "));
-			if(strcmp(akey,akey1)) != 0){
-				fprintf(stderr,"Key mistyped, try again\n");
-			} else
-				break;
-		}
-		memset(akey1,0,strlen(akey1));
-		free(akey1);
-	}
-	if(hexflag){
-		for(i=0;i<16;i++){
-			if(htoa(akey[i]) == -1){
-				fprintf(stderr,"Non-hex character in key\n");
-				exit(1);
-			}
-		}
-		gethex(key,akey,8);
-	} else {
-		strncpy(key,akey,8);
-		/* Set up key, determine parity bit */
-		for(cnt = 0; cnt < 8; cnt++){
-			c = 0;
-			for(i=0;i<7;i++)
-				if(key[cnt] & (1 << i))
-					c++;
-			if((c & 1) == 0)
-				key[cnt] |= 0x80;
-			else
-				key[cnt] &= ~0x80;
-		}
-	}
-	/* Blot out original key */
-	i = strlen(akey);
-	i = (i < 8) ? i : 8;
-	memset(akey,0,i);
+    tripflag = hexflag = block = encrypt = decrypt = 0;
+    akey = NULL;
+    while((c = getopt(argc,argv,"3hedk:b")) != EOF) {
+        switch(c) {
+        case '3':
+            tripflag++;
+            break;
+        case 'h':
+            hexflag++;
+            break;
+        case 'e':
+            encrypt++;
+            break;
+        case 'd':
+            decrypt++;
+            break;
+        case 'k':
+            akey = optarg;
+            break;
+        case 'b':
+            block++;
+            break;
+        }
+    }
+    if(encrypt == 0 && decrypt == 0) {
+        fprintf(stderr,"Usage: des -e|-d [-3] [-h] [-k key]\n");
+        exit(2);
+    }
+    if(akey == NULL) {
+        /* No key on command line, prompt for it */
+        for(;;) {
+            akey = strdup(getpass("Enter key: "));
+            akey1 = strdup(getpass("Enter key again: "));
+            if(strcmp(akey,akey1)) != 0) {
+                fprintf(stderr,"Key mistyped, try again\n");
+            } else
+                break;
+            }
+        memset(akey1,0,strlen(akey1));
+        free(akey1);
+    }
+    if(hexflag) {
+        for(i=0; i<16; i++) {
+            if(htoa(akey[i]) == -1) {
+                fprintf(stderr,"Non-hex character in key\n");
+                exit(1);
+            }
+        }
+        gethex(key,akey,8);
+    } else {
+        strncpy(key,akey,8);
+        /* Set up key, determine parity bit */
+        for(cnt = 0; cnt < 8; cnt++) {
+            c = 0;
+            for(i=0; i<7; i++)
+                if(key[cnt] & (1 << i))
+                    c++;
+            if((c & 1) == 0)
+                key[cnt] |= 0x80;
+            else
+                key[cnt] &= ~0x80;
+        }
+    }
+    /* Blot out original key */
+    i = strlen(akey);
+    i = (i < 8) ? i : 8;
+    memset(akey,0,i);
 
-	deskey(ds,key,
-	setkey(ks,key);
+    deskey(ds,key,
+           setkey(ks,key);
 
-	/* Initialize IV to all zeros */
-	memset(iv,0,8);
+           /* Initialize IV to all zeros */
+           memset(iv,0,8);
 
-	if(encrypt){
-		doencrypt();
-	} else {
-		dodecrypt();
-	}
+    if(encrypt) {
+    doencrypt();
+    } else {
+        dodecrypt();
+    }
 }
 /* Encrypt standard input to standard output */
-doencrypt()
-{
-	char work[8],*cp,*cp1;
-	int cnt,i;
+doencrypt() {
+    char work[8],*cp,*cp1;
+    int cnt,i;
 
-	for(;;){
-		if((cnt = fread(work,1,8,stdin)) != 8){
-			/* Put residual byte count in the last block.
-			 * Note that garbage is left in the other bytes,
-			 * if any; this is a feature, not a bug, since it'll
-			 * be stripped out at decrypt time.
-			 */
-			work[7] = cnt;
-		}
-		if(!block){
-			/* CBC mode; chain in last cipher word */
-			cp = work;
-			cp1 = iv;
-			for(i=8; i!=0; i--)
-				*cp++ ^= *cp1++;
-		}
-		endes(ks,work);	/* Encrypt block */
-		if(!block){	/* Save outgoing ciphertext for chain */
-			memcpy(iv,work,8);
-		}
-		fwrite(work,1,8,stdout);
-		if(cnt != 8)
-			break;
-	}
+    for(;;) {
+        if((cnt = fread(work,1,8,stdin)) != 8) {
+            /* Put residual byte count in the last block.
+             * Note that garbage is left in the other bytes,
+             * if any; this is a feature, not a bug, since it'll
+             * be stripped out at decrypt time.
+             */
+            work[7] = cnt;
+        }
+        if(!block) {
+            /* CBC mode; chain in last cipher word */
+            cp = work;
+            cp1 = iv;
+            for(i=8; i!=0; i--)
+                *cp++ ^= *cp1++;
+        }
+        endes(ks,work);	/* Encrypt block */
+        if(!block) {	/* Save outgoing ciphertext for chain */
+            memcpy(iv,work,8);
+        }
+        fwrite(work,1,8,stdout);
+        if(cnt != 8)
+            break;
+    }
 }
-dodecrypt()
-{
-	char work[8],nwork[8],ivtmp[8],*cp,*cp1;
-	int cnt,i;
+dodecrypt() {
+    char work[8],nwork[8],ivtmp[8],*cp,*cp1;
+    int cnt,i;
 
 
-	cnt = fread(work,1,8,stdin);	/* Prime the pump */
-	for(;;){
-		if(!block){	/* Save incoming ciphertext for chain */
-			memcpy(ivtmp,work,8);
-		}
-		dedes(ks,work);
-		if(!block){	/* Unchain block, save ciphertext for next */
-			cp = work;
-			cp1 = iv;
-			for(i=8; i!=0; i--){
-				*cp++ ^= *cp1++;
-			}
-			memcpy(iv,ivtmp,8);
-		}
-		/* Save buffer pending next read */
-		memcpy(nwork,work,8);
-		/* Try to read next block */
-		cnt = fread(work,1,8,stdin);
-		if(cnt != 8){	/* Can "only" be 0 if not 8 */
-			/* Prev block was last one, write appropriate number
-			 * of bytes
-			 */
-			cnt = nwork[7];
-			if(cnt < 0 || cnt > 7){
-				fprintf(stderr,"Corrupted file or wrong key\n");
-			} else if(cnt != 0)
-				fwrite(nwork,1,cnt,stdout);
-			exit(0);
-		} else {
-			/* Now okay to write previous buffer */
-			fwrite(nwork,1,8,stdout);
-		}
+    cnt = fread(work,1,8,stdin);	/* Prime the pump */
+    for(;;) {
+        if(!block) {	/* Save incoming ciphertext for chain */
+            memcpy(ivtmp,work,8);
+        }
+        dedes(ks,work);
+        if(!block) {	/* Unchain block, save ciphertext for next */
+            cp = work;
+            cp1 = iv;
+            for(i=8; i!=0; i--) {
+                *cp++ ^= *cp1++;
+            }
+            memcpy(iv,ivtmp,8);
+        }
+        /* Save buffer pending next read */
+        memcpy(nwork,work,8);
+        /* Try to read next block */
+        cnt = fread(work,1,8,stdin);
+        if(cnt != 8) {	/* Can "only" be 0 if not 8 */
+            /* Prev block was last one, write appropriate number
+             * of bytes
+             */
+            cnt = nwork[7];
+            if(cnt < 0 || cnt > 7) {
+                fprintf(stderr,"Corrupted file or wrong key\n");
+            } else if(cnt != 0)
+                fwrite(nwork,1,cnt,stdout);
+            exit(0);
+        } else {
+            /* Now okay to write previous buffer */
+            fwrite(nwork,1,8,stdout);
+        }
 
-	}
+    }
 }
 /* Convert hex/ascii nybble to binary */
 int
 htoa(c)
 char c;
 {
-	if(c >= '0' && c <= '9')
-		return c - '0';
-	if(c >= 'a' && c <= 'f')
-		return 10 + c - 'a';
-	if(c >= 'A' && c <= 'F')
-		return 10 + c - 'A';
-	return -1;
+    if(c >= '0' && c <= '9')
+        return c - '0';
+    if(c >= 'a' && c <= 'f')
+        return 10 + c - 'a';
+    if(c >= 'A' && c <= 'F')
+        return 10 + c - 'A';
+    return -1;
 }
 /* Convert bytes from hex/ascii to binary */
 gethex(result,cp,cnt)
@@ -187,19 +185,19 @@ register char *result;
 register char *cp;
 register int cnt;
 {
-	while(cnt-- != 0){
-		*result = htoa(*cp++) << 4;
-		*result++ |= htoa(*cp++);
-	}
+    while(cnt-- != 0) {
+        *result = htoa(*cp++) << 4;
+        *result++ |= htoa(*cp++);
+    }
 }
 #ifdef	DEBUG
 put8(cp)
 register char *cp;
 {
-	int i;
+    int i;
 
-	for(i=0;i<8;i++){
-		fprintf(stderr,"%02x ",*cp++ & 0xff);
-	}
+    for(i=0; i<8; i++) {
+        fprintf(stderr,"%02x ",*cp++ & 0xff);
+    }
 }
 #endif
