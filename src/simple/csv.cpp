@@ -9,7 +9,7 @@ static	void	skip_spaces(std::istream& is) {
     }
 }
 
-bool	ignore_crlf(std::istream& is) {
+static	bool	ignore_crlf(std::istream& is) {
     while(!is.eof()) {
         switch(is.peek()) {
         case '\r':
@@ -22,7 +22,7 @@ bool	ignore_crlf(std::istream& is) {
     return	true;
 }
 
-bool	read_field_normal(std::istream& is, std::string& field) {
+static	bool	read_field_normal(std::istream& is, std::string& field) {
     while(!is.eof()) {
         char	c	= is.peek();
         if(is.eof()) {
@@ -44,7 +44,7 @@ bool	read_field_normal(std::istream& is, std::string& field) {
     return	true;
 }
 
-bool	read_field_quoted(std::istream& is, std::string& field) {
+static	bool	read_field_quoted(std::istream& is, std::string& field) {
     std::string	str;
     while(is.peek() == '"') {
         is.get();
@@ -82,7 +82,7 @@ bool	read_field_quoted(std::istream& is, std::string& field) {
     return	true;
 }
 
-bool	read_field(std::istream& is, std::string& field) {
+static	bool	read_field(std::istream& is, std::string& field) {
     skip_spaces(is);
     if(is.peek() == '"') {
         return	read_field_quoted(is, field);
