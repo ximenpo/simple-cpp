@@ -34,42 +34,46 @@ OTHER DEALINGS IN THE SOFTWARE.
 #define _COMBFROMREPSET_H_
 
 
-namespace stdcomb {
+namespace stdcomb
+{
 
 
-struct RepElem {
-    unsigned int Start;
-    unsigned int End;
+struct RepElem 
+{
+	unsigned int Start;
+	unsigned int End;
 };
 
 
-class CCombFromRepSet : public CIdxComb {
+class CCombFromRepSet : public CIdxComb
+{
 public:
-    // Constructor
-    CCombFromRepSet() {};
+	// Constructor
+	CCombFromRepSet() {};
 
-    CCombFromRepSet( unsigned int SetSize, unsigned int CombSize )
-        : CIdxComb( SetSize, CombSize ) {
-    };
+	CCombFromRepSet( unsigned int SetSize, unsigned int CombSize )
+	: CIdxComb( SetSize, CombSize )
+	{};
+	
+	~CCombFromRepSet() {};
+	
+	bool SetRepeatSetInfo( const std::vector<unsigned int> &vi );
 
-    ~CCombFromRepSet() {};
+	// Getvrep() must be removed
+	//============================
+	std::vector<RepElem> & Getvrep()
+	{
+		return m_vrep;
+	};
+	
+	void SetFirstComb( std::vector<unsigned int> &vi );
 
-    bool SetRepeatSetInfo( const std::vector<unsigned int> &vi );
-
-    // Getvrep() must be removed
-    //============================
-    std::vector<RepElem> & Getvrep() {
-        return m_vrep;
-    };
-
-    void SetFirstComb( std::vector<unsigned int> &vi );
-
-    bool GetNextComb( std::vector<unsigned int> &vi );
-
+	bool GetNextComb( std::vector<unsigned int> &vi );
+	
 private:
-    void Shift( std::vector<unsigned int> &vi );
+	void Shift( std::vector<unsigned int> &vi );
 
-    std::vector<RepElem> m_vrep;
+	std::vector<RepElem> m_vrep;
 
 };
 

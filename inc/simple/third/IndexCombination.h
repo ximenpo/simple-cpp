@@ -32,37 +32,41 @@ OTHER DEALINGS IN THE SOFTWARE.
 #ifndef _INDEXCOMBINATION_H_
 #define _INDEXCOMBINATION_H_
 
-namespace stdcomb {
+namespace stdcomb
+{
 
 
-class CIdxComb {
+class CIdxComb
+{
 public:
-    // Constructor
-    CIdxComb() {
-        Init( 2, 1 );
-    };
+	// Constructor
+	CIdxComb()
+	{
+		Init( 2, 1 );
+	};
 
-    CIdxComb( unsigned int SetSize, unsigned int CombSize ) {
-        Init( SetSize, CombSize );
-    };
+	CIdxComb( unsigned int SetSize, unsigned int CombSize )
+	{
+		Init( SetSize, CombSize ); 
+	};
+	
+	
+	// Destructor
+	~CIdxComb() {};
 
 
-    // Destructor
-    ~CIdxComb() {};
+	void Init( unsigned int SetSize, unsigned int CombSize );
 
+	bool SetSizes( unsigned int SetSize, unsigned int CombSize );
 
-    void Init( unsigned int SetSize, unsigned int CombSize );
-
-    bool SetSizes( unsigned int SetSize, unsigned int CombSize );
-
-    bool GetNextComb( std::vector<unsigned int> &vi );
+	bool GetNextComb( std::vector<unsigned int> &vi );
 
 protected:
-    unsigned int m_ArrSize;
-    unsigned int m_LastIdx;
-
-    unsigned int m_SetSize;
-    unsigned int m_LastSetIdx;
+	unsigned int m_ArrSize;
+	unsigned int m_LastIdx;
+	
+	unsigned int m_SetSize;
+	unsigned int m_LastSetIdx;
 
 };
 

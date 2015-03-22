@@ -12,41 +12,44 @@
  * MimeCoder -  Abstract base class for MIME filters.
  ******************************************************************************/
 template <class InIter, class OutIter>
-class MimeCoder {
+class MimeCoder
+{
 public:
-    virtual OutIter Filter( OutIter out, InIter inBeg, InIter inEnd ) = 0;
+	virtual OutIter Filter( OutIter out, InIter inBeg, InIter inEnd ) = 0;
     virtual OutIter Finish( OutIter out ) = 0;
 
-    virtual ~MimeCoder() {};
+	virtual ~MimeCoder(){};
 };
 
 /******************************************************************************
  * Base64
  ******************************************************************************/
 template <class InIter, class OutIter>
-class Base64Encoder : public MimeCoder<InIter, OutIter> {
+class Base64Encoder : public MimeCoder<InIter, OutIter>
+{
 public:
     Base64Encoder() : its3Len(0), itsLinePos(0) {}
     virtual OutIter Filter( OutIter out, InIter inBeg, InIter inEnd );
-    virtual OutIter Finish( OutIter out );
+	 virtual OutIter Finish( OutIter out );
 private:
     int             itsLinePos;
-    unsigned char   itsCurr3[3];
+	 unsigned char   itsCurr3[3];
     int             its3Len;
     void EncodeCurr3( OutIter& out );
 };
 
 template <class InIter, class OutIter>
-class Base64Decoder : public MimeCoder<InIter, OutIter> {
+class Base64Decoder : public MimeCoder<InIter, OutIter>
+{
 public:
     Base64Decoder() : its4Len(0), itsEnded(0) {}
     virtual OutIter Filter( OutIter out, InIter inBeg, InIter inEnd );
-    virtual OutIter Finish( OutIter out );
+	 virtual OutIter Finish( OutIter out );
 private:
     int             itsEnded;
     unsigned char   itsCurr4[4];
     int             its4Len;
-    int             itsErrNum;
+	 int             itsErrNum;
     void DecodeCurr4( OutIter& out );
 };
 
@@ -54,21 +57,23 @@ private:
  * Quoted-Printable
  ******************************************************************************/
 template <class InIter, class OutIter>
-class QpEncoder : public MimeCoder<InIter, OutIter> {
+class QpEncoder : public MimeCoder<InIter, OutIter>
+{
 public:
     QpEncoder() : itsLinePos(0), itsPrevCh('x') {}
     virtual OutIter Filter( OutIter out, InIter inBeg, InIter inEnd );
     virtual OutIter Finish( OutIter out );
 private:
     int             itsLinePos;
-    unsigned char   itsPrevCh;
+	 unsigned char   itsPrevCh;
 };
 
 template <class InIter, class OutIter>
-class QpDecoder : public MimeCoder<InIter, OutIter> {
+class QpDecoder : public MimeCoder<InIter, OutIter>
+{
 public:
-    QpDecoder() : itsHexLen(0) {}
-    virtual OutIter Filter( OutIter out, InIter inBeg, InIter inEnd );
+	 QpDecoder() : itsHexLen(0) {}
+	 virtual OutIter Filter( OutIter out, InIter inBeg, InIter inEnd );
     virtual OutIter Finish( OutIter out );
 private:
     int             itsHexLen;
@@ -89,26 +94,27 @@ static const int cLineLen = 72;
  * Base64Encoder
  ******************************************************************************/
 static const char cBase64Codes[] =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 static const char CR = 13;
 static const char LF = 10;
 
 template <class InIter, class OutIter>
 OutIter Base64Encoder<InIter, OutIter>::Filter(
-    OutIter out,
+	 OutIter out,
     InIter inBeg,
-    InIter inEnd ) {
+    InIter inEnd )
+{
     for(;;) {
         for(; itsLinePos < cLineLen; itsLinePos += 4) {
             for (; its3Len < 3; its3Len++) {
                 if (inBeg == inEnd)
-                    ___ ___ ___ ___ ___ return out;
+___ ___ ___ ___ ___ return out;
                 itsCurr3[its3Len] = *inBeg;
                 ++inBeg;
             }
             EncodeCurr3(out);
             its3Len = 0;
-        } // for loop until end of line
+		  } // for loop until end of line
         *out++ = CR;
         *out++ = LF;
         itsLinePos = 0;
@@ -117,23 +123,25 @@ OutIter Base64Encoder<InIter, OutIter>::Filter(
 }
 
 template <class InIter, class OutIter>
-OutIter Base64Encoder<InIter, OutIter>::Finish( OutIter out ) {
+OutIter Base64Encoder<InIter, OutIter>::Finish( OutIter out )
+{
     if (its3Len)
         EncodeCurr3(out);
-    its3Len = 0;
+	 its3Len = 0;
     itsLinePos = 0;
 
     return out;
 }
 
 template <class InIter, class OutIter>
-void Base64Encoder<InIter, OutIter>::EncodeCurr3( OutIter& out ) {
+void Base64Encoder<InIter, OutIter>::EncodeCurr3( OutIter& out )
+{
     if (its3Len < 3) itsCurr3[its3Len] = 0;
 
     *out++ = cBase64Codes[ itsCurr3[0] >> 2 ];
     *out++ = cBase64Codes[ ((itsCurr3[0] & 0x3)<< 4) |
                            ((itsCurr3[1] & 0xF0) >> 4) ];
-    if (its3Len == 1) *out++ = '=';
+	 if (its3Len == 1) *out++ = '=';
     else
         *out++ = cBase64Codes[ ((itsCurr3[1] & 0xF) << 2) |
                                ((itsCurr3[2] & 0xC0) >>6) ];
@@ -161,7 +169,7 @@ static const unsigned char cIndex64[256] = {
     XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX,
     XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX,
     XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX,
-    XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX,
+	 XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX,
     XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX,
     XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX,
 };
@@ -169,15 +177,16 @@ static const unsigned char cIndex64[256] = {
 template <class InIter, class OutIter>
 OutIter Base64Decoder<InIter, OutIter>::Filter(
     OutIter out,
-    InIter inBeg,
-    InIter inEnd ) {
+    InIter inBeg, 
+    InIter inEnd )
+{
     unsigned char c;
     itsErrNum = 0;
 
-    for (;;) {
+	 for (;;) {
         while (its4Len < 4) {
             if (inBeg == inEnd)
-                ___ ___ ___ ___ return out;
+___ ___ ___ ___ return out;
             c = *inBeg;
             if ((cIndex64[c] != XX) || (c == '='))
                 itsCurr4[its4Len++] = c;
@@ -187,12 +196,13 @@ OutIter Base64Decoder<InIter, OutIter>::Filter(
         DecodeCurr4(out);
         its4Len = 0;
     } // for (;;)
-
+    
 //	 return out;
 }
 
 template <class InIter, class OutIter>
-OutIter Base64Decoder<InIter, OutIter>::Finish( OutIter out ) {
+OutIter Base64Decoder<InIter, OutIter>::Finish( OutIter out )
+{
     its4Len = 0;
     if (itsEnded) return out;
     else { // error
@@ -202,7 +212,8 @@ OutIter Base64Decoder<InIter, OutIter>::Finish( OutIter out ) {
 }
 
 template <class InIter, class OutIter>
-void Base64Decoder<InIter, OutIter>::DecodeCurr4( OutIter& out ) {
+void Base64Decoder<InIter, OutIter>::DecodeCurr4( OutIter& out )
+{
     if (itsEnded) {
         ++itsErrNum;
         itsEnded = 0;
@@ -211,8 +222,9 @@ void Base64Decoder<InIter, OutIter>::DecodeCurr4( OutIter& out ) {
     for (int i = 0; i < 2; i++)
         if (itsCurr4[i] == '=') {
             ++itsErrNum; // error
-            ___ ___ ___ return;
-        } else itsCurr4[i] = cIndex64[itsCurr4[i]];
+___ ___ ___ return;
+        }
+        else itsCurr4[i] = cIndex64[itsCurr4[i]];
 
     *out++ = (itsCurr4[0] << 2) | ((itsCurr4[1] & 0x30) >> 4);
     if (itsCurr4[2] == '=') {
@@ -235,12 +247,13 @@ static const char cBasisHex[] = "0123456789ABCDEF";
 template <class InIter, class OutIter>
 OutIter QpEncoder<InIter, OutIter>::Filter(
     OutIter out,
-    InIter inBeg,
-    InIter inEnd ) {
-    unsigned char c;
-
+    InIter inBeg, 
+    InIter inEnd )
+{
+   unsigned char c;
+    
     for (; inBeg != inEnd; ++inBeg) {
-        c = *inBeg;
+		  c = *inBeg;
 
         // line-breaks
         if (c == '\n') {
@@ -254,7 +267,7 @@ OutIter QpEncoder<InIter, OutIter>::Filter(
         }
 
         // non-printable
-        else if ( (c < 32 && c != '\t')
+		  else if ( (c < 32 && c != '\t')
                   || (c == '=')
                   || (c >= 127)
                   // Following line is to avoid single periods alone on lines,
@@ -266,9 +279,9 @@ OutIter QpEncoder<InIter, OutIter>::Filter(
             itsLinePos += 3;
             itsPrevCh = 'A'; // close enough
         }
-
+        
         // printable characters
-        else {
+		  else {
             *out++ = itsPrevCh = c;
             ++itsLinePos;
         }
@@ -279,12 +292,13 @@ OutIter QpEncoder<InIter, OutIter>::Filter(
             itsLinePos = 0;
         }
     } // for loop over all input
-
+    
     return out;
 }
 
 template <class InIter, class OutIter>
-OutIter QpEncoder<InIter, OutIter>::Finish( OutIter out ) {
+OutIter QpEncoder<InIter, OutIter>::Finish( OutIter out )
+{
     if (itsLinePos) {
         *out++ = '=';
         *out++ = '\n';
@@ -304,12 +318,12 @@ static const unsigned char cIndexHex[256] = {
     XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX,
     XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX,
     XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX,
-    0, 1, 2, 3,  4, 5, 6, 7,  8, 9,XX,XX, XX,XX,XX,XX,
+     0, 1, 2, 3,  4, 5, 6, 7,  8, 9,XX,XX, XX,XX,XX,XX,
     XX,10,11,12, 13,14,15,XX, XX,XX,XX,XX, XX,XX,XX,XX,
     XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX,
     XX,10,11,12, 13,14,15,XX, XX,XX,XX,XX, XX,XX,XX,XX,
     XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX,
-    XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX,
+	 XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX,
     XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX,
     XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX,
     XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX,
@@ -322,8 +336,9 @@ static const unsigned char cIndexHex[256] = {
 template <class InIter, class OutIter>
 OutIter QpDecoder<InIter, OutIter>::Filter(
     OutIter out,
-    InIter inBeg,
-    InIter inEnd ) {
+    InIter inBeg, 
+	 InIter inEnd )
+{
     unsigned char c, c1, c2;
     int errn = 0;
 
@@ -336,22 +351,24 @@ OutIter QpDecoder<InIter, OutIter>::Filter(
                     if (XX == (c1 = cIndexHex[itsHex[0]])) ++errn;
                     if (XX == (c2 = cIndexHex[itsHex[1]])) ++errn;
                     c = (c1 << 4) | c2;
-                    if (c != '\r') *out++ = c;
+						  if (c != '\r') *out++ = c;
                     itsHexLen = 0;
                 }
             }
-        } else if (*inBeg == '=') itsHexLen = 1; // beginning of a new Hex triplet
+        }
+        else if (*inBeg == '=') itsHexLen = 1;  // beginning of a new Hex triplet
         else *out++ = *inBeg;                   // printable character
     }
-
+    
     return out;
 }
 
 template <class InIter, class OutIter>
-OutIter QpDecoder<InIter, OutIter>::Finish( OutIter out ) {
+OutIter QpDecoder<InIter, OutIter>::Finish( OutIter out )
+{
     if (itsHexLen) { // error
         itsHexLen = 0;
-        ___ ___ return out;
+___ ___ return out;
     }
     return out;
 }

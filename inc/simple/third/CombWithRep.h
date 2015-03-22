@@ -33,13 +33,14 @@ OTHER DEALINGS IN THE SOFTWARE.
 #define _COMBWITHREP_H_
 
 
-namespace stdcomb {
+namespace stdcomb
+{
 
 
-bool CombWithRep(
-    unsigned int Set,
-    unsigned int Comb,
-    std::vector<unsigned int> &vi );
+bool CombWithRep( 
+	unsigned int Set, 
+	unsigned int Comb, 
+	std::vector<unsigned int> &vi );
 
 
 

@@ -32,100 +32,112 @@ OTHER DEALINGS IN THE SOFTWARE.
 using namespace stdcomb;
 
 
-void CIdxComb::Init( unsigned int SetSize, unsigned int CombSize  ) {
-    // Assign CombSize
-    ////////////////////////
-    if( CombSize == 0 )
-        CombSize = 1;
+void CIdxComb::Init( unsigned int SetSize, unsigned int CombSize  )
+{
+	// Assign CombSize
+	////////////////////////
+	if( CombSize == 0 )
+		CombSize = 1;
 
-    m_ArrSize = CombSize;
-    m_LastIdx = CombSize - 1;
+	m_ArrSize = CombSize;
+	m_LastIdx = CombSize - 1;
 
-    // Assign SetSize
-    ////////////////////////
-    if( SetSize == 0 )
-        SetSize = 2;
+	// Assign SetSize
+	////////////////////////
+	if( SetSize == 0 )
+		SetSize = 2;
 
-    if( CombSize > SetSize )
-        CombSize = SetSize;
-
-    m_SetSize = SetSize;
-    m_LastSetIdx = SetSize - 1;
+	if( CombSize > SetSize )
+		CombSize = SetSize;
+	
+	m_SetSize = SetSize;
+	m_LastSetIdx = SetSize - 1;
 }
 
 
-bool CIdxComb::SetSizes( unsigned int SetSize, unsigned int CombSize ) {
-    if( SetSize == 0 )
-        return false;
+bool CIdxComb::SetSizes( unsigned int SetSize, unsigned int CombSize )
+{
+	if( SetSize == 0 )
+		return false;
 
-    if( CombSize == 0 )
-        return false;
+	if( CombSize == 0 )
+		return false;
 
-    if( CombSize > SetSize )
-        return false;
+	if( CombSize > SetSize )
+		return false;
+	
+	m_ArrSize = CombSize;
+	m_LastIdx = CombSize - 1;
 
-    m_ArrSize = CombSize;
-    m_LastIdx = CombSize - 1;
+	m_SetSize = SetSize;
+	m_LastSetIdx = SetSize - 1;
 
-    m_SetSize = SetSize;
-    m_LastSetIdx = SetSize - 1;
-
-    return true;
+	return true;
 
 }
 
 
-bool CIdxComb::GetNextComb( std::vector<unsigned int> &vi ) {
+bool CIdxComb::GetNextComb( std::vector<unsigned int> &vi )
+{
+	
+	// Check if the last element is at the end
+	if( vi[m_LastIdx] == m_LastSetIdx )
+	{
+		if( m_ArrSize == 1 ) // Completed
+			return false;
 
-    // Check if the last element is at the end
-    if( vi[m_LastIdx] == m_LastSetIdx ) {
-        if( m_ArrSize == 1 ) // Completed
-            return false;
+		// Check if the subsequent elements(counted from back)
+		// is also at their subsequent positions
+		//////////////////////////////////////////////////////
+		bool Completed = true;
+		// Incomplete Index, init value not used
+		unsigned int IncompIdx = m_LastIdx - 1; 
+		
+		bool FirstIdx = false;
+		unsigned int ArrIdx = m_LastIdx - 1;
 
-        // Check if the subsequent elements(counted from back)
-        // is also at their subsequent positions
-        //////////////////////////////////////////////////////
-        bool Completed = true;
-        // Incomplete Index, init value not used
-        unsigned int IncompIdx = m_LastIdx - 1;
+		unsigned int SetIdx = m_LastSetIdx - 1;
+		
+		while( !FirstIdx )
+		{
+			if( vi[ArrIdx] != SetIdx )
+			{
+				Completed = false;
+				IncompIdx = vi[ArrIdx] + 1;
+				break;
+			}
 
-        bool FirstIdx = false;
-        unsigned int ArrIdx = m_LastIdx - 1;
+			if( SetIdx )
+				--SetIdx;
+		
+			if( !ArrIdx )
+				FirstIdx = true;
+			else
+				--ArrIdx; 
+				 
+		}
 
-        unsigned int SetIdx = m_LastSetIdx - 1;
-
-        while( !FirstIdx ) {
-            if( vi[ArrIdx] != SetIdx ) {
-                Completed = false;
-                IncompIdx = vi[ArrIdx] + 1;
-                break;
-            }
-
-            if( SetIdx )
-                --SetIdx;
-
-            if( !ArrIdx )
-                FirstIdx = true;
-            else
-                --ArrIdx;
-
-        }
-
-        if( Completed )
-            return false;
-        else {
-            for( unsigned int i=ArrIdx; i<=m_LastIdx; ++i, ++IncompIdx ) {
-                vi[i] = IncompIdx;
-            }
-        }
-
-    } else if ( vi[m_LastIdx] < m_LastSetIdx ) {
-        (vi[m_LastIdx])++;
-    } else { // bigger than the m_LastIdx! Impossible!
-        return false;
-    }
-
-    return true;
+		if( Completed )
+			return false;
+		else
+		{
+			for( unsigned int i=ArrIdx; i<=m_LastIdx; ++i, ++IncompIdx )
+			{
+				vi[i] = IncompIdx;
+			}
+		}
+	
+	}
+	else if ( vi[m_LastIdx] < m_LastSetIdx )
+	{
+		(vi[m_LastIdx])++;
+	}
+	else // bigger than the m_LastIdx! Impossible!
+	{
+		return false;
+	} 
+	
+	return true;
 }
 
 

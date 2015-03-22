@@ -33,130 +33,149 @@ OTHER DEALINGS IN THE SOFTWARE.
 #define _FINDCOMBBYIDX_H_
 
 
-namespace stdcomb {
+namespace stdcomb
+{
 
 // template class
 template< typename CFTC, typename N >
-class CFindCombByIdx {
+class CFindCombByIdx
+{
 
 public:
-    CFindCombByIdx() {};
-    ~CFindCombByIdx() {};
+	CFindCombByIdx() {};
+	~CFindCombByIdx() {};
 
 
-    bool FindCombByIdx(
-        const unsigned int Set,
-        const unsigned int Comb,
-        N Num,
-        std::vector<unsigned int> &vi ) {
-        if( Comb > Set || Set == 0 || Comb == 0 )
-            return false;
+	bool FindCombByIdx( 
+			const unsigned int Set, 
+			const unsigned int Comb, 
+			N Num, 
+			std::vector<unsigned int> &vi )
+	{
+		if( Comb > Set || Set == 0 || Comb == 0 )
+			return false;
+			
+		if( Num == 0 )
+		{
+			for( unsigned int i=0; i<Comb; ++i )
+				vi[i] = i;
+				
+			return true;
+		}
+		
+		// Actual Processing
+		unsigned int RSet = Set - 1;    // Remaining Set
+		unsigned int RComb = Comb - 1;  // Remaining Comb
+		CFTC ToFind(Num);
+		CFTC Zero(0);
+		CFTC One(1);
 
-        if( Num == 0 ) {
-            for( unsigned int i=0; i<Comb; ++i )
-                vi[i] = i;
+		for( unsigned int x=0; x<Comb; ++x )
+		{
+			
+			if( x == Comb-1 ) // Last Element
+			{
+				while( true )
+				{
+					if( Zero == ToFind )
+					{
+						vi[x] = Set - RSet - 1;
+						break;			
+					}
+					else
+					{
+						ToFind -= One;
+						--RSet;
+					}
+				}
+			}
+			else
+			{
+				CFTC ftc;
+				CFTC Prev;
+				
+				unsigned int yLoop = RSet-RComb;
+				bool Found = false;
+				unsigned int xPrev = 0;
 
-            return true;
-        }
+				if( x > 0 )
+					xPrev = vi[ x-1 ] + 1;
 
-        // Actual Processing
-        unsigned int RSet = Set - 1;    // Remaining Set
-        unsigned int RComb = Comb - 1;  // Remaining Comb
-        CFTC ToFind(Num);
-        CFTC Zero(0);
-        CFTC One(1);
+				unsigned int y;
+				for( y=0; y<yLoop; ++y )
+				{
+					ftc.FindTotalComb(RSet, RComb);
+					ftc += Prev;
+					if( ftc > ToFind ) // Prev is the found one
+					{
+						ToFind -= Prev;
+											
+						vi[x] = y + xPrev;
 
-        for( unsigned int x=0; x<Comb; ++x ) {
+						Found = true;
+						break;
+					}
+					Prev = ftc;
+					--RSet;
+				}
 
-            if( x == Comb-1 ) { // Last Element
-                while( true ) {
-                    if( Zero == ToFind ) {
-                        vi[x] = Set - RSet - 1;
-                        break;
-                    } else {
-                        ToFind -= One;
-                        --RSet;
-                    }
-                }
-            } else {
-                CFTC ftc;
-                CFTC Prev;
+				if( !Found )
+				{
+					ToFind -= ftc;
+					
+					vi[x] = y + xPrev;
 
-                unsigned int yLoop = RSet-RComb;
-                bool Found = false;
-                unsigned int xPrev = 0;
+				}
+				
+				--RSet;
+				--RComb;
+			}
+		}
+		
+		return true;
+	};
+	// find the position using the combination elements
+	bool FindIdxByComb( 
+		const unsigned int Set, 
+		const unsigned int Comb, 
+		N& Num, 
+		std::vector<unsigned int> &vi )
+	{
+		if( Comb > Set || Set == 0 || Comb == 0 )
+			return false;
 
-                if( x > 0 )
-                    xPrev = vi[ x-1 ] + 1;
+		// Actual Processing
+		unsigned int RSet = Set - 1;    // Remaining Set
+		unsigned int RComb = Comb - 1;  // Remaining Comb
+		CFTC Pos(0);
+		for( unsigned int x=0; x<Comb; ++x )
+		{
+			CFTC ftc(0);
+			CFTC Prev(0);
 
-                unsigned int y;
-                for( y=0; y<yLoop; ++y ) {
-                    ftc.FindTotalComb(RSet, RComb);
-                    ftc += Prev;
-                    if( ftc > ToFind ) { // Prev is the found one
-                        ToFind -= Prev;
+			unsigned int yLoop = RSet-RComb;
 
-                        vi[x] = y + xPrev;
+			unsigned int y;
+			for( y=0; y<yLoop+1; ++y )
+			{
+				ftc.FindTotalComb(RSet, RComb); // compute the total combinations for this set and comb elements
+				ftc += Prev; // add back the saved value to the current value
+				if( vi[x] == Set-RSet-1 ) // if this element is the same value, eg 8==8
+				{
+					Pos += Prev; // add the prev value to the position
+					break; // do not compute anymore.
+				}
+				Prev = ftc; // save ftc value
+				--RSet;
+			}
+			--RSet;
+			--RComb;
+		}
 
-                        Found = true;
-                        break;
-                    }
-                    Prev = ftc;
-                    --RSet;
-                }
+		Num = Pos.GetResult(); // convert the result to BigInteger
 
-                if( !Found ) {
-                    ToFind -= ftc;
-
-                    vi[x] = y + xPrev;
-
-                }
-
-                --RSet;
-                --RComb;
-            }
-        }
-
-        return true;
-    };
-    // find the position using the combination elements
-    bool FindIdxByComb(
-        const unsigned int Set,
-        const unsigned int Comb,
-        N& Num,
-        std::vector<unsigned int> &vi ) {
-        if( Comb > Set || Set == 0 || Comb == 0 )
-            return false;
-
-        // Actual Processing
-        unsigned int RSet = Set - 1;    // Remaining Set
-        unsigned int RComb = Comb - 1;  // Remaining Comb
-        CFTC Pos(0);
-        for( unsigned int x=0; x<Comb; ++x ) {
-            CFTC ftc(0);
-            CFTC Prev(0);
-
-            unsigned int yLoop = RSet-RComb;
-
-            unsigned int y;
-            for( y=0; y<yLoop+1; ++y ) {
-                ftc.FindTotalComb(RSet, RComb); // compute the total combinations for this set and comb elements
-                ftc += Prev; // add back the saved value to the current value
-                if( vi[x] == Set-RSet-1 ) { // if this element is the same value, eg 8==8
-                    Pos += Prev; // add the prev value to the position
-                    break; // do not compute anymore.
-                }
-                Prev = ftc; // save ftc value
-                --RSet;
-            }
-            --RSet;
-            --RComb;
-        }
-
-        Num = Pos.GetResult(); // convert the result to BigInteger
-
-        return true;
-    };
+		return true;
+	};
 
 };
 

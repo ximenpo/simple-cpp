@@ -23,42 +23,46 @@
 #define ANY_PTR_HEADER
 
 #include <cstddef>
-#include <typeinfo>
 
-class any_ptr {
+class any_ptr
+{
 private:
     const void *_pObject;
-    const void *_typeId;
+    std::size_t _typeId;
 
     template <class T>
-    const void* TypeId()const {
-        //static const char typeId( 0 );
-        //return reinterpret_cast<std::size_t>( &typeId );
-        return &typeid(T);
+    static const std::size_t TypeId()
+    {
+        static char typeId( 0 );
+        return reinterpret_cast<std::size_t>( &typeId );
     }
 
 public:
     // Default Constructor
     any_ptr() :
         _pObject( 0 ),
-        _typeId( 0 ) {
+        _typeId( 0 )
+    {
     }
 
     // Construct from object pointer
     template <class T>
     any_ptr(T *const pObject) :
         _pObject( pObject ),
-        _typeId( TypeId<T>() ) {
+        _typeId( TypeId<T>() )
+    {
     }
 
     // Copy Constructor
     any_ptr(const any_ptr &other) :
         _pObject( other._pObject ),
-        _typeId( other._typeId ) {
+        _typeId( other._typeId )
+    {
     }
 
     // Assignment Operator
-    const any_ptr &operator =(const any_ptr &other) {
+    const any_ptr &operator =(const any_ptr &other)
+    {
         _pObject = other._pObject;
         _typeId  = other._typeId;
         return (*this);
@@ -66,7 +70,8 @@ public:
 
     // Assign from object pointer
     template <class T>
-    const any_ptr &operator =(T *const pObject) {
+    const any_ptr &operator =(T *const pObject)
+    {
         _pObject = pObject;
         _typeId  = TypeId<T>();
         return (*this);
@@ -74,7 +79,8 @@ public:
 
     // Implicit cast to non-const object pointer
     template <class T>
-    operator T *const() const {
+    operator T *const() const
+    {
         if( _typeId == TypeId<T>() )
             return static_cast<T *const>( const_cast<void *const>(_pObject) );
 
@@ -83,7 +89,8 @@ public:
 
     // Implicit cast to const object pointer
     template <class T>
-    operator const T *const() const {
+    operator const T *const() const
+    {
         if( (_typeId == TypeId<const T>()) || (_typeId == TypeId<T>()) )
             return static_cast<const T *const>( _pObject );
 
@@ -91,7 +98,8 @@ public:
     }
 
     // Test for emptiness
-    const bool empty() const {
+    const bool empty() const
+    {
         return (_pObject == 0);
     }
 };

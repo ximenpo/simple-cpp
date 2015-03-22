@@ -32,94 +32,108 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 using namespace stdcomb;
 
-bool CCombFromRepSet::SetRepeatSetInfo( const std::vector<unsigned int> &vi ) {
-    if( vi.size() == 0 )
-        return false;
+bool CCombFromRepSet::SetRepeatSetInfo( const std::vector<unsigned int> &vi )
+{
+	if( vi.size() == 0 )
+		return false;
+	
+	// empty vrep!
+	m_vrep.clear();
+			
+	RepElem re;
+	re.Start = 0;
+	unsigned int CurrElem = vi[0];
+	bool bRepeat = false;
+	for( unsigned int i=1; i<vi.size(); ++i )
+	{
+		if( bRepeat == false && CurrElem == vi[i] )
+		{
+			bRepeat = true;
+			if( i == vi.size()-1 ) // last element
+			{
+				re.End = i;
+				m_vrep.push_back( re );
+			}
+			continue;
+		}
+		
+		if( bRepeat == false && CurrElem != vi[i] )
+		{
+			CurrElem = vi[i];
+			re.Start = i;
+			continue;
+		}
 
-    // empty vrep!
-    m_vrep.clear();
+		if( bRepeat == true && CurrElem == vi[i] )
+		{
+			if( i == vi.size()-1 ) // last element
+			{
+				re.End = i;
+				m_vrep.push_back( re );
+			}
+			
+			continue;
+		}
+		
+		if( bRepeat == true && CurrElem != vi[i] )
+		{
+			CurrElem = vi[i];
 
-    RepElem re;
-    re.Start = 0;
-    unsigned int CurrElem = vi[0];
-    bool bRepeat = false;
-    for( unsigned int i=1; i<vi.size(); ++i ) {
-        if( bRepeat == false && CurrElem == vi[i] ) {
-            bRepeat = true;
-            if( i == vi.size()-1 ) { // last element
-                re.End = i;
-                m_vrep.push_back( re );
-            }
-            continue;
-        }
+			re.End = i - 1;
+			m_vrep.push_back( re );
+			
+			re.Start = i;
+			
+			bRepeat = false;
+		}
+	}
 
-        if( bRepeat == false && CurrElem != vi[i] ) {
-            CurrElem = vi[i];
-            re.Start = i;
-            continue;
-        }
-
-        if( bRepeat == true && CurrElem == vi[i] ) {
-            if( i == vi.size()-1 ) { // last element
-                re.End = i;
-                m_vrep.push_back( re );
-            }
-
-            continue;
-        }
-
-        if( bRepeat == true && CurrElem != vi[i] ) {
-            CurrElem = vi[i];
-
-            re.End = i - 1;
-            m_vrep.push_back( re );
-
-            re.Start = i;
-
-            bRepeat = false;
-        }
-    }
-
-    return true;
+	return true;
 }
 
 
-void CCombFromRepSet::SetFirstComb( std::vector<unsigned int> &vi ) {
-    Shift( vi );
-
+void CCombFromRepSet::SetFirstComb( std::vector<unsigned int> &vi )
+{
+	Shift( vi );
+	
 }
 
 
-bool CCombFromRepSet::GetNextComb( std::vector<unsigned int> &vi ) {
-    if( !CIdxComb::GetNextComb( vi ) )
-        return false;
+bool CCombFromRepSet::GetNextComb( std::vector<unsigned int> &vi )
+{
+	if( !CIdxComb::GetNextComb( vi ) )
+		return false;
 
-    Shift( vi );
-
-    return true;
+	Shift( vi );
+	
+	return true;	
 }
 
 
-void CCombFromRepSet::Shift( std::vector<unsigned int> &vi ) {
-    if( m_vrep.size() == 0 || vi.size() == 0 )
-        return;
+void CCombFromRepSet::Shift( std::vector<unsigned int> &vi )
+{
+	if( m_vrep.size() == 0 || vi.size() == 0 )
+		return;
 
-    for( unsigned int i=m_vrep.size()-1; i>=0 ; --i ) {
-        unsigned int RepCnt = 0;
-        for( int j=vi.size()-1; j>=0; --j ) {
-            if( vi[j] >= m_vrep[i].Start && vi[j] <= m_vrep[i].End ) {
-                vi[j] = m_vrep[i].End - RepCnt;
+	for( unsigned int i=m_vrep.size()-1; i>=0 ; --i )
+	{
+		unsigned int RepCnt = 0;
+		for( int j=vi.size()-1; j>=0; --j )
+		{
+			if( vi[j] >= m_vrep[i].Start && vi[j] <= m_vrep[i].End )
+			{
+				vi[j] = m_vrep[i].End - RepCnt;
+				
+				++RepCnt;
 
-                ++RepCnt;
+			}
 
-            }
+			if( j==0 )
+				break;
+		}
 
-            if( j==0 )
-                break;
-        }
-
-        if( i==0 )
-            break;
-    }
+		if( i==0 )
+			break;
+	}
 
 }

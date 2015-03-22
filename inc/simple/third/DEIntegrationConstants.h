@@ -32,7 +32,8 @@ hardly matter due to the rapid decay of the integrand.
 All values below were calculated with Mathematica.
 */
 
-static const double doubleExponentialAbcissas[] = {
+static const double doubleExponentialAbcissas[] = 
+{
     // 1st layer abcissas: transformed 0, 1, 2, 3
     0.00000000000000000000,
     0.95136796407274694573,
@@ -235,7 +236,8 @@ static const double doubleExponentialAbcissas[] = {
     0.99999999999992987953
 }; // end abcissas
 
-static const double doubleExponentialWeights[] = {
+static const double doubleExponentialWeights[] =
+{
     // First layer weights
     1.5707963267948966192,
     0.230022394514788685,
