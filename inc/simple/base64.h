@@ -12,7 +12,7 @@ inline	std::string	base64_encode(const char* s, unsigned int len) {
 }
 
 inline	std::string	base64_encode(const std::string& s) {
-    return	base64_encode(s.c_str(), s.size());
+    return	base64_encode((const unsigned char*)s.c_str(), s.size());
 }
 
 #endif
