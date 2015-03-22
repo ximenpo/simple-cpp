@@ -1,0 +1,40 @@
+Fast DES and 3DES kit - Phil Karn, KA9Q
+September 2, 1994
+November 4, 1995 - updated for 3DES
+November 15, 1995 - updated 3DES for 3 independent keys
+April 29, 1999 - repackaged into separate portable and x86 versions
+
+This archive includes optimized DES and EDE 3DES code in portable C.
+
+Contents:
+
+readme - this file
+readme.des - details on the des functions and some measured speeds
+des.h - Header file defining user accessable functions
+desport.c - DES encrypt/decrypt function in portable C
+des3port.c - Triple DES encrypt/decrypt function in portable C
+deskey.c - DES key scheduling function in portable C
+des3key.c - Triple DES key scheduling function in portable C
+gensp.c - Generate combined S/P box source files dessp.c and desspa.c
+descert.c - DES certification driver, reads and verifies NIST test suite
+des3cert.c - Triple DES certification driver, reads and verifies NIST test suite
+testdata - test data for descert.c
+descycle.c - DES exerciser. Executes DES in output feedback mode, printing
+   a line of ciphertext every 10,000 encryptions
+unixtime.c - DES timing test for UNIX. Executes DES 1 million times. Invoke
+   with UNIX 'time' command to measure execution time.
+dostime.c - Same as unixtime.c, but for DOS. Measures time internally.
+makefile - Makefile for portable C version
+
+Making the "certify" target will build the certification routine and
+execute it. This echoes each test vector as a text line to standard
+output followed by OK if the test passes.
+
+The triple DES certification routine uses the same test vectors as
+single DES with K1==K2==K3. This causes the triple DES routine to behave
+identically to a (slow) single DES routine.
+
+The executables for the GNU asm versions are named differently from the
+C versions (the assembler versions have 'a' appended to their names).
+
+

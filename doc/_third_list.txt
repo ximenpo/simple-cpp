@@ -11,6 +11,7 @@ CSVParser		http://www.mayukhbose.com/freebies/c-code.php
 DefineImprovedEnum	http://www.codeproject.com/Articles/32000/Improving-C-Enums-Adding-Serialization-Inheritance
 DEIntegrator		http://www.codeproject.com/Articles/31550/Fast-Numerical-Integration
 FastDelegate		http://www.codeproject.com/Articles/7150/Member-Function-Pointers-and-the-Fastest-Possible
+Fast DES code		http://www.ka9q.net/code/des/
 pugixml			http://pugixml.org/
 rapidxml		http://rapidxml.sourceforge.net/
 switch_flags		http://www.codeproject.com/Articles/141327/Switching-on-Boolean-Conditions-and-Flags

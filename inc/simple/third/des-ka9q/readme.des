@@ -1,0 +1,121 @@
+Data Encryption Standard routines in portable C and 386/486 assembler
+Phil Karn, KA9Q
+September 2, 1994 - initial release
+November 4, 1995 - updated for triple DES
+November 15, 1995 - updated 3DES for 3 independent keys
+December 14, 1995 - pipeline improvements to desgnu.s 
+April 29, 1999 - repackaged into separate x86 and portable C versions;
+		timings added for some more modern machines
+
+For conventional (single key) DES, there are two user calls, deskey()
+for creating a key schedule for encryption or decryption, and des()
+that does the actual encryption or decryption.
+
+The triple DES counterparts are des3key() and des3(). These implement
+triple DES in the "EDE" mode. Three distinct 56-bit keys are used, and
+the key schedule array is three times the size of that used for
+conventional DES. When encrypting, the first key is used in the
+encryption mode, then the second key is used in the decryption mode,
+and then the third key is again used in the encryption
+mode. Decryption in triple DES is the same, except that the three
+operations become DED (decrypt-encrypt-decrypt).
+
+This convention is followed by many 3DES implementations to facilitate
+backward compatibility with conventional DES. Setting all three keys
+in 3DES to the same value is equivalent to encrypting once with the
+single key.
+
+The functions are declared as follows:
+
+typedef unsigned long DES_KS[16][2];	/* Single-key DES key schedule */
+typedef unsigned long DES3_KS[48][2];	/* Triple-DES key schedule */
+
+void
+deskey(DES_KS,unsigned char key[8],int decrypt);
+
+void
+des3key(DES3_KS,unsigned char key[16],int decrypt);
+
+void
+des(DES_KS,unsigned char buf[8]);
+
+void
+des3(DES3_KS,unsigned char buf[8]);
+
+
+The deskey() and des3key() functions initialize a key schedule 'k'
+from 'key' for later use by des() or des3(), respectively; space for
+these arrays must be allocated by the caller. Be sure to note the
+different size requirements.
+
+The des() and des3() functions encrypt or decrypt the user-provided
+buffer 'buf' in place under control of the key schedule 'k'. Whether
+des() and des3() encrypt or decrypt is controlled by the 'decrypt'
+argument to deskey() or des3key() when the key schedule is
+created. This is because DES encryption and decryption are identical
+except for the key schedule being in reverse order.
+
+The deskey() and des3key() functions are not optimized for speed.  If
+you wish to alternate quickly between encryption and decryption using
+the same key it is best to allocate two separate key schedules with
+the same key, one for encryption and one for decryption.
+
+The deskey() and des3key() routines are in portable C; if you want
+great speed (e.g., for key searching or UNIX password cracking) you'll
+have to tune it yourself.
+
+The des() and des3() routines refer to an external table containing
+the combined S&P boxes. This table is generated as a C source file by
+the program gensp.
+
+This is an almost complete rewrite of my old public domain DES code
+written circa 1987, which in turn borrowed heavily from Jim Gillogly's
+1977 public domain code. I pretty much kept my key scheduling code,
+but the actual encrypt/decrypt routines are taken from from Richard
+Outerbridge's DES code as printed in Schneier's "Applied
+Cryptography."
+
+Some measured execution speeds of des() (single-key DES) in crypts/sec:
+
+Borland Assembler version, Borland C++ 3.1 -O2, DOS 16-bit real mode:
+110,254 (90 Mhz Pentium)
+72,098 (60 Mhz Pentium)
+43,460 (486DX-50)
+
+Gnu assembler version, 32-bit protected mode, BSDI 2.0:
+167,476 (Pentium 90)
+
+Gnu assembler version, Linux 2.2.6:
+877,193 (Pentium-II 400 MHz)
+
+Portable C version:
+714,000	(Pentium-II 400 MHz, GCC 2.7.2.3 -O4, Linux 2.2.6)
+109,890 (Sparc 20 Model 61, GCC 2.5.8 -O)
+99,300 (Pentium 90, BSDI 2.0, GCC 2.6.3 -O2, 32-bit prot mode)
+93,457 (Sparc 1000)
+88,495 (Sparc 5/85)
+84,034 (Sparc 2000)
+83,333 (Sparc 20 Model 51)
+80,000 (Sparc 10 Model 51)
+71,942 (Sparc 5/70)
+66,666 (Sparc 10 Model 41)
+66,225 (Sparc 10 Model 30)
+45,248 (Sun 4/15)
+44,643 (Sun 4/30)
+36,101 (Sun 4/690)
+35,335 (Sun 4/75)
+35,199 (486DX2-66, BSDI 1.1, GCC 1.42 -O, 32-bit prot mode)
+11,561 (486DX-50, DOS, Borland C++ 3.1 -O2, 16-bit real mode)
+
+Triple-key DES:
+GNU assembler version, Linux 2.2.6
+378,000 (Pentium-II 400 MHz)
+
+Portable C version
+282,000 (Pentium-II 400 MHz, GCC 2.7.2.3 -O4, Linux 2.2.6)
+
+
+This code is in the public domain. Bug reports and enhancements are
+appreciated.
+
+Phil Karn KA9Q, karn@ka9q.ampr.org
