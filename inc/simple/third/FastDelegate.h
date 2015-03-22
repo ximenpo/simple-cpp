@@ -862,6 +862,15 @@ private:
 public:
 	// Typedefs to aid generic programming
 	typedef FastDelegate0 type;
+    typedef	RetType		return_type;
+    typedef	void*		param1_type;
+    typedef	void*		param2_type;
+    typedef	void*		param3_type;
+    typedef	void*		param4_type;
+    typedef	void*		param5_type;
+    typedef	void*		param6_type;
+    typedef	void*		param7_type;
+    typedef	void*		param8_type;
 
 	// Construction and comparison functions
 	FastDelegate0() { clear(); }
@@ -947,6 +956,15 @@ private:
 public:
 	// Typedefs to aid generic programming
 	typedef FastDelegate1 type;
+    typedef	RetType		return_type;
+    typedef	Param1		param1_type;
+    typedef	void*		param2_type;
+    typedef	void*		param3_type;
+    typedef	void*		param4_type;
+    typedef	void*		param5_type;
+    typedef	void*		param6_type;
+    typedef	void*		param7_type;
+    typedef	void*		param8_type;
 
 	// Construction and comparison functions
 	FastDelegate1() { clear(); }
@@ -1032,6 +1050,15 @@ private:
 public:
 	// Typedefs to aid generic programming
 	typedef FastDelegate2 type;
+    typedef	RetType		return_type;
+    typedef	Param1		param1_type;
+    typedef	Param2		param2_type;
+    typedef	void*		param3_type;
+    typedef	void*		param4_type;
+    typedef	void*		param5_type;
+    typedef	void*		param6_type;
+    typedef	void*		param7_type;
+    typedef	void*		param8_type;
 
 	// Construction and comparison functions
 	FastDelegate2() { clear(); }
@@ -1117,6 +1144,15 @@ private:
 public:
 	// Typedefs to aid generic programming
 	typedef FastDelegate3 type;
+    typedef	RetType		return_type;
+    typedef	Param1		param1_type;
+    typedef	Param2		param2_type;
+    typedef	Param3		param3_type;
+    typedef	void*		param4_type;
+    typedef	void*		param5_type;
+    typedef	void*		param6_type;
+    typedef	void*		param7_type;
+    typedef	void*		param8_type;
 
 	// Construction and comparison functions
 	FastDelegate3() { clear(); }
@@ -1202,6 +1238,15 @@ private:
 public:
 	// Typedefs to aid generic programming
 	typedef FastDelegate4 type;
+    typedef	RetType		return_type;
+    typedef	Param1		param1_type;
+    typedef	Param2		param2_type;
+    typedef	Param3		param3_type;
+    typedef	Param4		param4_type;
+    typedef	void*		param5_type;
+    typedef	void*		param6_type;
+    typedef	void*		param7_type;
+    typedef	void*		param8_type;
 
 	// Construction and comparison functions
 	FastDelegate4() { clear(); }
@@ -1287,6 +1332,15 @@ private:
 public:
 	// Typedefs to aid generic programming
 	typedef FastDelegate5 type;
+    typedef	RetType		return_type;
+    typedef	Param1		param1_type;
+    typedef	Param2		param2_type;
+    typedef	Param3		param3_type;
+    typedef	Param4		param4_type;
+    typedef	Param5		param5_type;
+    typedef	void*		param6_type;
+    typedef	void*		param7_type;
+    typedef	void*		param8_type;
 
 	// Construction and comparison functions
 	FastDelegate5() { clear(); }
@@ -1372,6 +1426,15 @@ private:
 public:
 	// Typedefs to aid generic programming
 	typedef FastDelegate6 type;
+    typedef	RetType		return_type;
+    typedef	Param1		param1_type;
+    typedef	Param2		param2_type;
+    typedef	Param3		param3_type;
+    typedef	Param4		param4_type;
+    typedef	Param5		param5_type;
+    typedef	Param6		param6_type;
+    typedef	void*		param7_type;
+    typedef	void*		param8_type;
 
 	// Construction and comparison functions
 	FastDelegate6() { clear(); }
@@ -1457,6 +1520,15 @@ private:
 public:
 	// Typedefs to aid generic programming
 	typedef FastDelegate7 type;
+    typedef	RetType		return_type;
+    typedef	Param1		param1_type;
+    typedef	Param2		param2_type;
+    typedef	Param3		param3_type;
+    typedef	Param4		param4_type;
+    typedef	Param5		param5_type;
+    typedef	Param6		param6_type;
+    typedef	Param7		param7_type;
+    typedef	void*		param8_type;
 
 	// Construction and comparison functions
 	FastDelegate7() { clear(); }
@@ -1542,6 +1614,15 @@ private:
 public:
 	// Typedefs to aid generic programming
 	typedef FastDelegate8 type;
+    typedef	RetType		return_type;
+    typedef	Param1		param1_type;
+    typedef	Param2		param2_type;
+    typedef	Param3		param3_type;
+    typedef	Param4		param4_type;
+    typedef	Param5		param5_type;
+    typedef	Param6		param6_type;
+    typedef	Param7		param7_type;
+    typedef	Param8		param8_type;
 
 	// Construction and comparison functions
 	FastDelegate8() { clear(); }

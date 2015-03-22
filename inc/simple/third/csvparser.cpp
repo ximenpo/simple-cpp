@@ -106,6 +106,8 @@ CSVParser & CSVParser::operator >>(string & sOut)
         break;
       if (m_sData[m_nPos+1] == ',')
         break;
+      if (m_sData[m_nPos+1] == '"')
+        m_nPos++;
     }
     sOut += m_sData[m_nPos++];
   }

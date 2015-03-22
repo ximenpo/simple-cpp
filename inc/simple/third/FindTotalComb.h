@@ -32,6 +32,9 @@ OTHER DEALINGS IN THE SOFTWARE.
 #ifndef __FINDTOTALCOMB_H__
 #define __FINDTOTALCOMB_H__
 
+#if	defined(__GNUC__)
+#	include	"bigint/BigIntegerUtils.hh"
+#endif
 
 #define FACTMAX  100
 
