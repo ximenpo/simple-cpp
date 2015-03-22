@@ -1,7 +1,7 @@
 /**
  * pugixml parser - version 1.6
  * --------------------------------------------------------
- * Copyright (C) 2006-2014, by Arseny Kapoulkine (arseny.kapoulkine@gmail.com)
+ * Copyright (C) 2006-2015, by Arseny Kapoulkine (arseny.kapoulkine@gmail.com)
  * Report bugs and download new versions at http://pugixml.org/
  *
  * This library is distributed under the MIT License. See notice at the end
@@ -10146,7 +10146,7 @@ PUGI__FN xpath_node xml_node::select_single_node(const xpath_query& query) const
 #endif
 
 /**
- * Copyright (c) 2006-2014 Arseny Kapoulkine
+ * Copyright (c) 2006-2015 Arseny Kapoulkine
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
