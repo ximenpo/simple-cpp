@@ -28,7 +28,11 @@
 #ifndef FMT_FORMAT_H_
 #define FMT_FORMAT_H_
 
+#if		defined(_MSC_VER) && _MSC_VER < 1600
+#error	cppformat do not support below VS2010
+#else
 #include <stdint.h>
+#endif
 
 #include <cassert>
 #include <cmath>
@@ -44,7 +48,7 @@
 # include <iterator>
 #endif
 
-#ifdef _MSC_VER
+#if defined(_MSC_VER) &&  _MSC_VER >= 1400
 # include <intrin.h>  // _BitScanReverse, _BitScanReverse64
 
 namespace fmt {
