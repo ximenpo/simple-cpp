@@ -9,7 +9,7 @@
 #define MAXBITS 15
 
 const char inflate_copyright[] =
-    " inflate 1.2.8 Copyright 1995-2013 Mark Adler ";
+   " inflate 1.2.8 Copyright 1995-2013 Mark Adler ";
 /*
   If you use the zlib library in a product, an acknowledgment is welcome
   in the documentation of your product. If for some reason you cannot
@@ -59,22 +59,18 @@ unsigned short FAR *work;
     unsigned short offs[MAXBITS+1];     /* offsets in table for each length */
     static const unsigned short lbase[31] = { /* Length codes 257..285 base */
         3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 17, 19, 23, 27, 31,
-        35, 43, 51, 59, 67, 83, 99, 115, 131, 163, 195, 227, 258, 0, 0
-    };
+        35, 43, 51, 59, 67, 83, 99, 115, 131, 163, 195, 227, 258, 0, 0};
     static const unsigned short lext[31] = { /* Length codes 257..285 extra */
         16, 16, 16, 16, 16, 16, 16, 16, 17, 17, 17, 17, 18, 18, 18, 18,
-        19, 19, 19, 19, 20, 20, 20, 20, 21, 21, 21, 21, 16, 72, 78
-    };
+        19, 19, 19, 19, 20, 20, 20, 20, 21, 21, 21, 21, 16, 72, 78};
     static const unsigned short dbase[32] = { /* Distance codes 0..29 base */
         1, 2, 3, 4, 5, 7, 9, 13, 17, 25, 33, 49, 65, 97, 129, 193,
         257, 385, 513, 769, 1025, 1537, 2049, 3073, 4097, 6145,
-        8193, 12289, 16385, 24577, 0, 0
-    };
+        8193, 12289, 16385, 24577, 0, 0};
     static const unsigned short dext[32] = { /* Distance codes 0..29 extra */
         16, 16, 16, 16, 17, 17, 18, 18, 19, 19, 20, 20, 21, 21, 22, 22,
         23, 23, 24, 24, 25, 25, 26, 26, 27, 27,
-        28, 28, 29, 29, 64, 64
-    };
+        28, 28, 29, 29, 64, 64};
 
     /*
        Process a set of code lengths to create a canonical Huffman code.  The
@@ -213,7 +209,7 @@ unsigned short FAR *work;
 
     /* check available table space */
     if ((type == LENS && used > ENOUGH_LENS) ||
-            (type == DISTS && used > ENOUGH_DISTS))
+        (type == DISTS && used > ENOUGH_DISTS))
         return 1;
 
     /* process all codes and make table entries */
@@ -223,10 +219,12 @@ unsigned short FAR *work;
         if ((int)(work[sym]) < end) {
             here.op = (unsigned char)0;
             here.val = work[sym];
-        } else if ((int)(work[sym]) > end) {
+        }
+        else if ((int)(work[sym]) > end) {
             here.op = (unsigned char)(extra[work[sym]]);
             here.val = base[work[sym]];
-        } else {
+        }
+        else {
             here.op = (unsigned char)(32 + 64);         /* end of block */
             here.val = 0;
         }
@@ -247,7 +245,8 @@ unsigned short FAR *work;
         if (incr != 0) {
             huff &= incr - 1;
             huff += incr;
-        } else
+        }
+        else
             huff = 0;
 
         /* go to next symbol, update count, len */
@@ -279,7 +278,7 @@ unsigned short FAR *work;
             /* check for enough space */
             used += 1U << curr;
             if ((type == LENS && used > ENOUGH_LENS) ||
-                    (type == DISTS && used > ENOUGH_DISTS))
+                (type == DISTS && used > ENOUGH_DISTS))
                 return 1;
 
             /* point entry in root table to sub-table */

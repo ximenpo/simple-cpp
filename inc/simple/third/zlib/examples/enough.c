@@ -179,7 +179,8 @@ local struct tab *done; /* states already evaluated array */
 #define INDEX(i,j,k) (((size_t)((i-1)>>1)*((i-2)>>1)+(j>>1)-1)*(max-1)+k-1)
 
 /* Free allocated space.  Uses globals code, num, and done. */
-local void cleanup(void) {
+local void cleanup(void)
+{
     size_t n;
 
     if (done != NULL) {
@@ -199,7 +200,8 @@ local void cleanup(void) {
    length len unused -- return -1 if there is an overflow in the counting.
    Keep a record of previous results in num to prevent repeating the same
    calculation.  Uses the globals max and num. */
-local big_t count(int syms, int len, int left) {
+local big_t count(int syms, int len, int left)
+{
     big_t sum;          /* number of possible codes from this juncture */
     big_t got;          /* value returned from count() */
     int least;          /* least number of syms to use at this juncture */
@@ -230,7 +232,7 @@ local big_t count(int syms, int len, int left) {
        available for the remaining symbols at the maximum length (if there were
        no limit to the code length, this would become: most = left - 1) */
     most = (((code_t)left << (max - len)) - syms) /
-           (((code_t)1 << (max - len)) - 1);
+            (((code_t)1 << (max - len)) - 1);
 
     /* count all possible codes from this juncture and add them up */
     sum = 0;
@@ -253,7 +255,8 @@ local big_t count(int syms, int len, int left) {
    bit vector to indicate visiting this state.  Each (syms,len,left) state
    has a variable size bit vector indexed by (mem,rem).  The bit vector is
    lengthened if needed to allow setting the (mem,rem) bit. */
-local int beenhere(int syms, int len, int left, int mem, int rem) {
+local int beenhere(int syms, int len, int left, int mem, int rem)
+{
     size_t index;       /* index for this state's bit vector */
     size_t offset;      /* offset in this state's bit vector */
     int bit;            /* mask for this state's bit */
@@ -316,7 +319,8 @@ local int beenhere(int syms, int len, int left, int mem, int rem) {
    number of code structures used so far is mem, and the number remaining in
    the current sub-table is rem.  Uses the globals max, code, root, large, and
    done. */
-local void examine(int syms, int len, int left, int mem, int rem) {
+local void examine(int syms, int len, int left, int mem, int rem)
+{
     int least;          /* least number of syms to use at this juncture */
     int most;           /* most number of syms to use at this juncture */
     int use;            /* number of bit patterns to use in next call */
@@ -364,7 +368,7 @@ local void examine(int syms, int len, int left, int mem, int rem) {
        available for the remaining symbols at the maximum length (if there were
        no limit to the code length, this would become: most = left - 1) */
     most = (((code_t)left << (max - len)) - syms) /
-           (((code_t)1 << (max - len)) - 1);
+            (((code_t)1 << (max - len)) - 1);
 
     /* occupy least table spaces, creating new sub-tables as needed */
     use = least;
@@ -396,7 +400,8 @@ local void examine(int syms, int len, int left, int mem, int rem) {
    calculate the amount of memory required by inflate to build the decoding
    tables. Find the maximum amount of memory required and show the code that
    requires that maximum.  Uses the globals max, root, and num. */
-local void enough(int syms) {
+local void enough(int syms)
+{
     int n;              /* number of remaing symbols for this node */
     int left;           /* number of unused bit patterns at this length */
     size_t index;       /* index of this case in *num */
@@ -409,7 +414,8 @@ local void enough(int syms) {
     large = 1 << root;              /* base table */
     if (root < max)                 /* otherwise, there's only a base table */
         for (n = 3; n <= syms; n++)
-            for (left = 2; left < n; left += 2) {
+            for (left = 2; left < n; left += 2)
+            {
                 /* look at all reachable (root + 1) bit nodes, and the
                    resulting codes (complete at root + 2 or more) */
                 index = INDEX(n, left, root + 1);
@@ -449,7 +455,8 @@ local void enough(int syms) {
    to a multiple precision type), the method of printing will also need to be
    updated.
  */
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
     int syms;           /* total number of symbols to code */
     int n;              /* number of symbols to code for this run */
     big_t got;          /* return value of count() */

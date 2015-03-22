@@ -96,7 +96,7 @@ local void fixedtables OF((struct inflate_state FAR *state));
 local int updatewindow OF((z_streamp strm, const unsigned char FAR *end,
                            unsigned copy));
 #ifdef BUILDFIXED
-void makefixed OF((void));
+   void makefixed OF((void));
 #endif
 local unsigned syncsearch OF((unsigned FAR *have, const unsigned char FAR *buf,
                               unsigned len));
@@ -154,7 +154,8 @@ int windowBits;
     if (windowBits < 0) {
         wrap = 0;
         windowBits = -windowBits;
-    } else {
+    }
+    else {
         wrap = (windowBits >> 4) + 1;
 #ifdef GUNZIP
         if (windowBits < 48)
@@ -186,7 +187,7 @@ int stream_size;
     struct inflate_state FAR *state;
 
     if (version == Z_NULL || version[0] != ZLIB_VERSION[0] ||
-            stream_size != (int)(sizeof(z_stream)))
+        stream_size != (int)(sizeof(z_stream)))
         return Z_VERSION_ERROR;
     if (strm == Z_NULL) return Z_STREAM_ERROR;
     strm->msg = Z_NULL;                 /* in case we return an error */
@@ -321,7 +322,8 @@ struct inflate_state FAR *state;
 
     a.out > inffixed.h
  */
-void makefixed() {
+void makefixed()
+{
     unsigned low, size;
     struct inflate_state state;
 
@@ -404,7 +406,8 @@ unsigned copy;
         zmemcpy(state->window, end - state->wsize, state->wsize);
         state->wnext = 0;
         state->whave = state->wsize;
-    } else {
+    }
+    else {
         dist = state->wsize - state->wnext;
         if (dist > copy) dist = copy;
         zmemcpy(state->window + state->wnext, end - copy, dist);
@@ -413,7 +416,8 @@ unsigned copy;
             zmemcpy(state->window, end - copy, copy);
             state->wnext = copy;
             state->whave = state->wsize;
-        } else {
+        }
+        else {
             state->wnext += dist;
             if (state->wnext == state->wsize) state->wnext = 0;
             if (state->whave < state->wsize) state->whave += dist;
@@ -619,10 +623,10 @@ int flush;
     unsigned char hbuf[4];      /* buffer for gzip header crc calculation */
 #endif
     static const unsigned short order[19] = /* permutation of code lengths */
-    {16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15};
+        {16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15};
 
     if (strm == Z_NULL || strm->state == Z_NULL || strm->next_out == Z_NULL ||
-            (strm->next_in == Z_NULL && strm->avail_in != 0))
+        (strm->next_in == Z_NULL && strm->avail_in != 0))
         return Z_STREAM_ERROR;
 
     state = (struct inflate_state FAR *)strm->state;
@@ -654,7 +658,7 @@ int flush;
 #else
             if (
 #endif
-                    ((BITS(8) << 8) + (hold >> 8)) % 31) {
+                ((BITS(8) << 8) + (hold >> 8)) % 31) {
                 strm->msg = (char *)"incorrect header check";
                 state->mode = BAD;
                 break;
@@ -722,7 +726,8 @@ int flush;
                     state->head->extra_len = (unsigned)hold;
                 if (state->flags & 0x0200) CRC2(state->check, hold);
                 INITBITS();
-            } else if (state->head != Z_NULL)
+            }
+            else if (state->head != Z_NULL)
                 state->head->extra = Z_NULL;
             state->mode = EXTRA;
         case EXTRA:
@@ -731,7 +736,7 @@ int flush;
                 if (copy > have) copy = have;
                 if (copy) {
                     if (state->head != Z_NULL &&
-                            state->head->extra != Z_NULL) {
+                        state->head->extra != Z_NULL) {
                         len = state->head->extra_len - state->length;
                         zmemcpy(state->head->extra + len, next,
                                 len + copy > state->head->extra_max ?
@@ -763,7 +768,8 @@ int flush;
                 have -= copy;
                 next += copy;
                 if (len) goto inf_leave;
-            } else if (state->head != Z_NULL)
+            }
+            else if (state->head != Z_NULL)
                 state->head->name = Z_NULL;
             state->length = 0;
             state->mode = COMMENT;
@@ -783,7 +789,8 @@ int flush;
                 have -= copy;
                 next += copy;
                 if (len) goto inf_leave;
-            } else if (state->head != Z_NULL)
+            }
+            else if (state->head != Z_NULL)
                 state->head->comment = Z_NULL;
             state->mode = HCRC;
         case HCRC:
@@ -936,7 +943,8 @@ int flush;
                 if (here.val < 16) {
                     DROPBITS(here.bits);
                     state->lens[state->have++] = here.val;
-                } else {
+                }
+                else {
                     if (here.val == 16) {
                         NEEDBITS(here.bits + 2);
                         DROPBITS(here.bits);
@@ -948,13 +956,15 @@ int flush;
                         len = state->lens[state->have - 1];
                         copy = 3 + BITS(2);
                         DROPBITS(2);
-                    } else if (here.val == 17) {
+                    }
+                    else if (here.val == 17) {
                         NEEDBITS(here.bits + 3);
                         DROPBITS(here.bits);
                         len = 0;
                         copy = 3 + BITS(3);
                         DROPBITS(3);
-                    } else {
+                    }
+                    else {
                         NEEDBITS(here.bits + 7);
                         DROPBITS(here.bits);
                         len = 0;
@@ -997,7 +1007,7 @@ int flush;
             state->distcode = (const code FAR *)(state->next);
             state->distbits = 6;
             ret = inflate_table(DISTS, state->lens + state->nlen, state->ndist,
-                                &(state->next), &(state->distbits), state->work);
+                            &(state->next), &(state->distbits), state->work);
             if (ret) {
                 strm->msg = (char *)"invalid distances set";
                 state->mode = BAD;
@@ -1027,7 +1037,7 @@ int flush;
                 last = here;
                 for (;;) {
                     here = state->lencode[last.val +
-                                          (BITS(last.bits + last.op) >> last.bits)];
+                            (BITS(last.bits + last.op) >> last.bits)];
                     if ((unsigned)(last.bits + here.bits) <= bits) break;
                     PULLBYTE();
                 }
@@ -1039,8 +1049,8 @@ int flush;
             state->length = (unsigned)here.val;
             if ((int)(here.op) == 0) {
                 Tracevv((stderr, here.val >= 0x20 && here.val < 0x7f ?
-                         "inflate:         literal '%c'\n" :
-                         "inflate:         literal 0x%02x\n", here.val));
+                        "inflate:         literal '%c'\n" :
+                        "inflate:         literal 0x%02x\n", here.val));
                 state->mode = LIT;
                 break;
             }
@@ -1077,7 +1087,7 @@ int flush;
                 last = here;
                 for (;;) {
                     here = state->distcode[last.val +
-                                           (BITS(last.bits + last.op) >> last.bits)];
+                            (BITS(last.bits + last.op) >> last.bits)];
                     if ((unsigned)(last.bits + here.bits) <= bits) break;
                     PULLBYTE();
                 }
@@ -1138,10 +1148,12 @@ int flush;
                 if (copy > state->wnext) {
                     copy -= state->wnext;
                     from = state->window + (state->wsize - copy);
-                } else
+                }
+                else
                     from = state->window + (state->wnext - copy);
                 if (copy > state->length) copy = state->length;
-            } else {                            /* copy from output */
+            }
+            else {                              /* copy from output */
                 from = put - state->offset;
                 copy = state->length;
             }
@@ -1167,13 +1179,13 @@ int flush;
                 state->total += out;
                 if (out)
                     strm->adler = state->check =
-                                      UPDATE(state->check, put - out, out);
+                        UPDATE(state->check, put - out, out);
                 out = left;
                 if ((
 #ifdef GUNZIP
-                            state->flags ? hold :
+                     state->flags ? hold :
 #endif
-                            ZSWAP32(hold)) != state->check) {
+                     ZSWAP32(hold)) != state->check) {
                     strm->msg = (char *)"incorrect data check";
                     state->mode = BAD;
                     break;
@@ -1215,10 +1227,10 @@ int flush;
        error.  Call updatewindow() to create and/or update the window state.
        Note: a memory error from inflate() is non-recoverable.
      */
-inf_leave:
+  inf_leave:
     RESTORE();
     if (state->wsize || (out != strm->avail_out && state->mode < BAD &&
-                         (state->mode < CHECK || flush != Z_FINISH)))
+            (state->mode < CHECK || flush != Z_FINISH)))
         if (updatewindow(strm, strm->next_out, out - strm->avail_out)) {
             state->mode = MEM;
             return Z_MEM_ERROR;
@@ -1230,7 +1242,7 @@ inf_leave:
     state->total += out;
     if (state->wrap && out)
         strm->adler = state->check =
-                          UPDATE(state->check, strm->next_out - out, out);
+            UPDATE(state->check, strm->next_out - out, out);
     strm->data_type = state->bits + (state->last ? 64 : 0) +
                       (state->mode == TYPE ? 128 : 0) +
                       (state->mode == LEN_ || state->mode == COPY_ ? 256 : 0);
@@ -1398,11 +1410,9 @@ z_streamp strm;
 
     /* return no joy or set up to restart inflate() on a new block */
     if (state->have != 4) return Z_DATA_ERROR;
-    in = strm->total_in;
-    out = strm->total_out;
+    in = strm->total_in;  out = strm->total_out;
     inflateReset(strm);
-    strm->total_in = in;
-    strm->total_out = out;
+    strm->total_in = in;  strm->total_out = out;
     state->mode = TYPE;
     return Z_OK;
 }
@@ -1436,7 +1446,7 @@ z_streamp source;
 
     /* check input */
     if (dest == Z_NULL || source == Z_NULL || source->state == Z_NULL ||
-            source->zalloc == (alloc_func)0 || source->zfree == (free_func)0)
+        source->zalloc == (alloc_func)0 || source->zfree == (free_func)0)
         return Z_STREAM_ERROR;
     state = (struct inflate_state FAR *)source->state;
 
@@ -1458,7 +1468,7 @@ z_streamp source;
     zmemcpy((voidpf)dest, (voidpf)source, sizeof(z_stream));
     zmemcpy((voidpf)copy, (voidpf)state, sizeof(struct inflate_state));
     if (state->lencode >= state->codes &&
-            state->lencode <= state->codes + ENOUGH - 1) {
+        state->lencode <= state->codes + ENOUGH - 1) {
         copy->lencode = copy->codes + (state->lencode - state->codes);
         copy->distcode = copy->codes + (state->distcode - state->codes);
     }
@@ -1497,6 +1507,6 @@ z_streamp strm;
     if (strm == Z_NULL || strm->state == Z_NULL) return -1L << 16;
     state = (struct inflate_state FAR *)strm->state;
     return ((long)(state->back) << 16) +
-           (state->mode == COPY ? state->length :
+        (state->mode == COPY ? state->length :
             (state->mode == MATCH ? state->was - state->length : 0));
 }

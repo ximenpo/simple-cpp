@@ -79,7 +79,8 @@ struct access {
 };
 
 /* Deallocate an index built by build_index() */
-local void free_index(struct access *index) {
+local void free_index(struct access *index)
+{
     if (index != NULL) {
         free(index->list);
         free(index);
@@ -89,7 +90,8 @@ local void free_index(struct access *index) {
 /* Add an entry to the access point list.  If out of memory, deallocate the
    existing list and return NULL. */
 local struct access *addpoint(struct access *index, int bits,
-                              off_t in, off_t out, unsigned left, unsigned char *window) {
+    off_t in, off_t out, unsigned left, unsigned char *window)
+{
     struct point *next;
 
     /* if list is empty, create it (start with eight points) */
@@ -139,7 +141,8 @@ local struct access *addpoint(struct access *index, int bits,
    returns the number of access points on success (>= 1), Z_MEM_ERROR for out
    of memory, Z_DATA_ERROR for an error in the input file, or Z_ERRNO for a
    file read error.  On success, *built points to the resulting index. */
-local int build_index(FILE *in, off_t span, struct access **built) {
+local int build_index(FILE *in, off_t span, struct access **built)
+{
     int ret;
     off_t totin, totout;        /* our own total counters to avoid 4GB limit */
     off_t last;                 /* totout value of last access point */
@@ -209,7 +212,7 @@ local int build_index(FILE *in, off_t span, struct access **built) {
                access point after the last block by checking bit 6 of data_type
              */
             if ((strm.data_type & 128) && !(strm.data_type & 64) &&
-                    (totout == 0 || totout - last > span)) {
+                (totout == 0 || totout - last > span)) {
                 index = addpoint(index, strm.data_type & 7, totin,
                                  totout, strm.avail_out, window);
                 if (index == NULL) {
@@ -229,7 +232,7 @@ local int build_index(FILE *in, off_t span, struct access **built) {
     return index->size;
 
     /* return error */
-build_index_error:
+  build_index_error:
     (void)inflateEnd(&strm);
     if (index != NULL)
         free_index(index);
@@ -244,7 +247,8 @@ build_index_error:
    was generated.  extract() may also return Z_ERRNO if there is an error on
    reading or seeking the input file. */
 local int extract(FILE *in, struct access *index, off_t offset,
-                  unsigned char *buf, int len) {
+                  unsigned char *buf, int len)
+{
     int ret, skip;
     z_stream strm;
     struct point *here;
@@ -298,7 +302,8 @@ local int extract(FILE *in, struct access *index, off_t offset,
             strm.avail_out = WINSIZE;
             strm.next_out = discard;
             offset -= WINSIZE;
-        } else if (offset != 0) {           /* last skip */
+        }
+        else if (offset != 0) {             /* last skip */
             strm.avail_out = (unsigned)offset;
             strm.next_out = discard;
             offset = 0;
@@ -338,7 +343,7 @@ local int extract(FILE *in, struct access *index, off_t offset,
     ret = skip ? 0 : len - strm.avail_out;
 
     /* clean up and return bytes read or error */
-extract_ret:
+  extract_ret:
     (void)inflateEnd(&strm);
     return ret;
 }
@@ -346,7 +351,8 @@ extract_ret:
 /* Demonstrate the use of build_index() and extract() by processing the file
    provided on the command line, and the extracting 16K from about 2/3rds of
    the way through the uncompressed output, and writing that to stdout. */
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
     int len;
     off_t offset;
     FILE *in;

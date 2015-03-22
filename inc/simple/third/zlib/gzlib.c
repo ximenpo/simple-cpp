@@ -31,24 +31,24 @@ local gzFile gz_open OF((const void *, int, const char *));
    The gz_strwinerror function does not change the current setting of
    GetLastError. */
 char ZLIB_INTERNAL *gz_strwinerror (error)
-DWORD error;
+     DWORD error;
 {
     static char buf[1024];
 
     wchar_t *msgbuf;
     DWORD lasterr = GetLastError();
     DWORD chars = FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM
-                                | FORMAT_MESSAGE_ALLOCATE_BUFFER,
-                                NULL,
-                                error,
-                                0, /* Default language */
-                                (LPVOID)&msgbuf,
-                                0,
-                                NULL);
+        | FORMAT_MESSAGE_ALLOCATE_BUFFER,
+        NULL,
+        error,
+        0, /* Default language */
+        (LPVOID)&msgbuf,
+        0,
+        NULL);
     if (chars != 0) {
         /* If there is an \r\n appended, zap it.  */
         if (chars >= 2
-                && msgbuf[chars - 2] == '\r' && msgbuf[chars - 1] == '\n') {
+            && msgbuf[chars - 2] == '\r' && msgbuf[chars - 1] == '\n') {
             chars -= 2;
             msgbuf[chars] = 0;
         }
@@ -60,7 +60,8 @@ DWORD error;
 
         wcstombs(buf, msgbuf, chars + 1);
         LocalFree(msgbuf);
-    } else {
+    }
+    else {
         sprintf(buf, "unknown win32 error (%ld)", error);
     }
 
@@ -72,7 +73,7 @@ DWORD error;
 
 /* Reset gzip file state */
 local void gz_reset(state)
-gz_statep state;
+    gz_statep state;
 {
     state->x.have = 0;              /* no output data available */
     if (state->mode == GZ_READ) {   /* for reading ... */
@@ -88,9 +89,9 @@ gz_statep state;
 
 /* Open a gzip file either by name or file descriptor. */
 local gzFile gz_open(path, fd, mode)
-const void *path;
-int fd;
-const char *mode;
+    const void *path;
+    int fd;
+    const char *mode;
 {
     gz_statep state;
     size_t len;
@@ -192,7 +193,8 @@ const char *mode;
         len = wcstombs(NULL, path, 0);
         if (len == (size_t)-1)
             len = 0;
-    } else
+    }
+    else
 #endif
         len = strlen((const char *)path);
     state->path = (char *)malloc(len + 1);
@@ -238,9 +240,9 @@ const char *mode;
     /* open the file with the appropriate flags (or just use fd) */
     state->fd = fd > -1 ? fd : (
 #ifdef _WIN32
-                    fd == -2 ? _wopen(path, oflag, 0666) :
+        fd == -2 ? _wopen(path, oflag, 0666) :
 #endif
-                    open((const char *)path, oflag, 0666));
+        open((const char *)path, oflag, 0666));
     if (state->fd == -1) {
         free(state->path);
         free(state);
@@ -264,24 +266,24 @@ const char *mode;
 
 /* -- see zlib.h -- */
 gzFile ZEXPORT gzopen(path, mode)
-const char *path;
-const char *mode;
+    const char *path;
+    const char *mode;
 {
     return gz_open(path, -1, mode);
 }
 
 /* -- see zlib.h -- */
 gzFile ZEXPORT gzopen64(path, mode)
-const char *path;
-const char *mode;
+    const char *path;
+    const char *mode;
 {
     return gz_open(path, -1, mode);
 }
 
 /* -- see zlib.h -- */
 gzFile ZEXPORT gzdopen(fd, mode)
-int fd;
-const char *mode;
+    int fd;
+    const char *mode;
 {
     char *path;         /* identifier for error messages */
     gzFile gz;
@@ -301,8 +303,8 @@ const char *mode;
 /* -- see zlib.h -- */
 #ifdef _WIN32
 gzFile ZEXPORT gzopen_w(path, mode)
-const wchar_t *path;
-const char *mode;
+    const wchar_t *path;
+    const char *mode;
 {
     return gz_open(path, -2, mode);
 }
@@ -310,8 +312,8 @@ const char *mode;
 
 /* -- see zlib.h -- */
 int ZEXPORT gzbuffer(file, size)
-gzFile file;
-unsigned size;
+    gzFile file;
+    unsigned size;
 {
     gz_statep state;
 
@@ -335,7 +337,7 @@ unsigned size;
 
 /* -- see zlib.h -- */
 int ZEXPORT gzrewind(file)
-gzFile file;
+    gzFile file;
 {
     gz_statep state;
 
@@ -358,9 +360,9 @@ gzFile file;
 
 /* -- see zlib.h -- */
 z_off64_t ZEXPORT gzseek64(file, offset, whence)
-gzFile file;
-z_off64_t offset;
-int whence;
+    gzFile file;
+    z_off64_t offset;
+    int whence;
 {
     unsigned n;
     z_off64_t ret;
@@ -435,9 +437,9 @@ int whence;
 
 /* -- see zlib.h -- */
 z_off_t ZEXPORT gzseek(file, offset, whence)
-gzFile file;
-z_off_t offset;
-int whence;
+    gzFile file;
+    z_off_t offset;
+    int whence;
 {
     z_off64_t ret;
 
@@ -447,7 +449,7 @@ int whence;
 
 /* -- see zlib.h -- */
 z_off64_t ZEXPORT gztell64(file)
-gzFile file;
+    gzFile file;
 {
     gz_statep state;
 
@@ -464,7 +466,7 @@ gzFile file;
 
 /* -- see zlib.h -- */
 z_off_t ZEXPORT gztell(file)
-gzFile file;
+    gzFile file;
 {
     z_off64_t ret;
 
@@ -474,7 +476,7 @@ gzFile file;
 
 /* -- see zlib.h -- */
 z_off64_t ZEXPORT gzoffset64(file)
-gzFile file;
+    gzFile file;
 {
     z_off64_t offset;
     gz_statep state;
@@ -497,7 +499,7 @@ gzFile file;
 
 /* -- see zlib.h -- */
 z_off_t ZEXPORT gzoffset(file)
-gzFile file;
+    gzFile file;
 {
     z_off64_t ret;
 
@@ -507,7 +509,7 @@ gzFile file;
 
 /* -- see zlib.h -- */
 int ZEXPORT gzeof(file)
-gzFile file;
+    gzFile file;
 {
     gz_statep state;
 
@@ -524,8 +526,8 @@ gzFile file;
 
 /* -- see zlib.h -- */
 const char * ZEXPORT gzerror(file, errnum)
-gzFile file;
-int *errnum;
+    gzFile file;
+    int *errnum;
 {
     gz_statep state;
 
@@ -540,12 +542,12 @@ int *errnum;
     if (errnum != NULL)
         *errnum = state->err;
     return state->err == Z_MEM_ERROR ? "out of memory" :
-           (state->msg == NULL ? "" : state->msg);
+                                       (state->msg == NULL ? "" : state->msg);
 }
 
 /* -- see zlib.h -- */
 void ZEXPORT gzclearerr(file)
-gzFile file;
+    gzFile file;
 {
     gz_statep state;
 
@@ -571,9 +573,9 @@ gzFile file;
    allocation failure constructing the error message, then convert the error to
    out of memory. */
 void ZLIB_INTERNAL gz_error(state, err, msg)
-gz_statep state;
-int err;
-const char *msg;
+    gz_statep state;
+    int err;
+    const char *msg;
 {
     /* free previously allocated message and clear */
     if (state->msg != NULL) {
@@ -617,7 +619,8 @@ const char *msg;
    available) -- we need to do this to cover cases where 2's complement not
    used, since C standard permits 1's complement and sign-bit representations,
    otherwise we could just use ((unsigned)-1) >> 1 */
-unsigned ZLIB_INTERNAL gz_intmax() {
+unsigned ZLIB_INTERNAL gz_intmax()
+{
     unsigned p, q;
 
     p = 1;

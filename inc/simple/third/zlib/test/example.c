@@ -56,14 +56,15 @@ void *myalloc OF((void *, unsigned, unsigned));
 void myfree OF((void *, void *));
 
 void *myalloc(q, n, m)
-void *q;
-unsigned n, m;
+    void *q;
+    unsigned n, m;
 {
     q = Z_NULL;
     return calloc(n, m);
 }
 
-void myfree(void *q, void *p) {
+void myfree(void *q, void *p)
+{
     q = Z_NULL;
     free(p);
 }
@@ -85,8 +86,8 @@ void test_gzio          OF((const char *fname,
  * Test compress() and uncompress()
  */
 void test_compress(compr, comprLen, uncompr, uncomprLen)
-Byte *compr, *uncompr;
-uLong comprLen, uncomprLen;
+    Byte *compr, *uncompr;
+    uLong comprLen, uncomprLen;
 {
     int err;
     uLong len = (uLong)strlen(hello)+1;
@@ -111,9 +112,9 @@ uLong comprLen, uncomprLen;
  * Test read/write of .gz files
  */
 void test_gzio(fname, uncompr, uncomprLen)
-const char *fname; /* compressed file name */
-Byte *uncompr;
-uLong uncomprLen;
+    const char *fname; /* compressed file name */
+    Byte *uncompr;
+    uLong uncomprLen;
 {
 #ifdef NO_GZCOMPRESS
     fprintf(stderr, "NO_GZCOMPRESS -- gz* functions cannot compress\n");
@@ -197,8 +198,8 @@ uLong uncomprLen;
  * Test deflate() with small buffers
  */
 void test_deflate(compr, comprLen)
-Byte *compr;
-uLong comprLen;
+    Byte *compr;
+    uLong comprLen;
 {
     z_stream c_stream; /* compression stream */
     int err;
@@ -235,8 +236,8 @@ uLong comprLen;
  * Test inflate() with small buffers
  */
 void test_inflate(compr, comprLen, uncompr, uncomprLen)
-Byte *compr, *uncompr;
-uLong comprLen, uncomprLen;
+    Byte *compr, *uncompr;
+    uLong comprLen, uncomprLen;
 {
     int err;
     z_stream d_stream; /* decompression stream */
@@ -276,8 +277,8 @@ uLong comprLen, uncomprLen;
  * Test deflate() with large buffers and dynamic change of compression level
  */
 void test_large_deflate(compr, comprLen, uncompr, uncomprLen)
-Byte *compr, *uncompr;
-uLong comprLen, uncomprLen;
+    Byte *compr, *uncompr;
+    uLong comprLen, uncomprLen;
 {
     z_stream c_stream; /* compression stream */
     int err;
@@ -331,8 +332,8 @@ uLong comprLen, uncomprLen;
  * Test inflate() with large buffers
  */
 void test_large_inflate(compr, comprLen, uncompr, uncomprLen)
-Byte *compr, *uncompr;
-uLong comprLen, uncomprLen;
+    Byte *compr, *uncompr;
+    uLong comprLen, uncomprLen;
 {
     int err;
     z_stream d_stream; /* decompression stream */
@@ -372,8 +373,8 @@ uLong comprLen, uncomprLen;
  * Test deflate() with full flush
  */
 void test_flush(compr, comprLen)
-Byte *compr;
-uLong *comprLen;
+    Byte *compr;
+    uLong *comprLen;
 {
     z_stream c_stream; /* compression stream */
     int err;
@@ -410,8 +411,8 @@ uLong *comprLen;
  * Test inflateSync()
  */
 void test_sync(compr, comprLen, uncompr, uncomprLen)
-Byte *compr, *uncompr;
-uLong comprLen, uncomprLen;
+    Byte *compr, *uncompr;
+    uLong comprLen, uncomprLen;
 {
     int err;
     z_stream d_stream; /* decompression stream */
@@ -454,8 +455,8 @@ uLong comprLen, uncomprLen;
  * Test deflate() with preset dictionary
  */
 void test_dict_deflate(compr, comprLen)
-Byte *compr;
-uLong comprLen;
+    Byte *compr;
+    uLong comprLen;
 {
     z_stream c_stream; /* compression stream */
     int err;
@@ -468,7 +469,7 @@ uLong comprLen;
     CHECK_ERR(err, "deflateInit");
 
     err = deflateSetDictionary(&c_stream,
-                               (const Bytef*)dictionary, (int)sizeof(dictionary));
+                (const Bytef*)dictionary, (int)sizeof(dictionary));
     CHECK_ERR(err, "deflateSetDictionary");
 
     dictId = c_stream.adler;
@@ -491,8 +492,8 @@ uLong comprLen;
  * Test inflate() with a preset dictionary
  */
 void test_dict_inflate(compr, comprLen, uncompr, uncomprLen)
-Byte *compr, *uncompr;
-uLong comprLen, uncomprLen;
+    Byte *compr, *uncompr;
+    uLong comprLen, uncomprLen;
 {
     int err;
     z_stream d_stream; /* decompression stream */
@@ -542,8 +543,8 @@ uLong comprLen, uncomprLen;
  */
 
 int main(argc, argv)
-int argc;
-char *argv[];
+    int argc;
+    char *argv[];
 {
     Byte *compr, *uncompr;
     uLong comprLen = 10000*sizeof(int); /* don't overflow on MSDOS */
@@ -559,7 +560,7 @@ char *argv[];
     }
 
     printf("zlib version %s = 0x%04x, compile flags = 0x%lx\n",
-           ZLIB_VERSION, ZLIB_VERNUM, zlibCompileFlags());
+            ZLIB_VERSION, ZLIB_VERNUM, zlibCompileFlags());
 
     compr    = (Byte*)calloc((uInt)comprLen, 1);
     uncompr  = (Byte*)calloc((uInt)uncomprLen, 1);

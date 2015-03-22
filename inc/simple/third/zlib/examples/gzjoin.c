@@ -58,12 +58,13 @@
 #include <fcntl.h>      /* open() */
 #include <unistd.h>     /* close(), read(), lseek() */
 #include "zlib.h"
-/* crc32(), crc32_combine(), inflateInit2(), inflate(), inflateEnd() */
+    /* crc32(), crc32_combine(), inflateInit2(), inflate(), inflateEnd() */
 
 #define local static
 
 /* exit with an error (return a value to allow use in an expression) */
-local int bail(char *why1, char *why2) {
+local int bail(char *why1, char *why2)
+{
     fprintf(stderr, "gzjoin error: %s%s, output incomplete\n", why1, why2);
     exit(1);
     return 0;
@@ -83,7 +84,8 @@ typedef struct {
 } bin;
 
 /* close a buffered file and free allocated memory */
-local void bclose(bin *in) {
+local void bclose(bin *in)
+{
     if (in != NULL) {
         if (in->fd != -1)
             close(in->fd);
@@ -95,7 +97,8 @@ local void bclose(bin *in) {
 
 /* open a buffered file for input, return a pointer to type bin, or NULL on
    failure */
-local bin *bopen(char *name) {
+local bin *bopen(char *name)
+{
     bin *in;
 
     in = malloc(sizeof(bin));
@@ -115,7 +118,8 @@ local bin *bopen(char *name) {
 
 /* load buffer from file, return -1 on read error, 0 or 1 on success, with
    1 indicating that end-of-file was reached */
-local int bload(bin *in) {
+local int bload(bin *in)
+{
     long len;
 
     if (in == NULL)
@@ -138,7 +142,8 @@ local int bload(bin *in) {
                     bail("unexpected end of file on ", in->name))
 
 /* get a four-byte little-endian unsigned integer from file */
-local unsigned long bget4(bin *in) {
+local unsigned long bget4(bin *in)
+{
     unsigned long val;
 
     val = bget(in);
@@ -149,7 +154,8 @@ local unsigned long bget4(bin *in) {
 }
 
 /* skip bytes in file */
-local void bskip(bin *in, unsigned skip) {
+local void bskip(bin *in, unsigned skip)
+{
     /* check pointer */
     if (in == NULL)
         return;
@@ -195,7 +201,8 @@ local void bskip(bin *in, unsigned skip) {
 /* -- end of buffered input functions -- */
 
 /* skip the gzip header from file in */
-local void gzhead(bin *in) {
+local void gzhead(bin *in)
+{
     int flags;
 
     /* verify gzip magic header and compression method */
@@ -235,7 +242,8 @@ local void gzhead(bin *in) {
 }
 
 /* write a four-byte little-endian unsigned integer to out */
-local void put4(unsigned long val, FILE *out) {
+local void put4(unsigned long val, FILE *out)
+{
     putc(val & 0xff, out);
     putc((val >> 8) & 0xff, out);
     putc((val >> 16) & 0xff, out);
@@ -243,7 +251,8 @@ local void put4(unsigned long val, FILE *out) {
 }
 
 /* Load up zlib stream from buffered input, bail if end of file */
-local void zpull(z_streamp strm, bin *in) {
+local void zpull(z_streamp strm, bin *in)
+{
     if (in->left == 0)
         bload(in);
     if (in->left == 0)
@@ -253,7 +262,8 @@ local void zpull(z_streamp strm, bin *in) {
 }
 
 /* Write header for gzip file to out and initialize trailer. */
-local void gzinit(unsigned long *crc, unsigned long *tot, FILE *out) {
+local void gzinit(unsigned long *crc, unsigned long *tot, FILE *out)
+{
     fwrite("\x1f\x8b\x08\0\0\0\0\0\0\xff", 1, 10, out);
     *crc = crc32(0L, Z_NULL, 0);
     *tot = 0;
@@ -267,7 +277,8 @@ local void gzinit(unsigned long *crc, unsigned long *tot, FILE *out) {
    gzip file is written to out.  gzinit() must be called before the first call
    of gzcopy() to write the gzip header and to initialize crc and tot. */
 local void gzcopy(char *name, int clr, unsigned long *crc, unsigned long *tot,
-                  FILE *out) {
+                  FILE *out)
+{
     int ret;                /* return value from zlib functions */
     int pos;                /* where the "last block" bit is in byte */
     int last;               /* true if processing the last block */
@@ -342,7 +353,8 @@ local void gzcopy(char *name, int clr, unsigned long *crc, unsigned long *tot,
                 last = strm.next_in[-1] & pos;
                 if (last && clr)
                     in->buf[strm.next_in - in->buf - 1] &= ~pos;
-            } else {
+            }
+            else {
                 /* next last-block bit is in next unused byte */
                 if (strm.avail_in == 0) {
                     /* don't have that byte yet -- get it */
@@ -378,7 +390,8 @@ local void gzcopy(char *name, int clr, unsigned long *crc, unsigned long *tot,
             if (pos == 1)
                 putc(0, out);               /* two more bits in block header */
             fwrite("\0\0\xff\xff", 1, 4, out);
-        } else {
+        }
+        else {
             /* even -- append 1, 2, or 3 empty fixed blocks */
             switch (pos) {
             case 6:
@@ -411,7 +424,8 @@ local void gzcopy(char *name, int clr, unsigned long *crc, unsigned long *tot,
 }
 
 /* join the gzip files on the command line, write result to stdout */
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
     unsigned long crc, tot;     /* running crc and total uncompressed length */
 
     /* skip command name */

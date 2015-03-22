@@ -33,7 +33,8 @@
    level is supplied, Z_VERSION_ERROR if the version of zlib.h and the
    version of the library linked do not match, or Z_ERRNO if there is
    an error reading or writing the files. */
-int def(FILE *source, FILE *dest, int level) {
+int def(FILE *source, FILE *dest, int level)
+{
     int ret, flush;
     unsigned have;
     z_stream strm;
@@ -88,7 +89,8 @@ int def(FILE *source, FILE *dest, int level) {
    invalid or incomplete, Z_VERSION_ERROR if the version of zlib.h and
    the version of the library linked do not match, or Z_ERRNO if there
    is an error reading or writing the files. */
-int inf(FILE *source, FILE *dest) {
+int inf(FILE *source, FILE *dest)
+{
     int ret;
     unsigned have;
     z_stream strm;
@@ -146,7 +148,8 @@ int inf(FILE *source, FILE *dest) {
 }
 
 /* report a zlib or i/o error */
-void zerr(int ret) {
+void zerr(int ret)
+{
     fputs("zpipe: ", stderr);
     switch (ret) {
     case Z_ERRNO:
@@ -170,7 +173,8 @@ void zerr(int ret) {
 }
 
 /* compress or decompress from stdin to stdout */
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
     int ret;
 
     /* avoid end-of-line conversions */

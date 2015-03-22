@@ -23,21 +23,21 @@
 
 #if (!defined(_WIN32)) && (!defined(WIN32)) && (!defined(__APPLE__))
 
-// Linux needs this to support file operation on files larger then 4+GB
-// But might need better if/def to select just the platforms that needs them.
+  // Linux needs this to support file operation on files larger then 4+GB
+  // But might need better if/def to select just the platforms that needs them.
 
-#ifndef __USE_FILE_OFFSET64
-#define __USE_FILE_OFFSET64
-#endif
-#ifndef __USE_LARGEFILE64
-#define __USE_LARGEFILE64
-#endif
-#ifndef _LARGEFILE64_SOURCE
-#define _LARGEFILE64_SOURCE
-#endif
-#ifndef _FILE_OFFSET_BIT
-#define _FILE_OFFSET_BIT 64
-#endif
+        #ifndef __USE_FILE_OFFSET64
+                #define __USE_FILE_OFFSET64
+        #endif
+        #ifndef __USE_LARGEFILE64
+                #define __USE_LARGEFILE64
+        #endif
+        #ifndef _LARGEFILE64_SOURCE
+                #define _LARGEFILE64_SOURCE
+        #endif
+        #ifndef _FILE_OFFSET_BIT
+                #define _FILE_OFFSET_BIT 64
+        #endif
 
 #endif
 
@@ -56,14 +56,14 @@
 #define fseeko64 fseeko
 #endif
 #ifdef _MSC_VER
-#define fopen64 fopen
-#if (_MSC_VER >= 1400) && (!(defined(NO_MSCVER_FILE64_FUNC)))
-#define ftello64 _ftelli64
-#define fseeko64 _fseeki64
-#else // old MSC
-#define ftello64 ftell
-#define fseeko64 fseek
-#endif
+ #define fopen64 fopen
+ #if (_MSC_VER >= 1400) && (!(defined(NO_MSCVER_FILE64_FUNC)))
+  #define ftello64 _ftelli64
+  #define fseeko64 _fseeki64
+ #else // old MSC
+  #define ftello64 ftell
+  #define fseeko64 fseek
+ #endif
 #endif
 #endif
 
@@ -122,11 +122,11 @@ extern "C" {
 
 
 #ifndef ZCALLBACK
-#if (defined(WIN32) || defined(_WIN32) || defined (WINDOWS) || defined (_WINDOWS)) && defined(CALLBACK) && defined (USEWINDOWS_CALLBACK)
-#define ZCALLBACK CALLBACK
-#else
-#define ZCALLBACK
-#endif
+ #if (defined(WIN32) || defined(_WIN32) || defined (WINDOWS) || defined (_WINDOWS)) && defined(CALLBACK) && defined (USEWINDOWS_CALLBACK)
+   #define ZCALLBACK CALLBACK
+ #else
+   #define ZCALLBACK
+ #endif
 #endif
 
 
@@ -143,7 +143,8 @@ typedef long     (ZCALLBACK *seek_file_func)      OF((voidpf opaque, voidpf stre
 
 
 /* here is the "old" 32 bits structure structure */
-typedef struct zlib_filefunc_def_s {
+typedef struct zlib_filefunc_def_s
+{
     open_file_func      zopen_file;
     read_file_func      zread_file;
     write_file_func     zwrite_file;
@@ -158,7 +159,8 @@ typedef ZPOS64_T (ZCALLBACK *tell64_file_func)    OF((voidpf opaque, voidpf stre
 typedef long     (ZCALLBACK *seek64_file_func)    OF((voidpf opaque, voidpf stream, ZPOS64_T offset, int origin));
 typedef voidpf   (ZCALLBACK *open64_file_func)    OF((voidpf opaque, const void* filename, int mode));
 
-typedef struct zlib_filefunc64_def_s {
+typedef struct zlib_filefunc64_def_s
+{
     open64_file_func    zopen64_file;
     read_file_func      zread_file;
     write_file_func     zwrite_file;
@@ -173,7 +175,8 @@ void fill_fopen64_filefunc OF((zlib_filefunc64_def* pzlib_filefunc_def));
 void fill_fopen_filefunc OF((zlib_filefunc_def* pzlib_filefunc_def));
 
 /* now internal definition, only for zip.c and unzip.h */
-typedef struct zlib_filefunc64_32_def_s {
+typedef struct zlib_filefunc64_32_def_s
+{
     zlib_filefunc64_def zfile_func64;
     open_file_func      zopen32_file;
     tell_file_func      ztell32_file;

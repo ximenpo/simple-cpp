@@ -59,7 +59,8 @@
 #define local static
 
 /* print nastygram and leave */
-local void quit(char *why) {
+local void quit(char *why)
+{
     fprintf(stderr, "fitblk abort: %s\n", why);
     exit(1);
 }
@@ -69,7 +70,8 @@ local void quit(char *why) {
 /* compress from file to def until provided buffer is full or end of
    input reached; return last deflate() return value, or Z_ERRNO if
    there was read error on the file */
-local int partcompress(FILE *in, z_streamp def) {
+local int partcompress(FILE *in, z_streamp def)
+{
     int ret, flush;
     unsigned char raw[RAWLEN];
 
@@ -91,7 +93,8 @@ local int partcompress(FILE *in, z_streamp def) {
    the output for def are set in those structures before calling;
    return last deflate() return value, or Z_MEM_ERROR if inflate()
    was not able to allocate enough memory when it needed to */
-local int recompress(z_streamp inf, z_streamp def) {
+local int recompress(z_streamp inf, z_streamp def)
+{
     int ret, flush;
     unsigned char raw[RAWLEN];
 
@@ -121,7 +124,8 @@ local int recompress(z_streamp inf, z_streamp def) {
 #define MARGIN 8        /* amount to back off for completion */
 
 /* compress from stdin to fixed-size block on stdout */
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
     int ret;                /* return code */
     unsigned size;          /* requested fixed output block size */
     unsigned have;          /* bytes written by deflate() call */

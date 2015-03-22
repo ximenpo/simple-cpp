@@ -34,7 +34,8 @@
    3, or 5 times a power of 2 -- the result is always > size, until the result
    is the maximum value of an unsigned long, where it remains.  This is useful
    to keep reallocations less than ~33% over the actual data. */
-local size_t bythirds(size_t size) {
+local size_t bythirds(size_t size)
+{
     int n;
     size_t m;
 
@@ -56,7 +57,8 @@ local size_t bythirds(size_t size) {
    failure.  *len is the number of bytes of data read from the input file (even
    if load() returns NULL).  If the input file was empty or could not be opened
    or read, *len is zero. */
-local void *load(const char *name, size_t *len) {
+local void *load(const char *name, size_t *len)
+{
     size_t size;
     void *buf, *swap;
     FILE *in;
@@ -83,7 +85,8 @@ local void *load(const char *name, size_t *len) {
     return buf;
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
     int ret, put = 0, fail = 0;
     unsigned skip = 0;
     char *arg, *name = NULL;
@@ -104,10 +107,12 @@ int main(int argc, char **argv) {
                 fprintf(stderr, "invalid option %s\n", arg);
                 return 3;
             }
-        } else if (name != NULL) {
+        }
+        else if (name != NULL) {
             fprintf(stderr, "only one file name allowed\n");
             return 3;
-        } else
+        }
+        else
             name = arg;
     source = load(name, &len);
     if (source == NULL) {
@@ -135,7 +140,7 @@ int main(int argc, char **argv) {
     else {
         fprintf(stderr, "puff() succeeded uncompressing %lu bytes\n", destlen);
         if (sourcelen < len) fprintf(stderr, "%lu compressed bytes unused\n",
-                                         len - sourcelen);
+                                     len - sourcelen);
     }
 
     /* if requested, inflate again and write decompressd data to stdout */

@@ -65,7 +65,8 @@ struct state {
  *   buffer, using shift right, and new bytes are appended to the top of the
  *   bit buffer, using shift left.
  */
-local int bits(struct state *s, int need) {
+local int bits(struct state *s, int need)
+{
     int val;            /* bit accumulator */
 
     /* load at least need bits into val */
@@ -121,7 +122,8 @@ struct huffman {
  *   this ordering, the bits pulled during decoding are inverted to apply the
  *   more "natural" ordering starting with all zeros and incrementing.
  */
-local int decode(struct state *s, struct huffman *h) {
+local int decode(struct state *s, struct huffman *h)
+{
     int len;            /* current number of bits in code */
     int code;           /* len bits being decoded */
     int first;          /* first code of length len */
@@ -182,7 +184,8 @@ local int decode(struct state *s, struct huffman *h) {
  * it is possible for decode() using that table to return an error for received
  * codes past the end of the incomplete lengths.
  */
-local int construct(struct huffman *h, const unsigned char *rep, int n) {
+local int construct(struct huffman *h, const unsigned char *rep, int n)
+{
     int symbol;         /* current symbol when stepping through length[] */
     int len;            /* current length when stepping through h->count[] */
     int left;           /* number of possible codes left of current length */
@@ -272,7 +275,8 @@ local int construct(struct huffman *h, const unsigned char *rep, int n) {
  *   ignoring whether the length is greater than the distance or not implements
  *   this correctly.
  */
-local int decomp(struct state *s) {
+local int decomp(struct state *s)
+{
     int lit;            /* true if literals are coded */
     int dict;           /* log2(dictionary size) - 6 */
     int symbol;         /* decoded symbol, extra bits for distance */
@@ -287,25 +291,22 @@ local int decomp(struct state *s) {
     static struct huffman litcode = {litcnt, litsym};   /* length code */
     static struct huffman lencode = {lencnt, lensym};   /* length code */
     static struct huffman distcode = {distcnt, distsym};/* distance code */
-    /* bit lengths of literal codes */
+        /* bit lengths of literal codes */
     static const unsigned char litlen[] = {
         11, 124, 8, 7, 28, 7, 188, 13, 76, 4, 10, 8, 12, 10, 12, 10, 8, 23, 8,
         9, 7, 6, 7, 8, 7, 6, 55, 8, 23, 24, 12, 11, 7, 9, 11, 12, 6, 7, 22, 5,
         7, 24, 6, 11, 9, 6, 7, 22, 7, 11, 38, 7, 9, 8, 25, 11, 8, 11, 9, 12,
         8, 12, 5, 38, 5, 38, 5, 11, 7, 5, 6, 21, 6, 10, 53, 8, 7, 24, 10, 27,
         44, 253, 253, 253, 252, 252, 252, 13, 12, 45, 12, 45, 12, 61, 12, 45,
-        44, 173
-    };
-    /* bit lengths of length codes 0..15 */
+        44, 173};
+        /* bit lengths of length codes 0..15 */
     static const unsigned char lenlen[] = {2, 35, 36, 53, 38, 23};
-    /* bit lengths of distance codes 0..63 */
+        /* bit lengths of distance codes 0..63 */
     static const unsigned char distlen[] = {2, 20, 53, 230, 247, 151, 248};
     static const short base[16] = {     /* base for length codes */
-        3, 2, 4, 5, 6, 7, 8, 9, 10, 12, 16, 24, 40, 72, 136, 264
-    };
+        3, 2, 4, 5, 6, 7, 8, 9, 10, 12, 16, 24, 40, 72, 136, 264};
     static const char extra[16] = {     /* extra bits for length codes */
-        0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8
-    };
+        0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8};
 
     /* set up decoding tables (once--might not be thread-safe) */
     if (virgin) {
@@ -359,7 +360,8 @@ local int decomp(struct state *s) {
                     s->first = 0;
                 }
             } while (len != 0);
-        } else {
+        }
+        else {
             /* get literal and write it */
             symbol = lit ? decode(s, &litcode) : bits(s, 8);
             s->out[s->next++] = symbol;
@@ -374,7 +376,8 @@ local int decomp(struct state *s) {
 }
 
 /* See comments in blast.h */
-int blast(blast_in infun, void *inhow, blast_out outfun, void *outhow) {
+int blast(blast_in infun, void *inhow, blast_out outfun, void *outhow)
+{
     struct state s;             /* input/output state */
     int err;                    /* return value */
 
@@ -410,19 +413,22 @@ int blast(blast_in infun, void *inhow, blast_out outfun, void *outhow) {
 
 #define CHUNK 16384
 
-local unsigned inf(void *how, unsigned char **buf) {
+local unsigned inf(void *how, unsigned char **buf)
+{
     static unsigned char hold[CHUNK];
 
     *buf = hold;
     return fread(hold, 1, CHUNK, (FILE *)how);
 }
 
-local int outf(void *how, unsigned char *buf, unsigned len) {
+local int outf(void *how, unsigned char *buf, unsigned len)
+{
     return fwrite(buf, 1, len, (FILE *)how) != len;
 }
 
 /* Decompress a PKWare Compression Library stream from stdin to stdout */
-int main(void) {
+int main(void)
+{
     int ret, n;
 
     /* decompress to stdout */

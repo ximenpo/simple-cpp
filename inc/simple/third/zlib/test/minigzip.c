@@ -59,7 +59,7 @@
 
 #if !defined(Z_HAVE_UNISTD_H) && !defined(_LARGEFILE64_SOURCE)
 #ifndef WIN32 /* unlink already in stdio.h for WIN32 */
-extern int unlink OF((const char *));
+  extern int unlink OF((const char *));
 #endif
 #endif
 
@@ -78,24 +78,24 @@ extern int unlink OF((const char *));
    of GetLastError.  */
 
 static char *strwinerror (error)
-DWORD error;
+     DWORD error;
 {
     static char buf[1024];
 
     wchar_t *msgbuf;
     DWORD lasterr = GetLastError();
     DWORD chars = FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM
-                                | FORMAT_MESSAGE_ALLOCATE_BUFFER,
-                                NULL,
-                                error,
-                                0, /* Default language */
-                                (LPVOID)&msgbuf,
-                                0,
-                                NULL);
+        | FORMAT_MESSAGE_ALLOCATE_BUFFER,
+        NULL,
+        error,
+        0, /* Default language */
+        (LPVOID)&msgbuf,
+        0,
+        NULL);
     if (chars != 0) {
         /* If there is an \r\n appended, zap it.  */
         if (chars >= 2
-                && msgbuf[chars - 2] == '\r' && msgbuf[chars - 1] == '\n') {
+            && msgbuf[chars - 2] == '\r' && msgbuf[chars - 1] == '\n') {
             chars -= 2;
             msgbuf[chars] = 0;
         }
@@ -107,7 +107,8 @@ DWORD error;
 
         wcstombs(buf, msgbuf, chars + 1);
         LocalFree(msgbuf);
-    } else {
+    }
+    else {
         sprintf(buf, "unknown win32 error (%ld)", error);
     }
 
@@ -116,7 +117,7 @@ DWORD error;
 }
 
 static void pwinerror (s)
-const char *s;
+    const char *s;
 {
     if (s && *s)
         fprintf(stderr, "%s: %s\n", s, strwinerror(GetLastError ()));
@@ -136,7 +137,7 @@ const char *s;
 
 #ifdef MAXSEG_64K
 #  define local static
-/* Needed for systems with limitation on stack size. */
+   /* Needed for systems with limitation on stack size. */
 #else
 #  define local
 #endif
@@ -152,15 +153,15 @@ void *myalloc OF((void *, unsigned, unsigned));
 void myfree OF((void *, void *));
 
 void *myalloc(q, n, m)
-void *q;
-unsigned n, m;
+    void *q;
+    unsigned n, m;
 {
     q = Z_NULL;
     return calloc(n, m);
 }
 
 void myfree(q, p)
-void *q, *p;
+    void *q, *p;
 {
     q = Z_NULL;
     free(p);
@@ -193,9 +194,9 @@ const char *mode;
 }
 
 gzFile gz_open(path, fd, mode)
-const char *path;
-int fd;
-const char *mode;
+    const char *path;
+    int fd;
+    const char *mode;
 {
     gzFile gz;
     int ret;
@@ -219,7 +220,7 @@ const char *mode;
         return NULL;
     }
     gz->file = path == NULL ? fdopen(fd, gz->write ? "wb" : "rb") :
-               fopen(path, gz->write ? "wb" : "rb");
+                              fopen(path, gz->write ? "wb" : "rb");
     if (gz->file == NULL) {
         gz->write ? deflateEnd(&(gz->strm)) : inflateEnd(&(gz->strm));
         free(gz);
@@ -233,9 +234,9 @@ const char *mode;
 int gzwrite OF((gzFile, const void *, unsigned));
 
 int gzwrite(gz, buf, len)
-gzFile gz;
-const void *buf;
-unsigned len;
+    gzFile gz;
+    const void *buf;
+    unsigned len;
 {
     z_stream *strm;
     unsigned char out[BUFLEN];
@@ -257,9 +258,9 @@ unsigned len;
 int gzread OF((gzFile, void *, unsigned));
 
 int gzread(gz, buf, len)
-gzFile gz;
-void *buf;
-unsigned len;
+    gzFile gz;
+    void *buf;
+    unsigned len;
 {
     int ret;
     unsigned got;
@@ -294,7 +295,7 @@ unsigned len;
 int gzclose OF((gzFile));
 
 int gzclose(gz)
-gzFile gz;
+    gzFile gz;
 {
     z_stream *strm;
     unsigned char out[BUFLEN];
@@ -312,7 +313,8 @@ gzFile gz;
             fwrite(out, 1, BUFLEN - strm->avail_out, gz->file);
         } while (strm->avail_out == 0);
         deflateEnd(strm);
-    } else
+    }
+    else
         inflateEnd(strm);
     fclose(gz->file);
     free(gz);
@@ -322,8 +324,8 @@ gzFile gz;
 const char *gzerror OF((gzFile, int *));
 
 const char *gzerror(gz, err)
-gzFile gz;
-int *err;
+    gzFile gz;
+    int *err;
 {
     *err = gz->err;
     return gz->msg;
@@ -347,7 +349,7 @@ int  main             OF((int argc, char *argv[]));
  * Display error message and exit
  */
 void error(msg)
-const char *msg;
+    const char *msg;
 {
     fprintf(stderr, "%s: %s\n", prog, msg);
     exit(1);
@@ -358,8 +360,8 @@ const char *msg;
  */
 
 void gz_compress(in, out)
-FILE   *in;
-gzFile out;
+    FILE   *in;
+    gzFile out;
 {
     local char buf[BUFLEN];
     int len;
@@ -391,8 +393,8 @@ gzFile out;
  * if success, Z_ERRNO otherwise.
  */
 int gz_compress_mmap(in, out)
-FILE   *in;
-gzFile out;
+    FILE   *in;
+    gzFile out;
 {
     int len;
     int err;
@@ -426,8 +428,8 @@ gzFile out;
  * Uncompress input to output then close both files.
  */
 void gz_uncompress(in, out)
-gzFile in;
-FILE   *out;
+    gzFile in;
+    FILE   *out;
 {
     local char buf[BUFLEN];
     int len;
@@ -453,8 +455,8 @@ FILE   *out;
  * original.
  */
 void file_compress(file, mode)
-char  *file;
-char  *mode;
+    char  *file;
+    char  *mode;
 {
     local char outfile[MAX_NAME_LEN];
     FILE  *in;
@@ -492,7 +494,7 @@ char  *mode;
  * Uncompress the given file and remove the original.
  */
 void file_uncompress(file)
-char  *file;
+    char  *file;
 {
     local char buf[MAX_NAME_LEN];
     char *infile, *outfile;
@@ -552,8 +554,8 @@ char  *file;
  */
 
 int main(argc, argv)
-int argc;
-char *argv[];
+    int argc;
+    char *argv[];
 {
     int copyout = 0;
     int uncompr = 0;
@@ -569,33 +571,33 @@ char *argv[];
     prog = argv[0];
     bname = strrchr(argv[0], '/');
     if (bname)
-        bname++;
+      bname++;
     else
-        bname = argv[0];
+      bname = argv[0];
     argc--, argv++;
 
     if (!strcmp(bname, "gunzip"))
-        uncompr = 1;
+      uncompr = 1;
     else if (!strcmp(bname, "zcat"))
-        copyout = uncompr = 1;
+      copyout = uncompr = 1;
 
     while (argc > 0) {
-        if (strcmp(*argv, "-c") == 0)
-            copyout = 1;
-        else if (strcmp(*argv, "-d") == 0)
-            uncompr = 1;
-        else if (strcmp(*argv, "-f") == 0)
-            outmode[3] = 'f';
-        else if (strcmp(*argv, "-h") == 0)
-            outmode[3] = 'h';
-        else if (strcmp(*argv, "-r") == 0)
-            outmode[3] = 'R';
-        else if ((*argv)[0] == '-' && (*argv)[1] >= '1' && (*argv)[1] <= '9' &&
-                 (*argv)[2] == 0)
-            outmode[2] = (*argv)[1];
-        else
-            break;
-        argc--, argv++;
+      if (strcmp(*argv, "-c") == 0)
+        copyout = 1;
+      else if (strcmp(*argv, "-d") == 0)
+        uncompr = 1;
+      else if (strcmp(*argv, "-f") == 0)
+        outmode[3] = 'f';
+      else if (strcmp(*argv, "-h") == 0)
+        outmode[3] = 'h';
+      else if (strcmp(*argv, "-r") == 0)
+        outmode[3] = 'R';
+      else if ((*argv)[0] == '-' && (*argv)[1] >= '1' && (*argv)[1] <= '9' &&
+               (*argv)[2] == 0)
+        outmode[2] = (*argv)[1];
+      else
+        break;
+      argc--, argv++;
     }
     if (outmode[3] == ' ')
         outmode[3] = 0;

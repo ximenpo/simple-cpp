@@ -67,7 +67,7 @@
 #include <sys/stat.h>       /* stat(), chmod() */
 #include <utime.h>          /* utime() */
 #include "zlib.h"           /* inflateBackInit(), inflateBack(), */
-/* inflateBackEnd(), crc32() */
+                            /* inflateBackEnd(), crc32() */
 
 /* function declaration */
 #define local static
@@ -86,7 +86,8 @@ struct ind {
 /* Load input buffer, assumed to be empty, and return bytes loaded and a
    pointer to them.  read() is called until the buffer is full, or until it
    returns end-of-file or error.  Return 0 on error. */
-local unsigned in(void *in_desc, z_const unsigned char **buf) {
+local unsigned in(void *in_desc, z_const unsigned char **buf)
+{
     int ret;
     unsigned len;
     unsigned char *next;
@@ -127,7 +128,8 @@ struct outd {
    On success out() returns 0.  For a write failure, out() returns 1.  If the
    output file descriptor is -1, then nothing is written.
  */
-local int out(void *out_desc, unsigned char *buf, unsigned len) {
+local int out(void *out_desc, unsigned char *buf, unsigned len)
+{
     int ret;
     struct outd *me = (struct outd *)out_desc;
 
@@ -196,7 +198,8 @@ unsigned char match[65280 + 2];         /* buffer for reversed match or gzip
    not equal to Z_NULL), or Z_DATA_ERROR for invalid input.
  */
 local int lunpipe(unsigned have, z_const unsigned char *next, struct ind *indp,
-                  int outfile, z_stream *strm) {
+                  int outfile, z_stream *strm)
+{
     int last;                   /* last byte read by NEXT(), or -1 if EOF */
     unsigned chunk;             /* bytes left in current chunk */
     int left;                   /* bits left in rem */
@@ -377,7 +380,8 @@ local int lunpipe(unsigned have, z_const unsigned char *next, struct ind *indp,
    prematurely or a write error occurs, or Z_ERRNO if junk (not a another gzip
    stream) follows a valid gzip stream.
  */
-local int gunpipe(z_stream *strm, int infile, int outfile) {
+local int gunpipe(z_stream *strm, int infile, int outfile)
+{
     int ret, first, last;
     unsigned have, flags, len;
     z_const unsigned char *next = NULL;
@@ -477,9 +481,9 @@ local int gunpipe(z_stream *strm, int infile, int outfile) {
         /* check trailer */
         ret = Z_BUF_ERROR;
         if (NEXT() != (int)(outd.crc & 0xff) ||
-                NEXT() != (int)((outd.crc >> 8) & 0xff) ||
-                NEXT() != (int)((outd.crc >> 16) & 0xff) ||
-                NEXT() != (int)((outd.crc >> 24) & 0xff)) {
+            NEXT() != (int)((outd.crc >> 8) & 0xff) ||
+            NEXT() != (int)((outd.crc >> 16) & 0xff) ||
+            NEXT() != (int)((outd.crc >> 24) & 0xff)) {
             /* crc error */
             if (last != -1) {
                 strm->msg = (char *)"incorrect data check";
@@ -488,9 +492,9 @@ local int gunpipe(z_stream *strm, int infile, int outfile) {
             break;
         }
         if (NEXT() != (int)(outd.total & 0xff) ||
-                NEXT() != (int)((outd.total >> 8) & 0xff) ||
-                NEXT() != (int)((outd.total >> 16) & 0xff) ||
-                NEXT() != (int)((outd.total >> 24) & 0xff)) {
+            NEXT() != (int)((outd.total >> 8) & 0xff) ||
+            NEXT() != (int)((outd.total >> 16) & 0xff) ||
+            NEXT() != (int)((outd.total >> 24) & 0xff)) {
             /* length error */
             if (last != -1) {
                 strm->msg = (char *)"incorrect length check";
@@ -510,7 +514,8 @@ local int gunpipe(z_stream *strm, int infile, int outfile) {
    no errors are reported.  The mode bits, including suid, sgid, and the sticky
    bit are copied (if allowed), the owner's user id and group id are copied
    (again if allowed), and the access and modify times are copied. */
-local void copymeta(char *from, char *to) {
+local void copymeta(char *from, char *to)
+{
     struct stat was;
     struct utimbuf when;
 
@@ -540,7 +545,8 @@ local void copymeta(char *from, char *to) {
    gunzip() returns 1 if there is an out-of-memory error or an unexpected
    return code from gunpipe().  Otherwise it returns 0.
  */
-local int gunzip(z_stream *strm, char *inname, char *outname, int test) {
+local int gunzip(z_stream *strm, char *inname, char *outname, int test)
+{
     int ret;
     int infile, outfile;
 
@@ -548,7 +554,8 @@ local int gunzip(z_stream *strm, char *inname, char *outname, int test) {
     if (inname == NULL || *inname == 0) {
         inname = "-";
         infile = 0;     /* stdin */
-    } else {
+    }
+    else {
         infile = open(inname, O_RDONLY, 0);
         if (infile == -1) {
             fprintf(stderr, "gun cannot open %s\n", inname);
@@ -560,7 +567,8 @@ local int gunzip(z_stream *strm, char *inname, char *outname, int test) {
     else if (outname == NULL || *outname == 0) {
         outname = "-";
         outfile = 1;    /* stdout */
-    } else {
+    }
+    else {
         outfile = open(outname, O_CREAT | O_TRUNC | O_WRONLY, 0666);
         if (outfile == -1) {
             close(infile);
@@ -600,10 +608,12 @@ local int gunzip(z_stream *strm, char *inname, char *outname, int test) {
         if (strm->next_in != Z_NULL) {
             fprintf(stderr, "gun write error on %s: %s\n",
                     outname, strerror(errno));
-        } else if (errno) {
+        }
+        else if (errno) {
             fprintf(stderr, "gun read error on %s: %s\n",
                     inname, strerror(errno));
-        } else {
+        }
+        else {
             fprintf(stderr, "gun unexpected end of file on %s\n",
                     inname);
         }
@@ -618,7 +628,8 @@ local int gunzip(z_stream *strm, char *inname, char *outname, int test) {
 
 /* Process the gun command line arguments.  See the command syntax near the
    beginning of this source file. */
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
     int ret, len, test;
     char *outname;
     unsigned char *window;
@@ -657,12 +668,12 @@ int main(int argc, char **argv) {
             else {
                 len = (int)strlen(*argv);
                 if (strcmp(*argv + len - 3, ".gz") == 0 ||
-                        strcmp(*argv + len - 3, "-gz") == 0)
+                    strcmp(*argv + len - 3, "-gz") == 0)
                     len -= 3;
                 else if (strcmp(*argv + len - 2, ".z") == 0 ||
-                         strcmp(*argv + len - 2, "-z") == 0 ||
-                         strcmp(*argv + len - 2, "_z") == 0 ||
-                         strcmp(*argv + len - 2, ".Z") == 0)
+                    strcmp(*argv + len - 2, "-z") == 0 ||
+                    strcmp(*argv + len - 2, "_z") == 0 ||
+                    strcmp(*argv + len - 2, ".Z") == 0)
                     len -= 2;
                 else {
                     fprintf(stderr, "gun error: no gz type on %s--skipping\n",

@@ -123,7 +123,8 @@ struct state {
  *   buffer, using shift right, and new bytes are appended to the top of the
  *   bit buffer, using shift left.
  */
-local int bits(struct state *s, int need) {
+local int bits(struct state *s, int need)
+{
     long val;           /* bit accumulator (can use up to 20 bits) */
 
     /* load at least need bits into val */
@@ -160,7 +161,8 @@ local int bits(struct state *s, int need) {
  * - A stored block can have zero length.  This is sometimes used to byte-align
  *   subsets of the compressed data for random access or partial recovery.
  */
-local int stored(struct state *s) {
+local int stored(struct state *s)
+{
     unsigned len;       /* length of stored block */
 
     /* discard leftover bits from current byte (assumes s->bitcnt < 8) */
@@ -173,7 +175,7 @@ local int stored(struct state *s) {
     len = s->in[s->incnt++];
     len |= s->in[s->incnt++] << 8;
     if (s->in[s->incnt++] != (~len & 0xff) ||
-            s->in[s->incnt++] != ((~len >> 8) & 0xff))
+        s->in[s->incnt++] != ((~len >> 8) & 0xff))
         return -2;                              /* didn't match complement! */
 
     /* copy len bytes from in to out */
@@ -184,7 +186,8 @@ local int stored(struct state *s) {
             return 1;                           /* not enough output space */
         while (len--)
             s->out[s->outcnt++] = s->in[s->incnt++];
-    } else {                                    /* just scanning */
+    }
+    else {                                      /* just scanning */
         s->outcnt += len;
         s->incnt += len;
     }
@@ -229,7 +232,8 @@ struct huffman {
  *   in the deflate format.  See the format notes for fixed() and dynamic().
  */
 #ifdef SLOW
-local int decode(struct state *s, const struct huffman *h) {
+local int decode(struct state *s, const struct huffman *h)
+{
     int len;            /* current number of bits in code */
     int code;           /* len bits being decoded */
     int first;          /* first code of length len */
@@ -256,7 +260,8 @@ local int decode(struct state *s, const struct huffman *h) {
  * a few percent larger.
  */
 #else /* !SLOW */
-local int decode(struct state *s, const struct huffman *h) {
+local int decode(struct state *s, const struct huffman *h)
+{
     int len;            /* current number of bits in code */
     int code;           /* len bits being decoded */
     int first;          /* first code of length len */
@@ -332,7 +337,8 @@ local int decode(struct state *s, const struct huffman *h) {
  * - Within a given code length, the symbols are kept in ascending order for
  *   the code bits definition.
  */
-local int construct(struct huffman *h, const short *length, int n) {
+local int construct(struct huffman *h, const short *length, int n)
+{
     int symbol;         /* current symbol when stepping through length[] */
     int len;            /* current length when stepping through h->count[] */
     int left;           /* number of possible codes left of current length */
@@ -429,28 +435,25 @@ local int construct(struct huffman *h, const short *length, int n) {
  */
 local int codes(struct state *s,
                 const struct huffman *lencode,
-                const struct huffman *distcode) {
+                const struct huffman *distcode)
+{
     int symbol;         /* decoded symbol */
     int len;            /* length for copy */
     unsigned dist;      /* distance for copy */
     static const short lens[29] = { /* Size base for length codes 257..285 */
         3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 17, 19, 23, 27, 31,
-        35, 43, 51, 59, 67, 83, 99, 115, 131, 163, 195, 227, 258
-    };
+        35, 43, 51, 59, 67, 83, 99, 115, 131, 163, 195, 227, 258};
     static const short lext[29] = { /* Extra bits for length codes 257..285 */
         0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2,
-        3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 0
-    };
+        3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 0};
     static const short dists[30] = { /* Offset base for distance codes 0..29 */
         1, 2, 3, 4, 5, 7, 9, 13, 17, 25, 33, 49, 65, 97, 129, 193,
         257, 385, 513, 769, 1025, 1537, 2049, 3073, 4097, 6145,
-        8193, 12289, 16385, 24577
-    };
+        8193, 12289, 16385, 24577};
     static const short dext[30] = { /* Extra bits for distance codes 0..29 */
         0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6,
         7, 7, 8, 8, 9, 9, 10, 10, 11, 11,
-        12, 12, 13, 13
-    };
+        12, 12, 13, 13};
 
     /* decode literals and length/distance pairs */
     do {
@@ -465,7 +468,8 @@ local int codes(struct state *s,
                 s->out[s->outcnt] = symbol;
             }
             s->outcnt++;
-        } else if (symbol > 256) {      /* length */
+        }
+        else if (symbol > 256) {        /* length */
             /* get and compute length */
             symbol -= 257;
             if (symbol >= 29)
@@ -490,12 +494,13 @@ local int codes(struct state *s,
                     s->out[s->outcnt] =
 #ifdef INFLATE_ALLOW_INVALID_DISTANCE_TOOFAR_ARRR
                         dist > s->outcnt ?
-                        0 :
+                            0 :
 #endif
-                        s->out[s->outcnt - dist];
+                            s->out[s->outcnt - dist];
                     s->outcnt++;
                 }
-            } else
+            }
+            else
                 s->outcnt += len;
         }
     } while (symbol != 256);            /* end of block symbol */
@@ -528,7 +533,8 @@ local int codes(struct state *s,
  *   length, this can be implemented as an incomplete code.  Then the invalid
  *   codes are detected while decoding.
  */
-local int fixed(struct state *s) {
+local int fixed(struct state *s)
+{
     static int virgin = 1;
     static short lencnt[MAXBITS+1], lensym[FIXLCODES];
     static short distcnt[MAXBITS+1], distsym[MAXDCODES];
@@ -656,7 +662,8 @@ local int fixed(struct state *s) {
  * - For reference, a "typical" size for the code description in a dynamic
  *   block is around 80 bytes.
  */
-local int dynamic(struct state *s) {
+local int dynamic(struct state *s)
+{
     int nlen, ndist, ncode;             /* number of lengths in descriptor */
     int index;                          /* index of lengths[] */
     int err;                            /* construct() return value */
@@ -665,7 +672,7 @@ local int dynamic(struct state *s) {
     short distcnt[MAXBITS+1], distsym[MAXDCODES];       /* distcode memory */
     struct huffman lencode, distcode;   /* length and distance codes */
     static const short order[19] =      /* permutation of code length codes */
-    {16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15};
+        {16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15};
 
     /* construct lencode and distcode */
     lencode.count = lencnt;
@@ -709,7 +716,8 @@ local int dynamic(struct state *s) {
                     return -5;          /* no last length! */
                 len = lengths[index - 1];       /* last length */
                 symbol = 3 + bits(s, 2);
-            } else if (symbol == 17)    /* repeat zero 3..10 times */
+            }
+            else if (symbol == 17)      /* repeat zero 3..10 times */
                 symbol = 3 + bits(s, 3);
             else                        /* == 18, repeat zero 11..138 times */
                 symbol = 11 + bits(s, 7);
@@ -785,7 +793,8 @@ local int dynamic(struct state *s) {
 int puff(unsigned char *dest,           /* pointer to destination pointer */
          unsigned long *destlen,        /* amount of output space */
          const unsigned char *source,   /* pointer to source data pointer */
-         unsigned long *sourcelen) {    /* amount of input available */
+         unsigned long *sourcelen)      /* amount of input available */
+{
     struct state s;             /* input/output state */
     int last, type;             /* block information */
     int err;                    /* return value */
@@ -811,12 +820,12 @@ int puff(unsigned char *dest,           /* pointer to destination pointer */
             last = bits(&s, 1);         /* one if last block */
             type = bits(&s, 2);         /* block type 0..3 */
             err = type == 0 ?
-                  stored(&s) :
-                  (type == 1 ?
-                   fixed(&s) :
-                   (type == 2 ?
-                    dynamic(&s) :
-                    -1));       /* type == 3, invalid */
+                    stored(&s) :
+                    (type == 1 ?
+                        fixed(&s) :
+                        (type == 2 ?
+                            dynamic(&s) :
+                            -1));       /* type == 3, invalid */
             if (err != 0)
                 break;                  /* return with error */
         } while (!last);

@@ -90,7 +90,8 @@
 #define DSIZE 32768U
 
 /* print an error message and terminate with extreme prejudice */
-local void bye(char *msg1, char *msg2) {
+local void bye(char *msg1, char *msg2)
+{
     fprintf(stderr, "gzappend error: %s%s\n", msg1, msg2);
     exit(1);
 }
@@ -98,7 +99,8 @@ local void bye(char *msg1, char *msg2) {
 /* return the greatest common divisor of a and b using Euclid's algorithm,
    modified to be fast when one argument much greater than the other, and
    coded to avoid unnecessary swapping */
-local unsigned gcd(unsigned a, unsigned b) {
+local unsigned gcd(unsigned a, unsigned b)
+{
     unsigned c;
 
     while (a && b)
@@ -107,7 +109,8 @@ local unsigned gcd(unsigned a, unsigned b) {
             while (a - c >= c)
                 c <<= 1;
             a -= c;
-        } else {
+        }
+        else {
             c = a;
             while (b - c >= c)
                 c <<= 1;
@@ -117,7 +120,8 @@ local unsigned gcd(unsigned a, unsigned b) {
 }
 
 /* rotate list[0..len-1] left by rot positions, in place */
-local void rotate(unsigned char *list, unsigned len, unsigned rot) {
+local void rotate(unsigned char *list, unsigned len, unsigned rot)
+{
     unsigned char tmp;
     unsigned cycles;
     unsigned char *start, *last, *to, *from;
@@ -173,7 +177,8 @@ typedef struct {
 } file;
 
 /* reload buffer */
-local int readin(file *in) {
+local int readin(file *in)
+{
     int len;
 
     len = read(in->fd, in->buf, 1 << in->size);
@@ -184,7 +189,8 @@ local int readin(file *in) {
 }
 
 /* read from file in, exit if end-of-file */
-local int readmore(file *in) {
+local int readmore(file *in)
+{
     if (readin(in) == 0) bye("unexpected end of ", in->name);
     return 0;
 }
@@ -193,7 +199,8 @@ local int readmore(file *in) {
                    in->left--, *(in->next)++)
 
 /* skip over n bytes of in */
-local void skip(file *in, unsigned n) {
+local void skip(file *in, unsigned n)
+{
     unsigned bypass;
 
     if (n > in->left) {
@@ -213,7 +220,8 @@ local void skip(file *in, unsigned n) {
 }
 
 /* read a four-byte unsigned integer, little-endian, from in */
-unsigned long read4(file *in) {
+unsigned long read4(file *in)
+{
     unsigned long val;
 
     val = read1(in);
@@ -224,7 +232,8 @@ unsigned long read4(file *in) {
 }
 
 /* skip over gzip header */
-local void gzheader(file *in) {
+local void gzheader(file *in)
+{
     int flags;
     unsigned n;
 
@@ -247,7 +256,8 @@ local void gzheader(file *in) {
    continue compression of the data in the gzip file, and return a file
    descriptor pointing to where to write the compressed data -- the deflate
    stream is initialized to compress using level "level" */
-local int gzscan(char *name, z_stream *strm, int level) {
+local int gzscan(char *name, z_stream *strm, int level)
+{
     int ret, lastbit, left, full;
     unsigned have;
     unsigned long crc, tot;
@@ -339,7 +349,7 @@ local int gzscan(char *name, z_stream *strm, int level) {
     /* if not at end of file, warn */
     if (gz.left || readin(&gz))
         fprintf(stderr,
-                "gzappend warning: junk at end of gzip file overwritten\n");
+            "gzappend warning: junk at end of gzip file overwritten\n");
 
     /* clear last block bit */
     lseek(gz.fd, lastoff - (lastbit != 0), SEEK_SET);
@@ -375,7 +385,8 @@ local int gzscan(char *name, z_stream *strm, int level) {
 
 /* append file "name" to gzip file gd using deflate stream strm -- if last
    is true, then finish off the deflate stream at the end */
-local void gztack(char *name, int gd, z_stream *strm, int last) {
+local void gztack(char *name, int gd, z_stream *strm, int last)
+{
     int fd, len, ret;
     unsigned left;
     unsigned char *in, *out;
@@ -452,19 +463,19 @@ local void gztack(char *name, int gd, z_stream *strm, int last) {
    append the specified files, or append the data from stdin if no other file
    names are provided on the command line -- the gzip file must be writable
    and seekable */
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
     int gd, level;
     z_stream strm;
 
     /* ignore command name */
-    argc--;
-    argv++;
+    argc--; argv++;
 
     /* provide usage if no arguments */
     if (*argv == NULL) {
         printf(
             "gzappend 1.2 (11 Oct 2012) Copyright (C) 2003, 2012 Mark Adler\n"
-        );
+               );
         printf(
             "usage: gzappend [-level] file.gz [ addthis [ andthis ... ]]\n");
         return 0;
