@@ -8,40 +8,48 @@
 
 using namespace igloo;
 
-Context(MapTests) {
-    std::map<std::string, int> ages;
-
-    void SetUp() {
-        ages["joakim"] = 38;
-        ages["maria"] = 36;
-        ages["hanna"] = 6;
-        ages["moa"] = 4;
-    }
-
-    Spec(ContainingShouldDetermineIfKeyExists) {
-        Assert::That(ages, Is().Containing("joakim"));
-    }
-
-    Spec(ShouldGiveAProperMessageWhenContainingFails) {
-        AssertTestFails(Assert::That(ages, Is().Not().Containing("hanna")), "Expected: not contains hanna");
-    }
+Context(MapTests)
+{
+  std::map<std::string, int> ages;
+  
+  void SetUp()
+  {
+    ages["joakim"] = 38;
+    ages["maria"] = 36;
+    ages["hanna"] = 6;
+    ages["moa"] = 4;
+  }
+  
+  Spec(ContainingShouldDetermineIfKeyExists)
+  {
+    Assert::That(ages, Is().Containing("joakim"));
+  }
+  
+  Spec(ShouldGiveAProperMessageWhenContainingFails)
+  {
+    AssertTestFails(Assert::That(ages, Is().Not().Containing("hanna")), "Expected: not contains hanna"); 
+  }
 };
 
-Context(MapTests_ExpressionTemplates) {
-    std::map<std::string, int> ages;
-
-    void SetUp() {
-        ages["joakim"] = 38;
-        ages["maria"] = 36;
-        ages["hanna"] = 6;
-        ages["moa"] = 4;
-    }
-
-    Spec(ContainingShouldDetermineIfKeyExists) {
-        Assert::That(ages, Contains("joakim"));
-    }
-
-    Spec(ShouldGiveAProperMessageWhenContainingFails) {
-        AssertTestFails(Assert::That(ages, !Contains("hanna")), "Expected: not contains hanna");
-    }
+Context(MapTests_ExpressionTemplates)
+{
+  std::map<std::string, int> ages;
+  
+  void SetUp()
+  {
+    ages["joakim"] = 38;
+    ages["maria"] = 36;
+    ages["hanna"] = 6;
+    ages["moa"] = 4;
+  }
+  
+  Spec(ContainingShouldDetermineIfKeyExists)
+  {
+    Assert::That(ages, Contains("joakim"));
+  }
+  
+  Spec(ShouldGiveAProperMessageWhenContainingFails)
+  {
+    AssertTestFails(Assert::That(ages, !Contains("hanna")), "Expected: not contains hanna"); 
+  }
 };

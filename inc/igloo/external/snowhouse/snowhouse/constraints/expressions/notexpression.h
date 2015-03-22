@@ -6,34 +6,39 @@
 
 #ifndef IGLOO_NOTEXPRESSION_H
 #define IGLOO_NOTEXPRESSION_H
-
+  
 #include "./expression_fwd.h"
 
 namespace snowhouse {
 
-template< typename ExpressionType >
-struct NotExpression : Expression< NotExpression<ExpressionType> > {
+  template< typename ExpressionType >
+  struct NotExpression : Expression< NotExpression<ExpressionType> >
+  {
     NotExpression(const ExpressionType& expression)
-        : m_expression(expression) {
+      : m_expression(expression)
+    {
     }
 
     template<typename ActualType>
-    bool operator()(const ActualType& actual) const {
-        return !m_expression(actual);
+    bool operator()(const ActualType& actual) const
+    {
+      return !m_expression(actual);
     }
 
     ExpressionType m_expression;
-};
+  };
 
-template< typename ExpressionType >
-struct Stringizer< NotExpression<ExpressionType> > {
-    static std::string ToString(const NotExpression<ExpressionType>& expression) {
-        std::ostringstream builder;
-        builder << "not " << snowhouse::Stringize(expression.m_expression);
+  template< typename ExpressionType >
+  struct Stringizer< NotExpression<ExpressionType> >
+  {
+    static std::string ToString(const NotExpression<ExpressionType>& expression)
+    {
+      std::ostringstream builder;
+	  builder << "not " << snowhouse::Stringize(expression.m_expression);
 
-        return builder.str();
+      return builder.str();
     }
-};
+  };
 }
 
 #endif

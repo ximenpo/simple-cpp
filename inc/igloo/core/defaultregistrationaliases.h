@@ -26,13 +26,13 @@ IGLOO_CONTEXT_REGISTRATION_SKIP(contextName)
 IGLOO_SUBCONTEXT_REGISTRATION(contextName, baseContextName)
 
 #define Spec(specName) \
-IGLOO_SPEC_REGISTRATION(specName)
+IGLOO_SPEC_REGISTRATION(specName)  
 
 #define Spec_Skip(specName) \
-IGLOO_SPEC_REGISTRATION_SKIP(specName)
+IGLOO_SPEC_REGISTRATION_SKIP(specName)  
 
 #define Spec_Only(specName) \
-IGLOO_SPEC_REGISTRATION_ONLY(specName)
+IGLOO_SPEC_REGISTRATION_ONLY(specName)  
 
 #define ContextAttribute(attributeName, attributeValue) \
 IGLOO_CONTEXT_ATTRIBUTE_REGISTRATION(attributeName, attributeValue)
@@ -54,10 +54,10 @@ IGLOO_SUBCONTEXT_REGISTRATION(fixtureName, baseFixtureName)
 IGLOO_SPEC_REGISTRATION(methodName)
 
 #define TestMethod_Skip(methodName) \
-IGLOO_SPEC_REGISTRATION_SKIP(specName)
+IGLOO_SPEC_REGISTRATION_SKIP(specName)  
 
 #define TestMethod_Only(methodName) \
-IGLOO_SPEC_REGISTRATION_ONLY(specName)
+IGLOO_SPEC_REGISTRATION_ONLY(specName)  
 
 #define TestAttribute(attributeName, attributeValue) \
 IGLOO_CONTEXT_ATTRIBUTE_REGISTRATION(attributeName, attributeValue)

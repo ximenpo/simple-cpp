@@ -9,44 +9,51 @@
 
 namespace igloo {
 
-//
-// This is the base class for all contexts.
-//
-struct ContextBase {
+  //
+  // This is the base class for all contexts.
+  // 
+  struct ContextBase
+  {
     virtual ~ContextBase() {}
 
-    virtual void IglooFrameworkSetUp() {
+    virtual void IglooFrameworkSetUp()
+    {}
+
+    virtual void IglooFrameworkTearDown()
+    {}
+
+    virtual void SetUp()
+    {
     }
 
-    virtual void IglooFrameworkTearDown() {
+    virtual void TearDown()
+    {
     }
 
-    virtual void SetUp() {
+    static void SetUpContext()
+    {
     }
 
-    virtual void TearDown() {
+    static void TearDownContext()
+    {
     }
 
-    static void SetUpContext() {
+    void SetName(const std::string& name)
+    {
+      m_name = name;
     }
 
-    static void TearDownContext() {
-    }
-
-    void SetName(const std::string& name) {
-        m_name = name;
-    }
-
-    std::string Name() const {
-        return m_name;
+    std::string Name() const
+    {
+      return m_name;
     }
 
     virtual void SetAttribute(const std::string& name, const char* value) const = 0;
     virtual const std::string& GetAttribute(const std::string& name) const = 0;
 
-private:
+    private:
     std::string m_name;
-};
+  };
 
 }
 #endif

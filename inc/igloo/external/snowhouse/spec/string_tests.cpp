@@ -8,48 +8,60 @@
 
 using namespace igloo;
 
-Context(Strings) {
-    Spec(ShouldHandleStringContainsConstraint) {
-        Assert::That("abcdef", Contains("bcde"));
-    }
+Context(Strings)
+{
+  Spec(ShouldHandleStringContainsConstraint)
+  {
+    Assert::That("abcdef", Contains("bcde"));
+  }
 
-    Spec(StringConstraintShouldHandleMatchAtBeginningOfString) {
-        Assert::That("abcdef", Contains("a"));
-    }
+  Spec(StringConstraintShouldHandleMatchAtBeginningOfString)
+  {
+    Assert::That("abcdef", Contains("a"));
+  }  
 
-    Spec(ShouldDetectFailingContains) {
-        AssertTestFails(Assert::That("abcdef", Contains("hello")), "contains hello");
-    }
+  Spec(ShouldDetectFailingContains)
+  {
+    AssertTestFails(Assert::That("abcdef", Contains("hello")), "contains hello");
+  }
 
-    Spec(ShouldHandleStringStartingWithConstraint) {
-        Assert::That("abcdef", StartsWith("abc"));
-    }
+  Spec(ShouldHandleStringStartingWithConstraint)
+  {
+    Assert::That("abcdef", StartsWith("abc"));
+  }
 
-    Spec(ShouldHandleStringEndingWithConstraint) {
-        Assert::That("abcdef", EndsWith("def"));
-    }
+  Spec(ShouldHandleStringEndingWithConstraint)
+  {
+    Assert::That("abcdef", EndsWith("def"));
+  }
 
-    Spec(ShouldHandleOperatorsForStrings) {
-        Assert::That("abcdef", StartsWith("ab") && EndsWith("ef"));
-    }
+  Spec(ShouldHandleOperatorsForStrings)
+  {
+    Assert::That("abcdef", StartsWith("ab") && EndsWith("ef"));
+  }
 
-    Spec(ShouldHandleStringsWithMultipleOperators) {
-        Assert::That("abcdef", StartsWith("ab") && !EndsWith("qwqw"));
-    }
+  Spec(ShouldHandleStringsWithMultipleOperators)
+  {
+    Assert::That("abcdef", StartsWith("ab") && !EndsWith("qwqw"));
+  }
 
-    Spec(ShouldHandleOfLength) {
-        Assert::That("12345", HasLength(5));
-    }
+  Spec(ShouldHandleOfLength)
+  {
+    Assert::That("12345", HasLength(5));
+  }
 
-    Spec(ShouldHandleWeirdLongExpressions) {
-        Assert::That("12345", HasLength(5) && StartsWith("123") && !EndsWith("zyxxy"));
-    }
+  Spec(ShouldHandleWeirdLongExpressions)
+  {
+    Assert::That("12345", HasLength(5) && StartsWith("123") && !EndsWith("zyxxy"));
+  }
 
-    Spec(ShouldHandleStdStrings) {
-        Assert::That("12345", Contains(std::string("23")));
-    }
+  Spec(ShouldHandleStdStrings)
+  {
+    Assert::That("12345", Contains(std::string("23")));
+  }
 
-    Spec(ShouldHandleSimpleChar) {
-        Assert::That("12345", StartsWith('1'));
-    }
+  Spec(ShouldHandleSimpleChar)
+  {
+    Assert::That("12345", StartsWith('1'));
+  }
 };

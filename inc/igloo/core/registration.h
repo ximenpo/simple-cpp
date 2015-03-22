@@ -45,7 +45,7 @@
     } \
   } SpecRegistrar_##specName; \
   virtual void specName()
-
+                       
 #define IGLOO_SPEC_REGISTRATION(specName) \
   IGLOO_PRIVATE_SPEC_REGISTRATION(specName, false, false)
 

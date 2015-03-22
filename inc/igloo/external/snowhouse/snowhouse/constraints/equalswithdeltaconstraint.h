@@ -11,35 +11,41 @@
 
 namespace snowhouse {
 
-template< typename ExpectedType, typename DeltaType >
-struct EqualsWithDeltaConstraint : Expression< EqualsWithDeltaConstraint<ExpectedType, DeltaType> > {
+  template< typename ExpectedType, typename DeltaType >
+  struct EqualsWithDeltaConstraint : Expression< EqualsWithDeltaConstraint<ExpectedType, DeltaType> >
+  {
     EqualsWithDeltaConstraint(const ExpectedType& expected, const DeltaType& delta)
-        : m_expected(expected), m_delta(delta) {
+      : m_expected(expected), m_delta(delta)
+    {
     }
 
     template<typename ActualType>
-    bool operator()(const ActualType& actual) const {
-        return ((m_expected <= (actual + m_delta)) && (m_expected >= (actual - m_delta)));
+    bool operator()(const ActualType& actual) const
+    {
+      return ((m_expected <= (actual + m_delta)) && (m_expected >= (actual - m_delta)));
     }
 
     ExpectedType m_expected;
     DeltaType m_delta;
-};
+  };
 
-template< typename ExpectedType, typename DeltaType >
-inline EqualsWithDeltaConstraint<ExpectedType, DeltaType> EqualsWithDelta(const ExpectedType& expected, const DeltaType& delta) {
+  template< typename ExpectedType, typename DeltaType >
+  inline EqualsWithDeltaConstraint<ExpectedType, DeltaType> EqualsWithDelta(const ExpectedType& expected, const DeltaType& delta)
+  {
     return EqualsWithDeltaConstraint<ExpectedType, DeltaType>(expected, delta);
-}
+  }
 
-template< typename ExpectedType, typename DeltaType >
-struct Stringizer< EqualsWithDeltaConstraint< ExpectedType, DeltaType > > {
-    static std::string ToString(const EqualsWithDeltaConstraint<ExpectedType, DeltaType>& constraint) {
-        std::ostringstream builder;
-        builder << "equal to " << snowhouse::Stringize(constraint.m_expected) << " (+/- " << snowhouse::Stringize(constraint.m_delta) << ")";
+  template< typename ExpectedType, typename DeltaType >
+  struct Stringizer< EqualsWithDeltaConstraint< ExpectedType, DeltaType > >
+  {
+    static std::string ToString(const EqualsWithDeltaConstraint<ExpectedType, DeltaType>& constraint)
+    {
+      std::ostringstream builder;
+	  builder << "equal to " << snowhouse::Stringize(constraint.m_expected) << " (+/- " << snowhouse::Stringize(constraint.m_delta) << ")";
 
-        return builder.str();
+      return builder.str();
     }
-};
+  };
 }
 
 #endif

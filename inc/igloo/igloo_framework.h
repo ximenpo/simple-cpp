@@ -22,7 +22,7 @@
 #include <igloo/external/snowhouse/snowhouse/snowhouse.h>
 
 namespace igloo {
-using namespace snowhouse;
+  using namespace snowhouse;
 }
 
 #if	defined(_MSC_VER) && _MSC_VER <= 1310

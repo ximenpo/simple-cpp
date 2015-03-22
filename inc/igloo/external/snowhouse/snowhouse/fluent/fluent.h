@@ -23,13 +23,15 @@
 
 namespace snowhouse {
 
-inline ExpressionBuilder<Nil> Is() {
+  inline ExpressionBuilder<Nil> Is()
+  {
     return ExpressionBuilder<Nil>(Nil());
-}
+  }
 
-inline ExpressionBuilder<Nil> Has() {
-    return ExpressionBuilder<Nil>(Nil());
-}
+  inline ExpressionBuilder<Nil> Has()
+  {
+     return ExpressionBuilder<Nil>(Nil());
+  }
 
 }
 

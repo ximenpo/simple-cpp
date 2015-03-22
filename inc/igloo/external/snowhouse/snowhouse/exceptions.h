@@ -10,30 +10,35 @@
 #include "assert.h"
 
 namespace snowhouse {
-
-template <typename ExceptionType>
-class ExceptionStorage {
-public:
-    static std::auto_ptr<ExceptionType>& last_exception() {
-        static std::auto_ptr<ExceptionType> last;
-        return last;
+   
+  template <typename ExceptionType>
+  class ExceptionStorage
+  {
+  public:
+    static std::auto_ptr<ExceptionType>& last_exception()
+    {
+      static std::auto_ptr<ExceptionType> last;
+      return last;
     }
-
+    
     void compiler_thinks_i_am_unused() {}
-
-    ~ExceptionStorage() {
-        last_exception().reset(NULL);
+    
+    ~ExceptionStorage()
+    {
+      last_exception().reset(NULL);
     }
-};
-
-template <typename ExceptionType>
-inline ExceptionType& LastException() {
-    if(ExceptionStorage<ExceptionType>::last_exception().get() == NULL) {
-        Assert::Failure("No exception was stored");
+  };
+    
+  template <typename ExceptionType>
+  inline ExceptionType& LastException()
+  {
+    if(ExceptionStorage<ExceptionType>::last_exception().get() == NULL)
+    {
+      Assert::Failure("No exception was stored");
     }
-
+    
     return *(ExceptionStorage<ExceptionType>::last_exception().get());
-}
+  }  
 }
 
 #define IGLOO_CONCAT2(a, b) a##b

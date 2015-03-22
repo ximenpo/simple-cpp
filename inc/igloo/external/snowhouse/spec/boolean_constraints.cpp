@@ -7,35 +7,43 @@
 #include <tests/igloo_self_test.h>
 using namespace igloo;
 
-Context(BooleanOperators) {
-    Spec(ShouldHandleIsFalseOperator) {
-        Assert::That(false, IsFalse());
-    }
+Context(BooleanOperators)
+{
+  Spec(ShouldHandleIsFalseOperator)
+  {
+    Assert::That(false, IsFalse());
+  }
 
-    Spec(ShouldHandleWhenIsFalseFails) {
-        AssertTestFails(Assert::That(true, IsFalse()), "Expected: false");
-    }
+  Spec(ShouldHandleWhenIsFalseFails)
+  {
+    AssertTestFails(Assert::That(true, IsFalse()), "Expected: false");
+  }
 
-    Spec(ShouldHandleIsTrueOperator) {
-        Assert::That(true, IsTrue());
-    }
+  Spec(ShouldHandleIsTrueOperator)
+  {
+    Assert::That(true, IsTrue());
+  }
 
-    Spec(ShouldHandleWhenIsTrueFails) {
-        AssertTestFails(Assert::That(false, IsTrue()), "Expected: true");
-    }
+  Spec(ShouldHandleWhenIsTrueFails)
+  {
+    AssertTestFails(Assert::That(false, IsTrue()), "Expected: true");
+  }
 
-    Spec(ShouldHandleFluentIsTrue) {
-        Assert::That(true, Is().True());
-        AssertTestFails(Assert::That(false, Is().True()), "Expected: true");
-    }
+  Spec(ShouldHandleFluentIsTrue)
+  {
+    Assert::That(true, Is().True());
+    AssertTestFails(Assert::That(false, Is().True()), "Expected: true");
+  }
 
-    Spec(ShouldHandleFluentIsFalse) {
-        Assert::That(false, Is().False());
-        AssertTestFails(Assert::That(true, Is().False()), "Expected: false");
-    }
+  Spec(ShouldHandleFluentIsFalse)
+  {
+    Assert::That(false, Is().False());
+    AssertTestFails(Assert::That(true, Is().False()), "Expected: false");
+  }
 
-    Spec(ShouldTreatAssertWithoutConstraintAsBooleanConstrains) {
-        Assert::That(true);
-    }
+  Spec(ShouldTreatAssertWithoutConstraintAsBooleanConstrains)
+  {
+    Assert::That(true);
+  }
 };
 
