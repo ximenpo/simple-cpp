@@ -3,8 +3,7 @@
 
 #include <string>
 
-bool			is_base64(unsigned char c);
-bool			is_base64(const std::string& s);
+bool			base64_check(const std::string& s);
 std::string		base64_encode(const unsigned char* s, unsigned int len);
 std::string		base64_decode(const std::string& s);
 

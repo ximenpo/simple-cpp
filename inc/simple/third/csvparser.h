@@ -36,7 +36,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <string>
 
 class CSVParser {
- private:
+ protected:
   std::string m_sData;
   std::string::size_type m_nPos;
   void SkipSpaces(void);
