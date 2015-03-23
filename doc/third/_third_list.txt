@@ -7,7 +7,6 @@ bigint[combination1.5]	https://mattmccutchen.net/bigint/
 combination		http://www.codeproject.com/Articles/4675/Combinations-in-C
 			http://www.codeproject.com/Articles/21335/Combinations-in-C-Part
 *ConvertUTF[retired]	ftp://ftp.unicode.org/Public/PROGRAMS/CVTUTF/
-cppformat		https://github.com/cppformat/cppformat/
 CSVParser		http://www.mayukhbose.com/freebies/c-code.php
 DefineImprovedEnum	http://www.codeproject.com/Articles/32000/Improving-C-Enums-Adding-Serialization-Inheritance
 DEIntegrator		http://www.codeproject.com/Articles/31550/Fast-Numerical-Integration
