@@ -3,18 +3,13 @@
 #include	<istream>
 #include	"simple/csv.h"
 
-static	void	skip_spaces(std::istream& is) {
-    while(' ' == is.peek()) {
-        is.get();
-    }
-}
-
 static	bool	ignore_crlf(std::istream& is) {
     while(!is.eof()) {
         switch(is.peek()) {
         case '\r':
         case '\n':
             is.get();
+			break;
         default:
             return	true;
         }
@@ -83,7 +78,6 @@ static	bool	read_field_quoted(std::istream& is, std::string& field) {
 }
 
 static	bool	read_field(std::istream& is, std::string& field) {
-    skip_spaces(is);
     if(is.peek() == '"') {
         return	read_field_quoted(is, field);
     } else {

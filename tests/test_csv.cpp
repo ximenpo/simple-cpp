@@ -4,6 +4,7 @@ using namespace igloo;
 #include <fstream>
 #include <simple/app.h>
 #include <simple/csv.h>
+#include <simple/string.h>
 
 Context(csv_usage) {
     Spec(basic_usage) {
@@ -82,14 +83,10 @@ Context(csv_usage) {
                << "Column2: " << sCol2 << std::endl
                << "Column3: " << sCol3 << std::endl
                << std::endl;
-
-            if(infile.peek() == '\n') {
-                infile.get();
-            }
         }
         infile.close();
 
-        AssertThat(os.str(),	Equals(
+		AssertThat(string_replace(os.str().c_str(), "\r", ""),	Equals(
                        "Column1: a\n"
                        "Column2: b\n"
                        "Column3: c\n"
