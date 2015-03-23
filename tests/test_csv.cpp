@@ -86,7 +86,7 @@ Context(csv_usage) {
         }
         infile.close();
 
-		AssertThat(string_replace(os.str().c_str(), "\r", ""),	Equals(
+        AssertThat(string_replace(os.str().c_str(), "\r", ""),	Equals(
                        "Column1: a\n"
                        "Column2: b\n"
                        "Column3: c\n"

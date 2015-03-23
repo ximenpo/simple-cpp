@@ -1,3 +1,6 @@
+#ifndef	DES_KA9Q_DES_H___
+#define	DES_KA9Q_DES_H___
+
 typedef unsigned long DES_KS[16][2];	/* Single-key DES key schedule */
 typedef unsigned long DES3_KS[48][2];	/* Triple-DES key schedule */
 
@@ -12,4 +15,4 @@ void des3(DES3_KS,unsigned char *);
 
 extern int Asmversion;	/* 1 if we're linked with an asm version, 0 if C */
 
-
+#endif

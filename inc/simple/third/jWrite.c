@@ -17,9 +17,12 @@
 
 #include "jWrite.h"
 
-//#include <stdint.h>			// definintion of uint32_t, int32_t
+#if	!defined(_MSC_VER) || _MSC_VER <= 1400
+#include <stdint.h>			// definintion of uint32_t, int32_t
+#else
 typedef unsigned int uint32_t;
 typedef int int32_t;
+#endif
 
 
 // the jWrite functions take the above jWriteControl structure pointer

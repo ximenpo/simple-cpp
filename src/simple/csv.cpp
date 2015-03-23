@@ -9,7 +9,7 @@ static	bool	ignore_crlf(std::istream& is) {
         case '\r':
         case '\n':
             is.get();
-			break;
+            break;
         default:
             return	true;
         }

@@ -37,6 +37,9 @@
  ***********************************************************************
  */
 
+#ifndef	DES_KA9Q_MD5_H___
+#define	DES_KA9Q_MD5_H___
+
 /* typedef a 32-bit type */
 typedef unsigned long int UINT4;
 
@@ -57,3 +60,4 @@ void MD5Final ();
  ** End of md5.h                                                      **
  ******************************** (cut) ********************************
  */
+#endif
