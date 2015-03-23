@@ -218,6 +218,20 @@ std::string			string_xml_escape(const std::string& str);		//escape < > & ' "
 std::string			string_xml_unescape(const std::string& str);	//unescape < > & ' "
 
 //
+//	string base64 operations.
+//
+bool				string_is_base64(const std::string& str);
+std::string			string_base64_encode(const unsigned char* s, unsigned int len);
+std::string			string_base64_decode(const std::string& str);
+
+inline	std::string	string_base64_encode(const char* s, unsigned int len) {
+    return	string_base64_encode((const unsigned char*)s, len);
+}
+inline	std::string	string_base64_encode(const std::string& s) {
+    return	string_base64_encode((const unsigned char*)s.c_str(), s.size());
+}
+
+//
 //	string	traits.
 //
 struct string_iless : public std::binary_function<const std::string&, const std::string&, bool>	{
