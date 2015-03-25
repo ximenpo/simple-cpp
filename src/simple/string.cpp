@@ -36,6 +36,8 @@ void	string_format(std::string& str, const char* fmt, ...) {
     assert(nRealLen <= nLength);
     if(nRealLen > 0) {
         str.assign(&buf[0], nRealLen);
+    } else {
+        str.clear();
     }
     va_end(args);  //重置变量参数
 }
