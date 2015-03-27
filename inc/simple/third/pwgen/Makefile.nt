@@ -1,0 +1,36 @@
+#
+#  Makefile.nt
+#  
+#  Copyright (C) 2013
+#  Paul E. Jones <paulej@packetizer.com>
+#
+#  Description:
+#	This is a makefile for Win32 to build the pwgen program.
+#
+#  Portability Issues:
+#	Designed to work with Microsoft Visual Studio
+#
+#
+
+.silent:
+
+!include <win32.mak>
+
+RM	= del /q
+
+LIBS	= $(conlibs) setargv.obj
+
+CFLAGS	= -D _CRT_SECURE_NO_WARNINGS /EHsc /O2 /W3
+
+OBJS	= pwgen.obj
+
+all: pwgen.exe
+
+pwgen.exe: pwgen.obj $(OBJS)
+	$(link) $(conflags) -out:$@ $(OBJS) $(LIBS)
+
+.c.obj:
+	$(cc) $(CFLAGS) $(cflags) $(cvars) $<
+
+clean:
+	$(RM) *.obj pwgen.exe

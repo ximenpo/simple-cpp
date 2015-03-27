@@ -180,6 +180,11 @@ int				string_ireplace(const char* lpszStr, const char* lpszOld, const char* lps
 void			string_ireplace(std::string& str, const std::string& old_value, const std::string& new_value);
 
 //
+//	genreate randome string.
+//
+std::string		string_generate(size_t length, bool use_special_chars);
+
+//
 //	ellipsize operations.
 //
 std::string		string_ellipsis(const char* str, size_t nShowLen);

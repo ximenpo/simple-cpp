@@ -15,6 +15,7 @@ Fast DES code		http://www.ka9q.net/code/des/
 jRead			http://www.codeproject.com/Articles/885389/jRead-an-in-place-JSON-element-reader
 jWrite			http://www.codeproject.com/Articles/887604/jWrite-a-really-simple-JSON-writer-in-C
 pugixml			http://pugixml.org/
+pwgen			http://www.packetizer.com/security/pwgen/
 rapidxml		http://rapidxml.sourceforge.net/
 sha1			http://www.packetizer.com/security/sha1/
 switch_flags		http://www.codeproject.com/Articles/141327/Switching-on-Boolean-Conditions-and-Flags

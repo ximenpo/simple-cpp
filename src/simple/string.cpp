@@ -261,6 +261,23 @@ void	string_ireplace(std::string& str, const std::string& old_value, const std::
     delete[]pbuf;
 }
 
+extern	"C"	int GeneratePassword(   int length,
+                                    int special,
+                                    char *password);
+std::string		string_generate(size_t length, bool use_special_chars) {
+    std::auto_ptr<char>	buf(new char[length]);
+    if(0 == GeneratePassword(length, use_special_chars, buf.get())) {
+        return	std::string(buf.get(), length);
+    }
+
+    std::string	str;
+    str.reserve(length);
+    for(size_t i = 0; i < length; ++i) {
+        str.push_back('a' + rand()%26);
+    }
+    return	str;
+}
+
 std::string	string_replace(const char* str, const std::string& old_value, const std::string& new_value) {
     std::string	s(str);
     string_replace(s, old_value, new_value);
