@@ -1,4 +1,4 @@
-#include <igloo/igloo.h>
+#include <simple/igloo.h>
 using namespace igloo;
 
 #include <simple/creator.h>

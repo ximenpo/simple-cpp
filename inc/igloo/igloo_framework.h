@@ -25,11 +25,6 @@ namespace igloo {
   using namespace snowhouse;
 }
 
-#if	defined(_MSC_VER) && _MSC_VER <= 1310
-#	define	IGLOO_XUNITOUTPUT_H
-#	define	XUnitResultsOutput		ColoredConsoleTestResultsOutput
-#endif
-
 #include <igloo/core/core.h>
 
 //
