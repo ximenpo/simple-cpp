@@ -15,11 +15,12 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#ifdef WIN32
+#ifdef _MSC_VER
 #include <windows.h>
 #include <Wincrypt.h>
+#pragma	comment(lib, "Advapi32.lib")
 #else
-#include <malloc.h>
+#include <stdlib.h>
 #include <time.h>
 #endif
 
