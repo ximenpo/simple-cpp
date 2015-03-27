@@ -36,4 +36,4 @@ private:
 //	}
 //
 
-#endif	//RECURSIONGUARD_H__089BB269_EC67_495D_885A_CAB04219E370__INCLUDED_
+#endif
