@@ -1,5 +1,5 @@
 
-igloo			http://igloo-testing.org/
+aes			https://www.aescrypt.com/
 any			http://www.codeproject.com/Articles/11250/High-Performance-Dynamic-Typing-in-C-using-a-Repla
 any_ptr			http://www.codeproject.com/Articles/11250/High-Performance-Dynamic-Typing-in-C-using-a-Repla
 mime encoder		http://ootips.org/yonat/4dev/
@@ -12,6 +12,7 @@ DefineImprovedEnum	http://www.codeproject.com/Articles/32000/Improving-C-Enums-A
 DEIntegrator		http://www.codeproject.com/Articles/31550/Fast-Numerical-Integration
 FastDelegate		http://www.codeproject.com/Articles/7150/Member-Function-Pointers-and-the-Fastest-Possible
 Fast DES code		http://www.ka9q.net/code/des/
+igloo			http://igloo-testing.org/
 jRead			http://www.codeproject.com/Articles/885389/jRead-an-in-place-JSON-element-reader
 jWrite			http://www.codeproject.com/Articles/887604/jWrite-a-really-simple-JSON-writer-in-C
 pugixml			http://pugixml.org/
