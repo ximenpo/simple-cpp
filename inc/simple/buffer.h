@@ -193,15 +193,15 @@ buffer&		operator>>(buffer& buf, signed long& value);
 //
 //	UINT:	int/char/short
 //
+buffer&		operator<<(buffer& buf, unsigned int value);
 buffer&		operator<<(buffer& buf, unsigned char value);
 buffer&		operator<<(buffer& buf, unsigned short value);
 buffer&		operator<<(buffer& buf, unsigned long value);
-buffer&		operator<<(buffer& buf, unsigned int value);
 
+buffer&		operator>>(buffer& buf, unsigned int& value);
 buffer&		operator>>(buffer& buf, unsigned char& value);
 buffer&		operator>>(buffer& buf, unsigned short& value);
 buffer&		operator>>(buffer& buf, unsigned long& value);
-buffer&		operator>>(buffer& buf, unsigned int& value);
 
 //
 //	REAL:	float/double
