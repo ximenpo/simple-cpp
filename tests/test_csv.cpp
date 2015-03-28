@@ -15,12 +15,10 @@ Context(csv_usage) {
         std::ostringstream	os;
 
         while (infile) {
-            std::string sLine;
-            std::getline(infile, sLine, char('\r')); // Get a line
-            if (sLine == "")
-                continue;
-
-            parser << sLine; // Feed the line to the parser
+            infile >> parser;
+            if(parser.empty()) {
+                break;
+            }
 
             // Now extract the columns from the line
             std::string sCol1, sCol3, sCol4;
@@ -37,10 +35,6 @@ Context(csv_usage) {
                << "Column5: " << iCol5 << std::endl
                << "Column6: " << iCol6 << std::endl
                << std::endl;
-
-            if(infile.peek() == '\n') {
-                infile.get();
-            }
         }
         infile.close();
 

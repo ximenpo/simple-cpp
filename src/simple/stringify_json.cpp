@@ -127,6 +127,8 @@ bool	stringify_from_json_stream(stringify_data& data, std::istream& is) {
     case	json::ArrayVal:
         simple_value	= false;
         break;
+    default:
+        break;
     }
 
     if(simple_value) {
@@ -147,6 +149,8 @@ bool	stringify_from_json_stream(stringify_data& data, std::istream& is) {
         data.add_root(&container, &container_id);
         container->is_array	= false;
         return	load_from_json_object(data, container_id, val.ToObject());
+    default:
+        break;
     }
 
     return	false;

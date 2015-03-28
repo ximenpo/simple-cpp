@@ -22,9 +22,9 @@ buffer& operator>>(buffer& buf, testBufferMsg1& obj) {
     if(		!buffer_read_tag(buf, tag)
             ||	tag.data_type != buffer_tag::TYPE_OBJECT
             ||	!buffer_read_uint_value(buf, tag.size_tag, size)
-            ||	tag.version_tag && !buffer_read_uint_value(buf, buffer_tag::TAG_1, ver)
-            ||	tag.version_tag && ver>=0 && size < 0
-            ||	tag.version_tag && ver<=0 && size > 0
+            ||	(tag.version_tag && !buffer_read_uint_value(buf, buffer_tag::TAG_1, ver))
+            //||	(tag.version_tag && ver>=0 && size < 0)
+            ||	(tag.version_tag && ver<=0 && size > 0)
       ) {
         buf.set_failure();
         return	buf;
@@ -51,7 +51,7 @@ buffer& operator<<(buffer& buf, const testBufferMsg1& obj) {
     };
     if(		!buffer_write_tag(buf, tag)
             ||	!buffer_write_uint_value(buf, tag.size_tag, size)
-            ||	tag.version_tag && !buffer_write_uint_value(buf, buffer_tag::TAG_1, 0)
+            ||	(tag.version_tag && !buffer_write_uint_value(buf, buffer_tag::TAG_1, 0))
       ) {
         buf.set_failure();
         return	buf;

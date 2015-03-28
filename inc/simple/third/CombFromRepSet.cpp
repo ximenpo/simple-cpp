@@ -115,7 +115,7 @@ void CCombFromRepSet::Shift( std::vector<unsigned int> &vi )
 	if( m_vrep.size() == 0 || vi.size() == 0 )
 		return;
 
-	for( unsigned int i=m_vrep.size()-1; i>=0 ; --i )
+	for( int i=int(m_vrep.size())-1; i>=0 ; --i )
 	{
 		unsigned int RepCnt = 0;
 		for( int j=vi.size()-1; j>=0; --j )

@@ -87,7 +87,13 @@
     bit mask & shift operations.
 ------------------------------------------------------------------------ */
 
+#if	!defined(_MSC_VER) || _MSC_VER >= 1600
+#   include <stdint.h>			// definintion of uint32_t, int32_t
+typedef uint32_t        UTF32;  /* at least 32 bits */
+#else
 typedef unsigned long   UTF32;  /* at least 32 bits */
+#endif
+
 typedef unsigned short  UTF16;  /* at least 16 bits */
 typedef unsigned char   UTF8;   /* typically 8 bits */
 typedef unsigned char   Boolean; /* 0 or 1 */

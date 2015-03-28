@@ -1,6 +1,7 @@
 #include "simple/string.h"
 
 #include	<cassert>
+#include    <cstdarg>
 #include	<cstdio>
 #include	<cstring>
 #include	<vector>
@@ -24,38 +25,45 @@
 #endif
 
 void	string_format(std::string& str, const char* fmt, ...) {
+    str.clear();
     if (0 == fmt) {
         return;
     }
 
-    va_list args = 0;
+    va_list args;
     va_start(args, fmt);								//初始化变量参数
-    int nLength	= vscprintf(0, 0, fmt, args) + 1;	//获取格式化字符串长度
-    std::vector<char> buf(nLength, '\0');				//创建用于存储格式化字符串的字符数组
-    int	nRealLen	= vsnprintf(&buf[0], buf.size(), fmt, args);
-    assert(nRealLen <= nLength);
+    int nLength	= vscprintf(0, 0, fmt, args) + 1;       //获取格式化字符串长度
+    std::auto_ptr<char> buf(new char[nLength]);         //创建用于存储格式化字符串的字符数组
+    va_end(args);
+
+    va_start(args, fmt);								//重新初始化变量参数
+    int	nRealLen	= vsnprintf(buf.get(), nLength, fmt, args);
+    assert(nRealLen < nLength);
     if(nRealLen > 0) {
-        str.assign(&buf[0], nRealLen);
-    } else {
-        str.clear();
+        str.assign(buf.get(), nRealLen);
     }
-    va_end(args);  //重置变量参数
+    va_end(args);
 }
 
 std::string		string_format(const char* fmt, ...) {
     std::string str;
-    if (0 != fmt) {
-        va_list args = 0;
-        va_start(args, fmt);								//初始化变量参数
-        int nLength	= vscprintf(0, 0, fmt, args) + 1;	//获取格式化字符串长度
-        std::vector<char> buf(nLength, '\0');				//创建用于存储格式化字符串的字符数组
-        int	nRealLen	= vsnprintf(&buf[0], buf.size(), fmt, args);
-        assert(nRealLen <= nLength);
-        if(nRealLen > 0) {
-            str.assign(&buf[0], nRealLen);
-        }
-        va_end(args);	//重置变量参数
+    if (0 == fmt) {
+        return str;
     }
+
+    va_list args;
+    va_start(args, fmt);								//初始化变量参数
+    int nLength	= vscprintf(0, 0, fmt, args) + 1;       //获取格式化字符串长度
+    std::auto_ptr<char> buf(new char[nLength]);         //创建用于存储格式化字符串的字符数组
+    va_end(args);
+
+    va_start(args, fmt);								//重新初始化变量参数
+    int	nRealLen	= vsnprintf(buf.get(), nLength, fmt, args);
+    assert(nRealLen < nLength);
+    if(nRealLen > 0) {
+        str.assign(buf.get(), nRealLen);
+    }
+    va_end(args);
     return str;
 }
 
@@ -298,7 +306,7 @@ size_t	string_wchar_to_utf8(const wchar_t* src, size_t src_byte, char* dest, siz
         const UTF16* sourceend		= sourcestart + widesize;
         UTF8* targetstart			= reinterpret_cast<UTF8*>(dest);
         UTF8* targetend				= targetstart + utf8size;
-        ConversionResult res		= ConvertUTF16toUTF8(&sourcestart, sourceend, &targetstart, targetend, strictConversion);
+        ConversionResult res		= ConvertUTF16toUTF8(&sourcestart, sourceend, &targetstart, targetend, lenientConversion);
         if (res != conversionOK) {
             return	0;
         }
@@ -309,7 +317,7 @@ size_t	string_wchar_to_utf8(const wchar_t* src, size_t src_byte, char* dest, siz
         const UTF32* sourceend		= sourcestart + widesize;
         UTF8* targetstart			= reinterpret_cast<UTF8*>(dest);
         UTF8* targetend				= targetstart + utf8size;
-        ConversionResult res		= ConvertUTF32toUTF8(&sourcestart, sourceend, &targetstart, targetend, strictConversion);
+        ConversionResult res		= ConvertUTF32toUTF8(&sourcestart, sourceend, &targetstart, targetend, lenientConversion);
         if (res != conversionOK) {
             return	0;
         }
@@ -328,7 +336,7 @@ size_t	string_utf8_to_wchar(const char* src, size_t src_byte, wchar_t* dest, siz
         const UTF8* sourceend	= sourcestart + utf8size;
         UTF16* targetstart		= reinterpret_cast<UTF16*>(dest);
         UTF16* targetend		= targetstart + widesize;
-        ConversionResult res	= ConvertUTF8toUTF16(&sourcestart, sourceend, &targetstart, targetend, strictConversion);
+        ConversionResult res	= ConvertUTF8toUTF16(&sourcestart, sourceend, &targetstart, targetend, lenientConversion);
         if (res != conversionOK) {
             return	0;
         }
@@ -339,7 +347,7 @@ size_t	string_utf8_to_wchar(const char* src, size_t src_byte, wchar_t* dest, siz
         const UTF8* sourceend	= sourcestart + utf8size;
         UTF32* targetstart		= reinterpret_cast<UTF32*>(dest);
         UTF32* targetend		= targetstart + widesize;
-        ConversionResult res	= ConvertUTF8toUTF32(&sourcestart, sourceend, &targetstart, targetend, strictConversion);
+        ConversionResult res	= ConvertUTF8toUTF32(&sourcestart, sourceend, &targetstart, targetend, lenientConversion);
         if (res != conversionOK) {
             return	0;
         }
@@ -361,51 +369,61 @@ std::string	string_ellipsis(const char* str, size_t nShowLen) {
 
 void	string_ellipsis(std::string& str, size_t nShowLen) {
     size_t nSrcLen = str.size();
-    if (nShowLen >= nSrcLen) {
+    if (nShowLen >= nSrcLen || nShowLen <= 3) {
         return;
     }
 
-    wchar_t* temp	= new wchar_t[nSrcLen+1];
-    memset(temp, 0, sizeof(wchar_t)*(nSrcLen+1));
+    size_t  wlen    = nSrcLen+1;
+    std::auto_ptr<wchar_t>  wbuf(new wchar_t[wlen]);
+    memset(wbuf.get(), 0, sizeof(wchar_t)*wlen);
 
+    size_t  cvt_ret = 0;
 #if	defined(_WIN32)
-    MultiByteToWideChar(CP_ACP, 0, str.c_str(), nSrcLen, temp, nSrcLen);
+    cvt_ret = MultiByteToWideChar(CP_ACP, 0, str.c_str(), nSrcLen, wbuf.get(), wlen);
 #else
-    string_utf8_to_wchar(str.c_str(), nSrcLen, temp, nSrcLen * sizeof(wchar_t));
+    cvt_ret = string_utf8_to_wchar(str.c_str(), nSrcLen, wbuf.get(), sizeof(wchar_t) * wlen) / sizeof(wchar_t);
 #endif
 
-    size_t nLen = 0;
-    for (size_t i = 0; i < nSrcLen; ++i) {
-        if (temp[i] == '\0')			break;
-        else if (temp[i] > 0xA0)		nLen += 2;
+    if(0 == cvt_ret) {
+        return;
+    }
+
+    size_t      wRealLen    = 0;
+    wchar_t*    pwbuf       = wbuf.get();
+    for (size_t i = 0, nLen = 0; i < nSrcLen; ++i) {
+        if (pwbuf[i] == 0x00)			break;
+        else if (pwbuf[i] >= 0x80)		nLen += 2;
         else							nLen++;
 
         if (nLen >= nShowLen-2) {
-            int k = i;
-            if (temp[i+1] == '\0')
+            size_t k = i;
+            if (pwbuf[k+1] == '\0')
                 break;
 
-            if (nLen == nShowLen-1 && temp[i+1] <= 0xA0)
-                ++k;
+            if (nLen == nShowLen-1 && pwbuf[k+1] <= 0x80)
+                --k;
 
-            temp[k+1] = temp[k+2] = '.';
-            temp[k+3] = '\0';
+            pwbuf[k+1]   = pwbuf[k+2] = '.';
+            pwbuf[k+3]   = '\0';
+            wRealLen    = k + 2;
             break;
         }
     }
 
-    char *cDest = new char[nSrcLen];
-    memset(cDest, 0, sizeof(char) * nSrcLen);
+    std::auto_ptr<char> dbuf(new char[nSrcLen + 1]);
+    memset(dbuf.get(), 0, sizeof(char) * (nSrcLen + 1));
 
 #if	defined(_WIN32)
-    WideCharToMultiByte (CP_ACP, 0, temp, nSrcLen, cDest,  nSrcLen, NULL, NULL);
+    cvt_ret = WideCharToMultiByte (CP_ACP, 0, pwbuf, wRealLen + 1, dbuf.get(),  nSrcLen + 1, NULL, NULL);
 #else
-    string_wchar_to_utf8(temp, nSrcLen * sizeof(wchar_t), cDest, nSrcLen);
+    cvt_ret = string_wchar_to_utf8(pwbuf, (wRealLen + 1) * sizeof(wchar_t), dbuf.get(), nSrcLen + 1);
 #endif
 
-    str.assign(cDest);
-    delete []temp;
-    delete []cDest;
+    if(0 == cvt_ret) {
+        return;
+    }
+
+    str.assign(dbuf.get());
     return;
 }
 

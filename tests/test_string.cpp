@@ -39,11 +39,10 @@ Context(string_usage) {
 
     Spec(format_usage) {
         std::string	s1;
-
-        AssertThat(string_format("%s, %d", "XiMenPo", 35),		Equals("XiMenPo, 35"));
-
         string_format(s1, "%s, %d", "XiMenPo", 35);
         AssertThat(s1,		Equals("XiMenPo, 35"));
+
+        AssertThat(string_format("%s, %d", "XiMenPo", 35),		Equals("XiMenPo, 35"));
     }
 
     Spec(join_usage) {

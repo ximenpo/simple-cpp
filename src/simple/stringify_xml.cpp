@@ -104,6 +104,10 @@ public:
                 }
             }
             break;
+            default: {
+                //ignore
+            }
+            break;
             }
         }
         return	true;
@@ -112,7 +116,7 @@ public:
     bool visit(const pugi::xml_node& node) {
         switch(node.type()) {
         case pugi::node_pcdata:
-        case pugi::node_cdata:
+        case pugi::node_cdata: {
             std::string	name	= node.parent().name();
             stringify::node_value*	node_new	= 0;
             if(name == anonymous_) {
@@ -123,6 +127,9 @@ public:
             if(0 != node.value()) {
                 node_new->value	= node.value();
             }
+        }
+        break;
+        default:
             break;
         }
         return true; // continue traversal

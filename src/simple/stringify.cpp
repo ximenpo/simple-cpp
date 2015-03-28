@@ -33,6 +33,10 @@ static	bool	stringify_data_visit_value(stringify_data& data, stringify_data_visi
         }
     }
     break;
+    default: {
+        // ignore.
+    }
+    break;
     }
     return	true;
 }
@@ -48,6 +52,8 @@ static	bool	stringify_data_visit_container(stringify_data& data, stringify_data_
         break;
     case NODE_NAMED_CONTAINER:
         node	= &data.named_containers[index];
+        break;
+    default:
         break;
     }
 
@@ -78,6 +84,8 @@ static	bool	stringify_data_visit_array(stringify_data& data, stringify_data_visi
         node	= &data.named_containers[index];
         name	= &data.named_containers[index].name;
         break;
+    default:
+        break;
     }
 
     if(0 == node) {
@@ -104,6 +112,10 @@ static	bool	stringify_data_visit_array(stringify_data& data, stringify_data_visi
             }
         }
         break;
+        default: {
+            // ignore.
+        }
+        break;
         }
     }
 
@@ -127,6 +139,8 @@ static	bool	stringify_data_visit_object(stringify_data& data, stringify_data_vis
     case NODE_NAMED_CONTAINER:
         node	= &data.named_containers[index];
         name	= &data.named_containers[index].name;
+        break;
+    default:
         break;
     }
 
@@ -152,6 +166,10 @@ static	bool	stringify_data_visit_object(stringify_data& data, stringify_data_vis
             if(!stringify_data_visit_container(data, visitor, *it)) {
                 return	false;
             }
+        }
+        break;
+        default: {
+            // ignore.
         }
         break;
         }
@@ -191,6 +209,10 @@ bool	stringify_data::accept(stringify_data_visitor& visitor) {
         if(!stringify_data_visit_container(*this, visitor, root)) {
             return	false;
         }
+    }
+    break;
+    default: {
+        // ignore.
     }
     break;
     }
@@ -254,6 +276,10 @@ bool	stringify_data::fetch(stringify::node_id node_id, std::string** value, std:
         return	true;
     }
     break;
+    default: {
+        // ignore.
+    }
+    break;
     }
     return	false;
 }
@@ -287,6 +313,10 @@ bool	stringify_data::fetch(stringify::node_id node_id, stringify::node_container
             *name	= &node.name;
         }
         return	true;
+    }
+    break;
+    default: {
+        // ignore.
     }
     break;
     }
@@ -351,6 +381,10 @@ bool	stringify_data::fetch(stringify::node_id node_id, const std::string& child_
                 }
                 return	true;
             }
+        }
+        break;
+        default: {
+            // ignore.
         }
         break;
         }
@@ -683,6 +717,8 @@ void	stringify_data_builder::do_before_add_value(const char* err_msg) {
     case NODE_NAMED_CONTAINER: //object item
         context_valid	= (data_.named_containers[get_node_index(curr_id)].is_array);
         break;
+    default:
+        break;
     }
     if(!context_valid) {
         throw	std::invalid_argument(err_msg);
@@ -702,6 +738,8 @@ void	stringify_data_builder::do_after_add_value(node_id new_id) {
     case NODE_NAMED_CONTAINER: //append
         data_.named_containers[get_node_index(curr_id)].items.push_back(new_id);
         break;
+    default:
+        break;
     }
 }
 
@@ -720,6 +758,8 @@ void	stringify_data_builder::do_before_add_named_value(const char* err_msg) {
     case NODE_NAMED_CONTAINER: //object item
         context_valid	= !(data_.named_containers[get_node_index(curr_id)].is_array);
         break;
+    default:
+        break;
     }
     if(!context_valid) {
         throw	std::invalid_argument(err_msg);
@@ -735,6 +775,8 @@ void	stringify_data_builder::do_after_add_named_value(node_id new_id) {
         break;
     case NODE_NAMED_CONTAINER: // append
         data_.named_containers[get_node_index(curr_id)].items.push_back(new_id);
+        break;
+    default:
         break;
     }
 }

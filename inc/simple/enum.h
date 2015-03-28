@@ -59,7 +59,7 @@ private:
 	inline const char* const enum_to_string(const TYPE index)\
 {\
 	const static char* TYPE##EnumStrings[] = {VALUES ""};\
-	return (index >= 0 && index < sizeof(TYPE##EnumStrings)/sizeof(TYPE##EnumStrings[0]))?TYPE##EnumStrings[index]:"";\
+	return (index >= 0 && (unsigned int)(index) < sizeof(TYPE##EnumStrings)/sizeof(TYPE##EnumStrings[0]))?TYPE##EnumStrings[index]:"";\
 }
 #define	ENUM_NAME(Index)	(#Index),
 #define	ENUM_ITEM(VALUE)	(VALUE),

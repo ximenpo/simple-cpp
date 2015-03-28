@@ -149,7 +149,9 @@ namespace IMPROVED_ENUM_NAME {
 #endif// IMPROVED_ENUM_FILE
 #undef   IMPROVED_ENUM_ITEM_VALUE
 #undef   IMPROVED_ENUM_ITEM
-            //////////////////////////////////////////
+        //////////////////////////////////////////
+        default:
+            break;
         }
         return ""; // enum_item_invalid
     }
@@ -173,7 +175,9 @@ namespace IMPROVED_ENUM_NAME {
 #endif// IMPROVED_ENUM_FILE
 #undef   IMPROVED_ENUM_ITEM_VALUE
 #undef   IMPROVED_ENUM_ITEM
-            //////////////////////////////////////////
+        //////////////////////////////////////////
+        default:
+            break;
         }
         return ""; // enum_item_invalid
     }
@@ -329,7 +333,9 @@ namespace IMPROVED_ENUM_NAME {
 #endif// IMPROVED_ENUM_INHERITED_FILE
 #undef   IMPROVED_ENUM_ITEM_VALUE
 #undef   IMPROVED_ENUM_ITEM
-            //////////////////////////////////////////
+        //////////////////////////////////////////
+        default:
+            break;
         }
         return enum_item_invalid;
     }
@@ -354,7 +360,9 @@ namespace IMPROVED_ENUM_NAME {
 #endif// IMPROVED_ENUM_INHERITED_FILE
 #undef   IMPROVED_ENUM_ITEM_VALUE
 #undef   IMPROVED_ENUM_ITEM
-            //////////////////////////////////////////
+        //////////////////////////////////////////
+        default:
+            break;
         }
         return IMPROVED_ENUM_INHERITED_NAME::enum_item_invalid;
     }
@@ -379,6 +387,8 @@ namespace IMPROVED_ENUM_NAME {
 #undef   IMPROVED_ENUM_ITEM
             //////////////////////////////////////////
             return enum_item_invalid;
+        default:
+            break;
         }
         return enum_item_invalid;
     }
@@ -448,6 +458,8 @@ namespace IMPROVED_ENUM_NAME {
 #undef   IMPROVED_ENUM_ITEM
             //////////////////////////////////////////
             return enum_item_invalid;
+        default:
+            break;
         }
         return enum_item_invalid;
     }
