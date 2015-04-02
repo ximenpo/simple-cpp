@@ -138,7 +138,7 @@ bool	buffer_write_raw(buffer& buf, const void* pData, unsigned long nLen) {
 
     //	begin tag.
     if(		!buffer_write_tag(buf, tag)
-            ||	!buffer_write_uint_value(buf, tag.size_tag, nLen)
+            ||	!buffer_write_uint_value(buf, int(tag.size_tag), nLen)
       ) {
         return	false;
     }
@@ -151,7 +151,7 @@ bool	buffer_read_raw(buffer& buf, void* pData, unsigned long& nLen) {
     buffer_tag		tag;
     if(		!buffer_read_tag(buf, tag)
             ||	tag.data_type != buffer_tag::TYPE_RAW
-            ||	!buffer_read_uint_value(buf, tag.size_tag, size)
+            ||	!buffer_read_uint_value(buf, int(tag.size_tag), size)
             ||	size > nLen
       ) {
         buf.set_failure();
@@ -179,7 +179,7 @@ bool	buffer_read_and_ignore(buffer& buf) {
     case buffer_tag::TYPE_RAW:
     case buffer_tag::TYPE_STRING: {
         // string & raw read len, and read data.
-        if(!buffer_read_uint_value(buf, tag.size_tag, todo_bypes)) {
+        if(!buffer_read_uint_value(buf, int(tag.size_tag), todo_bypes)) {
             return	false;
         }
     }
@@ -223,7 +223,7 @@ bool	buffer_read_and_ignore(buffer& buf) {
     case buffer_tag::TYPE_ARRAY:
     case buffer_tag::TYPE_OBJECT: {
         // array & object -> read size, version, and contents.
-        if(!buffer_read_uint_value(buf, tag.size_tag, size)) {
+        if(!buffer_read_uint_value(buf, int(tag.size_tag), size)) {
             return	false;
         }
 
@@ -459,7 +459,7 @@ buffer& operator>>(buffer& buf, signed int& value) {
         signed long	tmp_v	= 0;
         if(buf.read(&tmp_v, sizeof(tmp_v))) {
             tmp_v	= ntohl(tmp_v);
-            value	= tmp_v;
+            value	= int(tmp_v);
         }
     }
     break;
@@ -489,7 +489,7 @@ buffer& operator<<(buffer& buf, unsigned int value) {
     };
 
     buffer_write_tag(buf, tag);
-    buffer_write_uint_value(buf, tag.size_tag, value);
+    buffer_write_uint_value(buf, int(tag.size_tag), value);
 
     return	buf;
 }
@@ -505,13 +505,13 @@ buffer& operator>>(buffer& buf, unsigned int& value) {
     buffer_tag		tag;
     if(		!buffer_read_tag(buf, tag)
             ||	tag.data_type != buffer_tag::TYPE_UINT
-            ||	!buffer_read_uint_value(buf, tag.size_tag, tmp_value)
+            ||	!buffer_read_uint_value(buf, int(tag.size_tag), tmp_value)
       ) {
         buf.set_failure();
         return	buf;
     }
 
-    value	= tmp_value;
+    value	= (unsigned int)tmp_value;
     return	buf;
 }
 
@@ -709,7 +709,8 @@ buffer& operator<<(buffer& buf, double value) {
 
     buffer_write_tag(buf, tag);
 
-    if(1==htonl(1)) {
+    long netnumber_1 = htonl(1);
+    if(1==netnumber_1) {
         buf.write(&value, sizeof(value));
     } else {
         // µÍÎ»ÔÚÇ°
@@ -737,8 +738,9 @@ buffer& operator>>(buffer& buf, double& value) {
         buf.set_failure();
         return	buf;
     }
-
-    if(1==ntohl(1)) {
+    
+    long netnumber_1 = htonl(1);
+    if(1==netnumber_1) {
         buf.read(&value, sizeof(value));
     } else {
         unsigned char	tmp_v[sizeof(double)]	= {0};
@@ -853,7 +855,7 @@ static	bool	WriteSerialString(buffer& buf, const char* data, unsigned long size)
     };
 
     return	(	buffer_write_tag(buf, tag)
-                &&		buffer_write_uint_value(buf, tag.size_tag, size)
+                &&		buffer_write_uint_value(buf, int(tag.size_tag), size)
                 &&		buf.write(data, size)
            );
 }
@@ -862,7 +864,7 @@ static	unsigned long	ReadSerialString(buffer& buf, char* data, unsigned long siz
     unsigned long	size_c;
     buffer_tag		tag;
     if(		!buffer_read_tag(buf, tag)
-            ||	!buffer_read_uint_value(buf, tag.size_tag, size_c)
+            ||	!buffer_read_uint_value(buf, int(tag.size_tag), size_c)
             ||	size_c > GC_SERIALIZE_STRING_MAX_SIZE*3
             ||	size_c > size
             ||	!buf.read(data, size_c)

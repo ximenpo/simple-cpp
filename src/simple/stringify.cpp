@@ -591,7 +591,7 @@ bool	stringify_data::has_value(const std::string& path, unsigned long child_inde
 
 std::string		stringify_data::get_value(const std::string& path, const std::string& default_value) {
     stringify::node_id	id;
-    std::string*	str;
+    std::string*	str = 0;
     if(!this->fetch(path, &id) || !this->fetch(id, &str, 0)) {
         return	default_value;
     }
@@ -601,7 +601,7 @@ std::string		stringify_data::get_value(const std::string& path, const std::strin
 
 std::string		stringify_data::get_value(const std::string& path, const std::string& child_name, const std::string& default_value) {
     stringify::node_id	id;
-    std::string*	str;
+    std::string*	str = 0;
     if(!this->fetch(path, &id) || !this->fetch(id, child_name, &str)) {
         return	default_value;
     }
@@ -611,7 +611,7 @@ std::string		stringify_data::get_value(const std::string& path, const std::strin
 
 std::string		stringify_data::get_value(const std::string& path, unsigned long child_index, const std::string& default_value) {
     stringify::node_id	id;
-    std::string*	str;
+    std::string*	str = 0;
     if(!this->fetch(path, &id) || !this->fetch(id, child_index, &str)) {
         return	default_value;
     }
@@ -621,7 +621,7 @@ std::string		stringify_data::get_value(const std::string& path, unsigned long ch
 
 bool	stringify_data::set_value(const std::string& path, const std::string& value) {
     stringify::node_id	id;
-    std::string*	str;
+    std::string*	str = 0;
     if(!this->fetch(path, &id) || !this->fetch(id, &str, 0)) {
         return	false;
     }
@@ -631,7 +631,7 @@ bool	stringify_data::set_value(const std::string& path, const std::string& value
 
 bool	stringify_data::set_value(const std::string& path, const std::string& child_name, const std::string& value) {
     stringify::node_id	id;
-    std::string*	str;
+    std::string*	str = 0;
     if(!this->fetch(path, &id) || !this->fetch(id, child_name, &str)) {
         return	false;
     }
@@ -641,7 +641,7 @@ bool	stringify_data::set_value(const std::string& path, const std::string& child
 
 bool	stringify_data::set_value(const std::string& path, unsigned long child_index, const std::string& value) {
     stringify::node_id	id;
-    std::string*	str;
+    std::string*	str = 0;
     if(!this->fetch(path, &id) || !this->fetch(id, child_index, &str)) {
         return	false;
     }

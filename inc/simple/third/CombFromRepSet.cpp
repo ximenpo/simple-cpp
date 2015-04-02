@@ -118,7 +118,7 @@ void CCombFromRepSet::Shift( std::vector<unsigned int> &vi )
 	for( int i=int(m_vrep.size())-1; i>=0 ; --i )
 	{
 		unsigned int RepCnt = 0;
-		for( int j=vi.size()-1; j>=0; --j )
+		for( int j=int(vi.size())-1; j>=0; --j )
 		{
 			if( vi[j] >= m_vrep[i].Start && vi[j] <= m_vrep[i].End )
 			{

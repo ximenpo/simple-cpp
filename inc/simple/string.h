@@ -226,7 +226,7 @@ std::string			string_xml_unescape(const std::string& str);	//unescape < > & ' "
 //	string base64 operations.
 //
 bool				string_is_base64(const std::string& str);
-std::string			string_base64_encode(const unsigned char* s, unsigned int len);
+std::string			string_base64_encode(const unsigned char* s, unsigned long len);
 std::string			string_base64_decode(const std::string& str);
 
 inline	std::string	string_base64_encode(const char* s, unsigned int len) {

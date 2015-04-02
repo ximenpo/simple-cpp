@@ -28,7 +28,7 @@ bool string_is_base64(const std::string& s) {
 }
 
 
-std::string		string_base64_encode(const unsigned char* str, unsigned int len) {
+std::string		string_base64_encode(const unsigned char* str, unsigned long len) {
     std::auto_ptr<char>	buf(new char[len * 2 + 1]);
     mime::Base64Encoder<const unsigned char*, char*>	encoder;
     char*	end	= encoder.filter(str, str + len, buf.get(), true);

@@ -112,8 +112,8 @@ bool	string_tobool(const std::string& str, bool& v) {
 //	类似于dir命令的匹配方式： * ?
 //
 bool string_match_wildcard(const char *pszString, const char *pszMatch) {
-    const char *mp;
-    const char *cp = NULL;
+    const char *mp  = NULL;
+    const char *cp  = NULL;
 
     while (*pszString) {
         if (*pszMatch == ('*')) {
@@ -274,7 +274,7 @@ extern	"C"	int GeneratePassword(   int length,
                                     char *password);
 std::string		string_generate(size_t length, bool use_special_chars) {
     std::auto_ptr<char>	buf(new char[length]);
-    if(0 == GeneratePassword(length, use_special_chars, buf.get())) {
+    if(0 == GeneratePassword(int(length), use_special_chars, buf.get())) {
         return	std::string(buf.get(), length);
     }
 

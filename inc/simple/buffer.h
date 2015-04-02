@@ -309,7 +309,7 @@ inline buffer&		operator>>(buffer& buf, T& array) {
     buffer_tag	tag;
     if(		!buffer_read_tag(buf, tag)
             ||	tag.data_type != buffer_tag::TYPE_ARRAY
-            ||	!buffer_read_uint_value(buf, tag.size_tag, size)
+            ||	!buffer_read_uint_value(buf, int(tag.size_tag), size)
       ) {
         buf.set_failure();
         return	buf;

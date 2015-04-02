@@ -20,12 +20,12 @@ namespace igloo {
 
       int NumberOfSucceededTests() const
       {
-        return succeededTests_.size();
+        return (int)succeededTests_.size();
       }
 
       int NumberOfFailedTests() const
       {
-        return failedTests_.size();
+        return (int)failedTests_.size();
       }
 
       void AddResult(const SucceededTestResult result)

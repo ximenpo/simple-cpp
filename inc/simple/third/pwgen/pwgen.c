@@ -130,7 +130,7 @@ int GeneratePassword(   int length,
     if (!(fp = fopen("/dev/urandom", "r")))
     {
         /* We must use the pseudo random number generator */
-        srand(time(NULL));
+        srand((unsigned int)time(NULL));
     }
 #endif
 

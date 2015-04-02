@@ -397,7 +397,7 @@ char * jReadCountObject( char *pJson, struct jReadElement *pResult, int keyIndex
 		pResult->dataType= JREAD_ERROR;
 		pResult->error= 11;			// Object key not found (bad index)
 	}else{
-		pResult->bytelen= pJson - (char *)pResult->pValue;
+		pResult->bytelen= (int)(pJson - (char *)pResult->pValue);
 	}
 	return pJson;
 }
@@ -435,7 +435,7 @@ char * jReadCountArray( char *pJson, struct jReadElement *pResult )
 			break;
 		}
 	}
-	pResult->bytelen= pJson - (char *)pResult->pValue;
+	pResult->bytelen= (int)(pJson - (char *)pResult->pValue);
 	return pJson;
 }
 
