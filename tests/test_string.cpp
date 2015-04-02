@@ -1,7 +1,7 @@
-#include <simple/igloo.h>
+#include "simple/igloo.h"
 using namespace igloo;
 
-#include <simple/string.h>
+#include "simple/string.h"
 
 Context(string_usage) {
     Spec(trim_const_strings_usage) {

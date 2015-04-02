@@ -1,7 +1,7 @@
-#include <simple/igloo.h>
+#include "simple/igloo.h"
 using namespace igloo;
 
-#include <simple/delegate.h>
+#include "simple/delegate.h"
 
 static	bool	global_greater_than(int n1, int n2) {
     return	n1 > n2;

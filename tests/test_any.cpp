@@ -1,7 +1,7 @@
-#include <simple/igloo.h>
+#include "simple/igloo.h"
 using namespace igloo;
 
-#include <simple/any.h>
+#include "simple/any.h"
 
 Context(any_usage) {
     Spec(basic_usage) {

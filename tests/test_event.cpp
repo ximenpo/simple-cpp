@@ -1,8 +1,8 @@
-#include <simple/igloo.h>
+#include "simple/igloo.h"
 using namespace igloo;
 
-#include <simple/event.h>
-#include <simple/delegate.h>
+#include "simple/event.h"
+#include "simple/delegate.h"
 
 static   bool	global_func(int& n) {
     //std::cout << __FUNCTION__ << &n << std::endl;

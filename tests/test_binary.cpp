@@ -1,7 +1,7 @@
-#include <simple/igloo.h>
+#include "simple/igloo.h"
 using namespace igloo;
 
-#include <simple/binary.h>
+#include "simple/binary.h"
 
 Context(binary_usage) {
     Spec(basic_usage) {

@@ -1,7 +1,7 @@
-#include <simple/igloo.h>
+#include "simple/igloo.h"
 using namespace igloo;
 
-#include <simple/switch.h>
+#include "simple/switch.h"
 
 Context(multi_switch_usage) {
     bool	gotTrue()	{

@@ -1,8 +1,8 @@
-#include <simple/igloo.h>
+#include "simple/igloo.h"
 using namespace igloo;
 
-#include <simple/timestamp.h>
-#include <simple/sleep.h>
+#include "simple/timestamp.h"
+#include "simple/sleep.h"
 
 Context(timestamp_usage) {
     Spec(usage) {

@@ -1,8 +1,8 @@
-#include <simple/igloo.h>
+#include "simple/igloo.h"
 using namespace igloo;
 
 #include	<memory>
-#include	<simple/class_info.h>
+#include	"simple/class_info.h"
 
 namespace class_info_test {
 

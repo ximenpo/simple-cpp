@@ -1,8 +1,8 @@
-#include <simple/igloo.h>
+#include "simple/igloo.h"
 using namespace igloo;
 
-#include <simple/bit.h>
-#include <simple/binary.h>
+#include "simple/bit.h"
+#include "simple/binary.h"
 
 Context(bit_usage) {
     Spec(bit_count_usage) {

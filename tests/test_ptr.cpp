@@ -1,7 +1,7 @@
-#include <simple/igloo.h>
+#include "simple/igloo.h"
 using namespace igloo;
 
-#include <simple/ptr.h>
+#include "simple/ptr.h"
 
 static	void	Add(any_ptr data) {
     int*	p	= data;

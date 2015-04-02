@@ -1,7 +1,7 @@
-#include <simple/igloo.h>
+#include "simple/igloo.h"
 using namespace igloo;
 
-#include <simple/type.h>
+#include "simple/type.h"
 
 Context(type_inference_usage) {
     Spec(const_inference) {

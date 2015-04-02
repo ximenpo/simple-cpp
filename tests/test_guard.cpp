@@ -1,7 +1,7 @@
-#include <simple/igloo.h>
+#include "simple/igloo.h"
 using namespace igloo;
 
-#include <simple/guard.h>
+#include "simple/guard.h"
 
 static	void	recursive_invoke(int& n) {
     if(n > 1000) {

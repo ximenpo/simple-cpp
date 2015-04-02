@@ -1,7 +1,7 @@
-#include <simple/igloo.h>
+#include "simple/igloo.h"
 using namespace igloo;
 
-#include <simple/pow2.h>
+#include "simple/pow2.h"
 
 Context(pow2_usage) {
     Spec(is_pow2_usage) {

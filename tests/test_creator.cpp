@@ -1,7 +1,7 @@
-#include <simple/igloo.h>
+#include "simple/igloo.h"
 using namespace igloo;
 
-#include <simple/creator.h>
+#include "simple/creator.h"
 
 class	CreatorTest {
     bool	valid_;

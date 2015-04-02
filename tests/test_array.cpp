@@ -1,8 +1,8 @@
-#include <simple/igloo.h>
+#include "simple/igloo.h"
 using namespace igloo;
 
 #include <cstring>
-#include <simple/array.h>
+#include "simple/array.h"
 
 static	const	int	ARR_LEN	= 4;
 

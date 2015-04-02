@@ -1,8 +1,8 @@
-#include <simple/igloo.h>
+#include "simple/igloo.h"
 using namespace igloo;
 
-#include <simple/enum.h>
-#include <simple/binary.h>
+#include "simple/enum.h"
+#include "simple/binary.h"
 
 enum	TestEnumType {
     TestEnum1,

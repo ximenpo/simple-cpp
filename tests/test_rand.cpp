@@ -1,7 +1,7 @@
-#include <simple/igloo.h>
+#include "simple/igloo.h"
 using namespace igloo;
 
-#include <simple/rand.h>
+#include "simple/rand.h"
 
 Context(rand_usage) {
     Spec(rand_normal_distribution_usage) {

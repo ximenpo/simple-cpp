@@ -1,9 +1,9 @@
-#include <simple/igloo.h>
+#include "simple/igloo.h"
 using namespace igloo;
 
 #include <string>
 
-#include <simple/property.h>
+#include "simple/property.h"
 
 class	PropertyTest {
 public:

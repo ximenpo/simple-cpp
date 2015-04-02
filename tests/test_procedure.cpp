@@ -1,7 +1,7 @@
-#include <simple/igloo.h>
+#include "simple/igloo.h"
 using namespace igloo;
 
-#include <simple/procedure.h>
+#include "simple/procedure.h"
 
 static	procedure_label		global_lbl;
 Context(procedure_context_usage) {

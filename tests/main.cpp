@@ -1,4 +1,4 @@
-#include <simple/igloo.h>
+#include "simple/igloo.h"
 using namespace igloo;
 
 int main(int argc, const char *argv[]) {
