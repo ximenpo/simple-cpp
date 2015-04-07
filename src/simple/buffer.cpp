@@ -738,7 +738,7 @@ buffer& operator>>(buffer& buf, double& value) {
         buf.set_failure();
         return	buf;
     }
-    
+
     long netnumber_1 = htonl(1);
     if(1==netnumber_1) {
         buf.read(&value, sizeof(value));

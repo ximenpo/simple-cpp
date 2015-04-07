@@ -227,13 +227,33 @@ std::string			string_xml_unescape(const std::string& str);	//unescape < > & ' "
 //
 bool				string_is_base64(const std::string& str);
 std::string			string_base64_encode(const unsigned char* s, unsigned long len);
-std::string			string_base64_decode(const std::string& str);
+std::string			string_base64_decode(const unsigned char* s, unsigned long len);
 
 inline	std::string	string_base64_encode(const char* s, unsigned int len) {
     return	string_base64_encode((const unsigned char*)s, len);
 }
 inline	std::string	string_base64_encode(const std::string& s) {
     return	string_base64_encode((const unsigned char*)s.c_str(), s.size());
+}
+
+inline  std::string	string_base64_decode(const std::string& s) {
+    return  string_base64_decode((const unsigned char*)s.c_str(), (unsigned long)s.size());
+}
+
+//
+//  string quoted-printable operations.
+//
+std::string			string_qp_encode(const unsigned char* s, unsigned long len);
+std::string			string_qp_decode(const unsigned char* s, unsigned long len);
+
+inline	std::string	string_qp_encode(const char* s, unsigned int len) {
+    return	string_qp_encode((const unsigned char*)s, len);
+}
+inline	std::string	string_qp_encode(const std::string& s) {
+    return	string_qp_encode((const unsigned char*)s.c_str(), s.size());
+}
+inline  std::string	string_qp_decode(const std::string& s) {
+    return  string_qp_decode((const unsigned char*)s.c_str(), (unsigned long)s.size());
 }
 
 //
