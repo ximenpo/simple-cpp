@@ -12,6 +12,13 @@
 #include <string.h>
 #include <ctype.h>
 
+#if defined(_MSC_VER)
+#   define  __inline__  inline
+#elif defined(__GNUC__)
+#else
+#   define  __inline__
+#endif
+
 /*
  * Prototype declarations
  */
