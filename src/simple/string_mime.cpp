@@ -1,6 +1,7 @@
 
 #include	<string>
 #include	<memory>
+#include  <iterator>
 
 #include	"simple/third/MimeCodes.cpp"
 
