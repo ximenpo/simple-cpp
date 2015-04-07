@@ -13,7 +13,7 @@
 #include <ctype.h>
 
 #if defined(_MSC_VER)
-#   define  __inline__  inline
+#   define  __inline__  __inline
 #elif defined(__GNUC__)
 #else
 #   define  __inline__
