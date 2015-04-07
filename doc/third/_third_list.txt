@@ -22,3 +22,4 @@ sha1			http://www.packetizer.com/security/sha1/
 switch_flags		http://www.codeproject.com/Articles/141327/Switching-on-Boolean-Conditions-and-Flags
 SuperEasyJson		http://www.sourceforge.net/p/supereasyjson
 tCNode			http://www.codeproject.com/Articles/837746/Cplusplus-tCNode-template-An-Indexed-Multi-node-Da
+url_parser	http://draft.scyphus.co.jp/lang/c/url_parser.html

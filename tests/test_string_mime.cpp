@@ -52,4 +52,35 @@ Context(string_mime_context) {
         AssertThat(encode,	Equals("XiMenPo=E6=98=AFSimple=E7=9A=84=E9=9F=B3=E8=AF=91=E5=90=8D=E3=80=82"));
 #endif
     }
+
+    Spec(parser_url_usage) {
+        std::string scheme, host, port, path, query, fragment, username, password;
+        string_parse_url("https://John:Dow@github.com:80/corporateshark/LUrlParser/?&query=ssl#q=frag",
+                         &scheme, &host, &port, &path, &query,
+                         &fragment, &username, &password);
+        AssertThat(scheme,	  Equals("https"));
+        AssertThat(host,	    Equals("github.com"));
+        AssertThat(port,	    Equals("80"));
+        AssertThat(path,	    Equals("corporateshark/LUrlParser/"));
+        AssertThat(query,	    Equals("&query=ssl"));
+        AssertThat(fragment,	Equals("q=frag"));
+        AssertThat(username,	Equals("John"));
+        AssertThat(password,	Equals("Dow"));
+    }
+
+    Spec(parser_url_simple_usage) {
+        std::string scheme, host, port, path, query, fragment, username, password;
+        string_parse_url("http://www.jiandan.ren/index.php?name=XiMenPo&is_good",
+                         &scheme, &host, &port, &path, &query,
+                         &fragment, &username, &password);
+        AssertThat(scheme,	  Equals("http"));
+        AssertThat(host,	    Equals("www.jiandan.ren"));
+        AssertThat(port,	    Equals(""));
+        AssertThat(path,	    Equals("index.php"));
+        AssertThat(query,	    Equals("name=XiMenPo&is_good"));
+        AssertThat(fragment,	Equals(""));
+        AssertThat(username,	Equals(""));
+        AssertThat(password,	Equals(""));
+    }
+
 };

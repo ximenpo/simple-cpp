@@ -4,6 +4,66 @@
 #include  <iterator>
 
 #include	"simple/third/MimeCodes.cpp"
+#include  "simple/third/url_parser.h"
+
+bool  string_parse_url(const char* url,
+                       std::string *scheme,
+                       std::string *host,
+                       std::string *port,
+                       std::string *path,
+                       std::string *query,
+                       std::string *fragment,
+                       std::string *username,
+                       std::string *password) {
+    parsed_url* items = parse_url(url);
+    if(0 == items) {
+        return false;
+    }
+
+    if(0 != scheme) {
+        scheme->clear();
+        if(0 != items->scheme)
+            *scheme = items->scheme;
+    }
+    if(0 != host) {
+        host->clear();
+        if(0 != items->host)
+            *host = items->host;
+    }
+    if(0 != port) {
+        port->clear();
+        if(0 != items->port)
+            *port = items->port;
+    }
+    if(0 != path) {
+        path->clear();
+        if(0 != items->path)
+            *path = items->path;
+    }
+    if(0 != query) {
+        query->clear();
+        if(0 != items->query)
+            *query = items->query;
+    }
+    if(0 != fragment) {
+        fragment->clear();
+        if(0 != items->fragment)
+            *fragment = items->fragment;
+    }
+    if(0 != username) {
+        username->clear();
+        if(0 != items->username)
+            *username = items->username;
+    }
+    if(0 != password) {
+        password->clear();
+        if(0 != items->password)
+            *password = items->password;
+    }
+
+    parsed_url_free(items);
+    return true;
+}
 
 static inline bool is_base64_char(unsigned char c) {
     return (isalnum(c) || (c == '+') || (c == '/'));
