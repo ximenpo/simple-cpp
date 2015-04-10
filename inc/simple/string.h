@@ -58,6 +58,21 @@ inline	std::string		string_tolower(const char* str) {
 }
 
 //
+//	hex
+//
+inline	void			string_hex(unsigned char c, char* buf_hex, bool lower_case = false) {
+    const char* HEX_TOKENS	= lower_case ? "0123456789abcdef\0": "0123456789ABCDEF\0";
+    buf_hex[0]	= HEX_TOKENS[c >> 4 & 0x0F];
+    buf_hex[1]	= HEX_TOKENS[c >> 0 & 0x0F];
+    buf_hex[2]	= '\0';
+}
+inline	std::string		string_hex(unsigned char c, bool lower_case = false) {
+    char	buf[4]	= {0};
+    string_hex(c, buf, lower_case);
+    return	std::string(buf);
+}
+
+//
 //	format
 //
 void			string_format(std::string& str, const char* fmt, ...);

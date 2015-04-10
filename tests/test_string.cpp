@@ -1,6 +1,8 @@
 #include "simple/igloo.h"
 using namespace igloo;
 
+#include <stdio.h>
+
 #include "simple/string.h"
 
 Context(string_usage) {
@@ -35,6 +37,20 @@ Context(string_usage) {
 
         string_tolower(s2);
         AssertThat(s2,		Equals("ok, i'm ximenpo"));
+    }
+
+    Spec(hex_usage) {
+        for(unsigned int i = 0; i < 0x100; ++i) {
+            char	buf[4]	= {0};
+            sprintf(buf, "%02X", i);
+            AssertThat(buf,	Equals(string_hex((unsigned char)i)));
+        }
+
+        for(unsigned int i = 0; i < 0x100; ++i) {
+            char	buf[4]	= {0};
+            sprintf(buf, "%02x", i);
+            AssertThat(buf,	Equals(string_hex((unsigned char)i, true)));
+        }
     }
 
     Spec(format_usage) {
