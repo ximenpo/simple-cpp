@@ -203,10 +203,13 @@ namespace pugi
 	// Open file using text mode in xml_document::save_file. This enables special character (i.e. new-line) conversions on some systems. This flag is off by default.
 	const unsigned int format_save_file_text = 0x20;
 
+	// Write every attribute on a new line with appropriate indentation. This flag is off by default.
+	const unsigned int format_indent_attributes = 0x40;
+
 	// The default set of formatting flags.
 	// Nodes are indented depending on their depth in DOM tree, a default declaration is output if document has none.
 	const unsigned int format_default = format_indent;
-		
+
 	// Forward declarations
 	struct xml_attribute_struct;
 	struct xml_node_struct;
@@ -1040,7 +1043,7 @@ namespace pugi
 		xpath_value_type _type;
 		xpath_variable* _next;
 
-		xpath_variable();
+		xpath_variable(xpath_value_type type);
 
 		// Non-copyable semantics
 		xpath_variable(const xpath_variable&);
@@ -1072,16 +1075,21 @@ namespace pugi
 	private:
 		xpath_variable* _data[64];
 
-		// Non-copyable semantics
-		xpath_variable_set(const xpath_variable_set&);
-		xpath_variable_set& operator=(const xpath_variable_set&);
+		void _assign(const xpath_variable_set& rhs);
+		void _swap(xpath_variable_set& rhs);
 
-		xpath_variable* find(const char_t* name) const;
+		xpath_variable* _find(const char_t* name) const;
+
+		static bool _clone(xpath_variable* var, xpath_variable** out_result);
 
 	public:
 		// Default constructor/destructor
 		xpath_variable_set();
 		~xpath_variable_set();
+
+		// Copy constructor/assignment operator
+		xpath_variable_set(const xpath_variable_set& rhs);
+		xpath_variable_set& operator=(const xpath_variable_set& rhs);
 
 		// Add a new variable or get the existing one, if the types match
 		xpath_variable* add(const char_t* name, xpath_value_type type);
@@ -1283,7 +1291,7 @@ namespace pugi
 		xpath_node* _begin;
 		xpath_node* _end;
 
-		void _assign(const_iterator begin, const_iterator end);
+		void _assign(const_iterator begin, const_iterator end, type_t type);
 	};
 #endif
 
