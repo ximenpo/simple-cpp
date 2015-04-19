@@ -1,5 +1,7 @@
 # simple-cpp
+
 a simple cpp library
+一堆简单的C++代码库;)
 
 ## 编译／测试环境
 
@@ -32,6 +34,7 @@ a simple cpp library
 - 方式一：直接复制需要的相关头文件/源代码
 - 方式二：设置头文件包含路径（设置到inc下，使用simple/xxxx.h），并包含用到的.cpp/.c文件
 
-## 备注
+## 使用协议
 
 - 本库会避开任何GPLx的第三方库。
+- 本库使用MIT协议。
