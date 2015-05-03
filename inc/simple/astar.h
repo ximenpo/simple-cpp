@@ -50,7 +50,7 @@ public:
 
 public:
     // 获取路径
-    const node_list&  get_path() {
+    const node_list&  path() {
         return path_;
     }
     // 搜索是否可以到达

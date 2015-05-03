@@ -28,31 +28,31 @@ static	void			get_rc(unsigned int n, int& r, int& c) {
 /// define the astar search context[implements the two functions].
 ///
 struct testSearchContext {
-    typedef float					weight_type;	// È¨ÖØÀàĞÍ£¬ÎªÁ½½Úµã¼äÂ·¾¶¹À¼ÆÖµ
-    typedef unsigned int			node_type;		// ½ÚµãÀàĞÍ£¬ÎªÖµÀàĞÍ£¬¿É¸³Öµ£¬¿É±È½Ï£¨<£©
-    typedef std::deque<node_type>	node_list;		// ½ÚµãÁĞ±íÀàĞÍ
+    typedef float					weight_type;	// æƒé‡ç±»å‹ï¼Œä¸ºä¸¤èŠ‚ç‚¹é—´è·¯å¾„ä¼°è®¡å€¼
+    typedef unsigned int			node_type;		// èŠ‚ç‚¹ç±»å‹ï¼Œä¸ºå€¼ç±»å‹ï¼Œå¯èµ‹å€¼ï¼Œå¯æ¯”è¾ƒï¼ˆ<ï¼‰
+    typedef std::deque<node_type>	node_list;		// èŠ‚ç‚¹åˆ—è¡¨ç±»å‹
 
-    // ¹À¼Ûº¯Êı,¹À¼Û pos µ½Ä¿µÄµØµÄ¾àÀë,¹À¼ÆÖµ±ØĞë±£Ö¤±ÈÊµ¼ÊÖµĞ¡
+    // ä¼°ä»·å‡½æ•°,ä¼°ä»· pos åˆ°ç›®çš„åœ°çš„è·ç¦»,ä¼°è®¡å€¼å¿…é¡»ä¿è¯æ¯”å®é™…å€¼å°
     weight_type		evaluation(const node_type& nodeFrom, const node_type& nodeEnd)const {
         int	r1, c1, r2, c2;
         get_rc(nodeFrom, r1, c1);
         get_rc(nodeEnd, r2, c2);
         return	sqrt(float(r1-r2)*float(r1-r2) + float(c1-c2)*float(c1-c2));
     }
-    // »ñÈ¡ pos ÖÜÎ§µÄËùÓĞ¿ÉÓÃµã
+    // è·å– pos å‘¨å›´çš„æ‰€æœ‰å¯ç”¨ç‚¹
     void			fetch_neighbors(const node_type& node, node_list& nodes)const {
         int	r1, c1;
         get_rc(node, r1, c1);
-        if(r1 - 1 >= 0 && maze[r1 - 1][c1] > 0) { //×ó
+        if(r1 - 1 >= 0 && maze[r1 - 1][c1] > 0) { //å·¦
             nodes.push_back(make_node(r1 - 1, c1));
         }
-        if(c1 - 1 >= 0 && maze[r1][c1 - 1] > 0) { //ÉÏ
+        if(c1 - 1 >= 0 && maze[r1][c1 - 1] > 0) { //ä¸Š
             nodes.push_back(make_node(r1, c1 - 1));
         }
-        if(r1 + 1 < R && maze[r1 + 1][c1] > 0) { //ÓÒ
+        if(r1 + 1 < R && maze[r1 + 1][c1] > 0) { //å³
             nodes.push_back(make_node(r1 + 1, c1));
         }
-        if(c1 + 1 < C && maze[r1][c1 + 1] > 0) { //ÏÂ
+        if(c1 + 1 < C && maze[r1][c1 + 1] > 0) { //ä¸‹
             nodes.push_back(make_node(r1, c1 + 1));
         }
     }

@@ -42,7 +42,7 @@ parse_url(const char *url)
     struct parsed_url *purl;
     const char *tmpstr;
     const char *curstr;
-    int len;
+    long len;
     int i;
     int userpass_flag;
     int bracket_flag;

@@ -15,15 +15,15 @@ public:
     }
 
 public:
-    //	Çå¿Õ±äÁ¿¼°´íÎóÐÅÏ¢
+    //	æ¸…ç©ºå˜é‡åŠé”™è¯¯ä¿¡æ¯
     void				reset();
-    //	Ö´ÐÐÊýÑ§±í´ïÊ½£¬ÈôÎª¸³Öµ£¬Ôò±£´æ½á¹ûµ½±äÁ¿ÖÐÍ¨¹ýget_variable»ñÈ¡£¬·ñÔòÖ±½ÓÍ¨¹ýresult·µ»Ø
+    //	æ‰§è¡Œæ•°å­¦è¡¨è¾¾å¼ï¼Œè‹¥ä¸ºèµ‹å€¼ï¼Œåˆ™ä¿å­˜ç»“æžœåˆ°å˜é‡ä¸­é€šè¿‡get_variableèŽ·å–ï¼Œå¦åˆ™ç›´æŽ¥é€šè¿‡resultè¿”å›ž
     bool				execute(const char* str, variable& result);
-    //	ÉèÖÃ±äÁ¿
+    //	è®¾ç½®å˜é‡
     void				set_variable(const std::string& key, variable value) {
         this->do_set_variable(key, value);
     }
-    //	»ñÈ¡±äÁ¿Öµ
+    //	èŽ·å–å˜é‡å€¼
     bool				get_variable(const std::string& key, variable& value) {
         return	(this->do_find_variable(key.c_str(), value) > 0);
     }

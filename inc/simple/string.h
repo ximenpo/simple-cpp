@@ -213,15 +213,15 @@ const std::string&	string_html_strip_tag(std::string& str);
 int					string_html_to_text(const char *html, char *plain,  size_t dwPlainSize);
 std::string			string_html_to_text(const std::string& html);
 
-bool          string_parse_url(const char* url,
-                               std::string *scheme,
-                               std::string *host,
-                               std::string *port,
-                               std::string *path,
-                               std::string *query,
-                               std::string *fragment,
-                               std::string *username,
-                               std::string *password);
+bool                string_parse_url(const char* url,
+                                     std::string *scheme,
+                                     std::string *host,
+                                     std::string *port,
+                                     std::string *path,
+                                     std::string *query,
+                                     std::string *fragment,
+                                     std::string *username,
+                                     std::string *password);
 
 //
 //	wchar <-> utf8 convert

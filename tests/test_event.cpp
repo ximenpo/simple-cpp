@@ -33,14 +33,14 @@ Context(event_usage) {
         evt.notify(n);
         AssertThat(n, Equals(0));
 
-        evt.attach(bind(&event_usage::member_func, this));
-        evt.attach(&global_func);
+        evt.handler().attach(bind(&event_usage::member_func, this));
+        evt.handler().attach(&global_func);
 
         n	= 0;
         evt.notify(n);
         AssertThat(n, Equals(2));
 
-        evt.detach(bind(&event_usage::member_func, this));
+        evt.handler().detach(bind(&event_usage::member_func, this));
 
         n	= 0;
         evt.notify(n);
@@ -55,14 +55,14 @@ Context(event_usage) {
         evt(n);
         AssertThat(n, Equals(0));
 
-        evt.attach(bind(&event_usage::member_func, this));
-        evt.attach(&global_func);
+        evt.handler().attach(bind(&event_usage::member_func, this));
+        evt.handler().attach(&global_func);
 
         n	= 0;
         evt(n);
         AssertThat(n, Equals(2));
 
-        evt.detach(bind(&event_usage::member_func, this));
+        evt.handler().detach(bind(&event_usage::member_func, this));
 
         n	= 0;
         evt(n);
@@ -77,8 +77,8 @@ Context(event_usage) {
         evt.execute(n);
         AssertThat(n, Equals(0));
 
-        evt.attach(bind(&event_usage::member_func, this));
-        evt.attach(&global_func);
+        evt.handler().attach(bind(&event_usage::member_func, this));
+        evt.handler().attach(&global_func);
 
         n	= 0;
         evt.execute(n);
