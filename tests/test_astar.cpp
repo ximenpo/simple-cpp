@@ -66,10 +66,10 @@ Context(astar_context) {
 
         astar_searcher<testSearchContext>	searcher;
         AssertThat(searcher(n1, n2, context),	IsTrue());
-        AssertThat(searcher.get_path(),	HasLength(11));
+        AssertThat(searcher.path(),	HasLength(11));
 
         unsigned int path_data[]	= {0x0000,	0x0100, 0x0101, 0x0102, 0x0103, 0x0104, 0x0105, 0x0205, 0x0305, 0x0405, 0x0505};
         testSearchContext::node_list	path(path_data, path_data + sizeof(path_data)/sizeof(path_data[0]));
-        AssertThat(searcher.get_path(),	EqualsContainer(path));
+        AssertThat(searcher.path(),	EqualsContainer(path));
     }
 };

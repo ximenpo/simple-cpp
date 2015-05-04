@@ -38,7 +38,7 @@ protected:
     ///	constructor
     explicit	privilege_table(const catalog_type& type) {
         size_t	size	= 0;
-        const table_item_type* pItems = impl_type::get_privilege_table(size);
+        const table_item_type* pItems = impl_type::do_get_privilege_table(size);
         for(size_t i = 0; i < size; ++i) {
             values_[pItems[i].item]	= pItems[i].values[impl_type::index_from_catalog_type(type)];
         }
@@ -121,11 +121,11 @@ public:
     }
 
 protected:
-    table_type&			get_privilege_table() {
+    table_type&			do_get_privilege_table() {
         return static_cast<table_type&>(*this);
     }
 
-    const table_type&	get_privilege_table()const {
+    const table_type&	do_get_privilege_table()const {
         return static_cast<const table_type&>(*this);
     }
 
@@ -133,7 +133,7 @@ private:
     list_type	privileges_;
 };
 
-#define	PRIVILEGE_TABLE_BEGIN()		static	const table_item_type*	get_privilege_table(size_t& size){	static const table_item_type	table[]	= {
+#define	PRIVILEGE_TABLE_BEGIN()		static	const table_item_type*	do_get_privilege_table(size_t& size){	static const table_item_type	table[]	= {
 #define	PRIVILEGE_TABLE_END()		{item_type(),	{0}	} };	size = sizeof(table)/sizeof(table[0]) - 1;	return table;}
 
 #define	PRIVILEGE_TABLE_ITEM1(item,_1	)																		{item, {_1}	},

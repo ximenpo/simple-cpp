@@ -17,20 +17,20 @@ type     var;
 #endif
 
 
-#define PROPERTY(var, type, get_func, put_func)                                 \
+#define PROPERTY(var, type, getter, setter)                                     \
 struct property_##var                                                           \
 {                                                                               \
     inline operator type()                                                      \
     {                                                                           \
         return (                                                                \
         (property_class__ *) ((char *)this - PROPERTY_OFFSET(property_class__,var))\
-        )->get_func();                                                          \
+        )->getter();                                                            \
     }                                                                           \
     inline type operator=(const type & value)                                   \
     {                                                                           \
         (                                                                       \
         (property_class__ *) ((char *)this - PROPERTY_OFFSET(property_class__,var))\
-        )->put_func( value );                                                   \
+        )->setter( value );                                                     \
         return value;                                                           \
     }                                                                           \
 };                                                                              \
@@ -38,28 +38,28 @@ friend struct property_##var;                                                   
 property_##var var;
 
 
-#define PROPERTY_READONLY(var, type, get_func)                                  \
+#define PROPERTY_READONLY(var, type, getter)                                    \
 struct property_##var                                                           \
 {                                                                               \
     inline operator type()                                                      \
     {                                                                           \
         return (                                                                \
         (property_class__ *) ((char *)this - PROPERTY_OFFSET(property_class__,var))\
-        )->get_func();                                                          \
+        )->getter();                                                            \
     }                                                                           \
 };                                                                              \
 friend struct property_##var;                                                   \
 property_##var var;
 
 
-#define PROPERTY_WRITEONLY(var, type, put_func)                                 \
+#define PROPERTY_WRITEONLY(var, type, setter)                                   \
 struct property_##var                                                           \
 {                                                                               \
     inline type operator=(const type & value)                                   \
     {                                                                           \
         (                                                                       \
         (property_class__ *) ((char *)this - PROPERTY_OFFSET(property_class__,var))\
-        )->put_func( value );                                                   \
+        )->setter( value );                                                     \
         return value;                                                           \
     }                                                                           \
 };                                                                              \

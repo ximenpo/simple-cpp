@@ -11,7 +11,7 @@
 //		astar_searcher<SearchContext>	searcher;
 //
 //		if( searcher(nodesBegin, nodeEnd) )	{
-//			// searcher.get_path();
+//			// searcher.path();
 //		}
 //
 //	其中，SearchContext接口如下：
@@ -68,7 +68,7 @@ public:
         open_[node.pos] = node;
 
         while(!open_.empty()) {
-            node = get_next_node();
+            node = do_get_next_node();
 
             if(node.pos == nodeEnd) {
                 // succeed.
@@ -76,7 +76,7 @@ public:
                 return true;
             }
 
-            // get_next_node step.
+            // next node step.
             node_list child_nodes;
             context.fetch_neighbors(node.pos, child_nodes);
 
@@ -107,7 +107,7 @@ public:
 
 private:
     // 下一个最可能的点（此处可进一步优化）
-    node_data	get_next_node() {
+    node_data	do_get_next_node() {
         typename	node_queue::const_iterator it		= open_.begin();
         typename	node_queue::const_iterator it_end	= open_.end();
 

@@ -15,9 +15,9 @@
  *
  *	Note:
  *		1.	KeyType must support = and < operators and a public 0-parameter constructor.
- *		2.	You	can	call get_instance( id ) to get the singleton	ValType	instance ptr.
+ *		2.	You	can	call instance( id ) to get the singleton	ValType	instance ptr.
  *		3.	You	can	override InitCurrentInstance() to init the current instance;
- *		4.	You	can	call get_instance_id()	to get the id of current instance;
+ *		4.	You	can	call instance_id()	to get the id of current instance;
  *		5.	You	can	call has_instance(id)	to check if the id	existed	or not;
  *		6.	You	can	use	the	UniqueType as the KeyType and the UniqueObject as the id
  *			to sepecify	a unique object	(Singleton type);
@@ -35,25 +35,25 @@ public:
 public:
     ///	check if the id	existed	or not.
     static bool					has( const key_type& id ) {
-        container_type&	instances_ = get_aggregation_map();
+        container_type&	instances_ = static_aggregation_map();
         return instances_.end()!=instances_.find(id);
     }
 
     static value_type*			find( const key_type& id ) {
-        container_type&	instances_ = get_aggregation_map();
+        container_type&	instances_ = static_aggregation_map();
         typename container_type::const_iterator	it	= instances_.find(id);
         return (instances_.end() != it) ? it->second : 0;
     }
 
     ///	get	instances' count.
     static size_t				size() {
-        return get_aggregation_map().size();
+        return static_aggregation_map().size();
     }
 
     ///	visitor-liked operations.
     template<typename UnaryPredicate>
     static value_type*			accept(UnaryPredicate& func) {
-        container_type&	tmpIds = get_aggregation_map();
+        container_type&	tmpIds = static_aggregation_map();
         typename container_type::iterator it		= tmpIds.begin();
         typename container_type::iterator it_end	= tmpIds.end();
         for( ; it != it_end; ++it ) {
@@ -66,7 +66,7 @@ public:
 
     ///	attributes.
 protected:
-    static container_type&			get_aggregation_map() {
+    static container_type&			static_aggregation_map() {
         static container_type instances_;
         return instances_;
     }
@@ -80,7 +80,7 @@ protected:
     }
 
     ~support_aggregation() {
-        arregation_type::get_aggregation_map().erase(instance_id_);
+        arregation_type::static_aggregation_map().erase(instance_id_);
     }
 
     ///	types defines.
@@ -94,7 +94,7 @@ public:
 
 public:
     ///	get	current	id name.
-    const key_type&				get_instance_id()const {
+    const key_type&				instance_id()const {
         return	instance_id_;
     }
 
@@ -115,16 +115,16 @@ public:
     }
 
     ///	get	instances' count.
-    static size_t				get_instance_sum() {
+    static size_t				instance_sum() {
         return arregation_type::size();
     }
 
     ///	get	the	instance of	type.
-    static value_type*			get_instance() {
-        return get_instance(key_type());
+    static value_type*			instance() {
+        return instance(key_type());
     }
-    static value_type*			get_instance( const key_type& id ) {
-        container_type&	instances_ = arregation_type::get_aggregation_map();
+    static value_type*			instance( const key_type& id ) {
+        container_type&	instances_ = arregation_type::static_aggregation_map();
         if(	instances_.end() == instances_.find(id) ) {
             instances_[id] = Creator::create();
             value_type* pObj = static_cast<value_type*>(instances_[id]);

@@ -126,9 +126,9 @@ public:
 public:
     procedure_context*	begin_context() {
         level_++;
-        return get_context();
+        return context();
     }
-    procedure_context*	get_context() {
+    procedure_context*	context() {
         if(contexts_.size() < level_)contexts_.push_back(procedure_context());
         return contexts_.empty()?0:&contexts_[level_-1];
     }
