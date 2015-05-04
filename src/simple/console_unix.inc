@@ -179,6 +179,6 @@ void	console::set_title(const char* str) {
     std::cout << "\033]0;\0" << str << "\x07\0";
 }
 
-std::string	console::get_title() {
+std::string	console::title() {
     return	std::string();
 }

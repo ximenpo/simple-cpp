@@ -26,13 +26,13 @@ struct base_any_policy {
     virtual void copy_from_value(void const* src, void** dest) = 0;
     virtual void clone(void* const* src, void** dest) = 0;
     virtual void move(void* const* src, void** dest) = 0;
-    virtual void* get_value(void** src) = 0;
-    virtual size_t get_size() = 0;
+    virtual void* value(void** src) = 0;
+    virtual size_t size() = 0;
 };
 
 template<typename T>
 struct typed_base_any_policy : base_any_policy {
-    virtual size_t get_size() {
+    virtual size_t size() {
         return sizeof(T);
     }
 };
@@ -49,7 +49,7 @@ struct small_any_policy : typed_base_any_policy<T> {
     virtual void move(void* const* src, void** dest) {
         *dest = *src;
     }
-    virtual void* get_value(void** src) {
+    virtual void* value(void** src) {
         return reinterpret_cast<void*>(src);
     }
 };
@@ -71,7 +71,7 @@ struct big_any_policy : typed_base_any_policy<T> {
         (*reinterpret_cast<T**>(dest))->~T();
         **reinterpret_cast<T**>(dest) = **reinterpret_cast<T* const*>(src);
     }
-    virtual void* get_value(void** src) {
+    virtual void* value(void** src) {
         return *src;
     }
 };
@@ -209,7 +209,7 @@ public:
     T& cast() {
         if (policy != any_impls::get_policy<T>())
             throw any_impls::bad_any_cast();
-        T* r = reinterpret_cast<T*>(policy->get_value(&object));
+        T* r = reinterpret_cast<T*>(policy->value(&object));
         return *r;
     }
 

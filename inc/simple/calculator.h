@@ -7,7 +7,7 @@
 class calculator {
 public:
     typedef	double	variable;
-    typedef	std::map<std::string, variable>		variable_list;
+    typedef	std::map<std::string, variable>	variable_list;
 
 public:
     calculator() {
@@ -17,14 +17,14 @@ public:
 public:
     //	清空变量及错误信息
     void				reset();
-    //	执行数学表达式，若为赋值，则保存结果到变量中通过get_variable获取，否则直接通过result返回
+    //	执行数学表达式，若为赋值，则保存结果到变量中通过 fetch_variable 获取，否则直接通过result返回
     bool				execute(const char* str, variable& result);
     //	设置变量
     void				set_variable(const std::string& key, variable value) {
         this->do_set_variable(key, value);
     }
     //	获取变量值
-    bool				get_variable(const std::string& key, variable& value) {
+    bool				fetch_variable(const std::string& key, variable& value) {
         return	(this->do_find_variable(key.c_str(), value) > 0);
     }
 
@@ -47,7 +47,7 @@ protected:
 
 private:
     variable			calculate(const char* p, int len);
-    variable			get_number(const char *p, int &move);
+    variable			search_number(const char *p, int &move);
     int					funk(const char *p, bool binary, variable &x, variable &y);
 
 private:

@@ -37,11 +37,11 @@ inline	node_id			make_node_id(NODE_TYPE type, unsigned long index) {
     return	((type & 0xFF) << 24) | (index & 0xFFFFFF);
 }
 ///	获取节点类型
-inline	NODE_TYPE		get_node_type(node_id id) {
+inline	NODE_TYPE		node_type(node_id id) {
     return	NODE_TYPE((id >> 24) & 0xFF);
 }
 ///	获取节点数据索引
-inline	unsigned long	get_node_index(node_id id) {
+inline	unsigned long	node_index(node_id id) {
     return	id & 0xFFFFFF;
 }
 
@@ -497,19 +497,19 @@ public:
     // properties.
     //
     void				set_config_data(stringify_data* data);
-    stringify_data*		get_config_data();
+    stringify_data*		config_data();
 
     void				set_config_type(const std::string& type);
-    const std::string&	get_config_type();
+    const std::string&	config_type();
 
     void				set_config_group(const std::string& group);
-    const std::string&	get_config_group();
+    const std::string&	config_group();
 
     void				set_config_id(const std::string& id);
-    const std::string&	get_config_id();
+    const std::string&	config_id();
 
     void				set_config_path_delimeter(const std::string& path_delimeter);
-    const std::string&	get_config_path_delimeter();
+    const std::string&	config_path_delimeter();
 
 public:
     //

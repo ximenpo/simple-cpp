@@ -9,7 +9,7 @@ stringify_config::stringify_config(stringify_data* data, const std::string& id, 
 void	stringify_config::set_config_data(stringify_data* data) {
     data_	= data;
 }
-stringify_data*	stringify_config::get_config_data() {
+stringify_data*	stringify_config::config_data() {
     return	data_;
 }
 
@@ -17,7 +17,7 @@ void	stringify_config::set_config_type(const std::string& type) {
     type_	= type;
 }
 
-const std::string&	stringify_config::get_config_type() {
+const std::string&	stringify_config::config_type() {
     return	type_;
 }
 
@@ -25,7 +25,7 @@ void	stringify_config::set_config_id(const std::string& id) {
     id_	= id;
 }
 
-const std::string&	stringify_config::get_config_id() {
+const std::string&	stringify_config::config_id() {
     return	id_;
 }
 
@@ -33,7 +33,7 @@ void	stringify_config::set_config_path_delimeter(const std::string& path_delimet
     delimeter_	= path_delimeter;
 }
 
-const std::string&	stringify_config::get_config_path_delimeter() {
+const std::string&	stringify_config::config_path_delimeter() {
     return	delimeter_;
 }
 

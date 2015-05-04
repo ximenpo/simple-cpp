@@ -29,7 +29,7 @@ Context(calculator_context) {
         calculator::variable	var;
         AssertThat(calc.execute("ret = 1 + 2 * (3- 4)", var),	IsTrue());
         AssertThat(var,		EqualsWithDelta(-1, 0.001));
-        AssertThat(calc.get_variable("ret", var),				IsTrue());
+        AssertThat(calc.fetch_variable("ret", var),				IsTrue());
         AssertThat(var,		EqualsWithDelta(-1, 0.001));
     }
 
@@ -39,7 +39,7 @@ Context(calculator_context) {
         calc.set_variable("x", 10);
         AssertThat(calc.execute("ret = x + 2 * (3- 4)", var),	IsTrue());
         AssertThat(var,		EqualsWithDelta(8, 0.001));
-        AssertThat(calc.get_variable("ret", var),				IsTrue());
+        AssertThat(calc.fetch_variable("ret", var),				IsTrue());
         AssertThat(var,		EqualsWithDelta(8, 0.001));
     }
 

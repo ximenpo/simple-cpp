@@ -227,11 +227,11 @@ buffer&		operator>>(buffer& buf, std::wstring& value);
 //	Array:	vector/deque/set/list/map/pair
 //
 template<typename T>
-static	unsigned long	buffer_get_array_version_tag(const T& array) {
+static	unsigned long	buffer_array_version_tag(const T& array) {
     return	0;
 }
 template<class KEY, class VALUE>
-static	unsigned long	buffer_get_array_version_tag(const std::map<KEY,VALUE>& array) {
+static	unsigned long	buffer_array_version_tag(const std::map<KEY,VALUE>& array) {
     return	2;
 }
 
@@ -270,7 +270,7 @@ inline buffer&		operator>>(buffer& buf, std::pair<KEY, VALUE>& obj) {
 
 template<typename T>
 inline buffer&		operator<<(buffer& buf, const T& array) {
-    unsigned long	version		= buffer_get_array_version_tag(array);
+    unsigned long	version		= buffer_array_version_tag(array);
     buffer_tag		tag	= {
         buffer_tag::TYPE_ARRAY,
         buffer_size_tag(array.size()),
@@ -319,8 +319,8 @@ inline buffer&		operator>>(buffer& buf, T& array) {
     if(tag.version_tag) {
         buffer_read_uint_value(buf, buffer_tag::TAG_1, version);
 
-        assert(version == buffer_get_array_version_tag(array));
-        if(version != buffer_get_array_version_tag(array)) {
+        assert(version == buffer_array_version_tag(array));
+        if(version != buffer_array_version_tag(array)) {
             buf.set_failure();
             return	buf;
         }
@@ -372,7 +372,7 @@ inline	buffer& operator>>(buffer& buf, ENUM_TYPE& value)			\
 //
 template<typename SAFE_ARRAY_TYPE, int SAFE_ARRAY_SIZE>
 inline buffer& operator<<(buffer& buf, const safe_array<SAFE_ARRAY_TYPE, SAFE_ARRAY_SIZE>& array) {
-    unsigned long	version		= buffer_get_array_version_tag(array);
+    unsigned long	version		= buffer_array_version_tag(array);
     buffer_tag		tag	= {
         buffer_tag::TYPE_ARRAY,
         buffer_size_tag(SAFE_ARRAY_SIZE),
@@ -418,8 +418,8 @@ inline buffer& operator>>(buffer& buf, safe_array<SAFE_ARRAY_TYPE, SAFE_ARRAY_SI
     if(tag.version_tag) {
         buffer_read_uint_value(buf, buffer_tag::TAG_1, version);
 
-        assert(version == buffer_get_array_version_tag(array));
-        if(version != buffer_get_array_version_tag(array)) {
+        assert(version == buffer_array_version_tag(array));
+        if(version != buffer_array_version_tag(array)) {
             buf.set_failure();
             return	buf;
         }

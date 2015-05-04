@@ -136,7 +136,7 @@ inline	size_t bit_lowest_one_index(register unsigned long bits) {
 
 
 /*!
-    \class    bit_token
+    \class    bit_mask
     \brief    An array of bits with fast search for the first zero bit
     \author   Ted Nguyen
 
@@ -149,18 +149,18 @@ inline	size_t bit_lowest_one_index(register unsigned long bits) {
     max_bits : maximum number of bits managed by this array.
 */
 #ifdef __GNUC__
-#	include	"_impls/bit_token_data.inc"
+#	include	"_impls/bit_mask_data.inc"
 #endif
 
 template <size_t max_bits>
-class bit_token {
+class bit_mask {
 #ifndef __GNUC__
-#	include	"_impls/bit_token_data.inc"
+#	include	"_impls/bit_mask_data.inc"
 #endif
 public:
-    bit_token() : array_() {
+    bit_mask() : array_() {
     }
-    explicit bit_token(bool x) {
+    explicit bit_mask(bool x) {
         array_.assign(x);
     }
     void assign(bool x) {
@@ -175,15 +175,26 @@ public:
     bool get(size_t n)  const {
         return array_.get(n);
     }
-    size_t get_token() const {
-        return array_.find_zero();	// find first zero bit
-    }
     void set(size_t n, bool x) {
         array_.set(n, x);			// set one bit at index n to x
     }
+    size_t find_zero() const {
+        return array_.find_zero();	// find first zero bit
+    }
+    bool find_zero(size_t& token, bool auto_set = true) {
+        size_t	t	= find_zero();
+        if( t >= max_bits) {
+            return	false;
+        }
+        if(auto_set) {
+            array_.set(t, true);
+        }
+        token	= t;
+        return	true;
+    }
 
 protected:
-    bit_token_data<((max_bits+BIT_ARRAY_BITS_MASK) >> BIT_ARRAY_BITS_SHIFT)>   array_;      // round-up then convert to words
+    bit_mask_data<((max_bits+BIT_ARRAY_BITS_MASK) >> BIT_ARRAY_BITS_SHIFT)>   array_;      // round-up then convert to words
 };
 
 #endif

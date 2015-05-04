@@ -100,7 +100,7 @@ Context(stringify_context) {
             id_list::const_iterator	it2		= it->items.begin();
             id_list::const_iterator	it2_end	= it->items.end();
             for(; it2 != it2_end; ++it2) {
-                os	<<	"("	<<	get_node_type(*it2) << "," <<  get_node_index(*it2)	<<	")";
+                os	<<	"("	<<	node_type(*it2) << "," <<  node_index(*it2)	<<	")";
             }
             os	<<	(it->is_array?"]":"}")	<<	"\n";
         }
@@ -126,7 +126,7 @@ Context(stringify_context) {
             id_list::const_iterator	it2		= it->items.begin();
             id_list::const_iterator	it2_end	= it->items.end();
             for(; it2 != it2_end; ++it2) {
-                os	<<	"("	<<	get_node_type(*it2) << "," <<  get_node_index(*it2)	<<	")";
+                os	<<	"("	<<	node_type(*it2) << "," <<  node_index(*it2)	<<	")";
             }
             os	<<	(it->is_array?"]":"}")	<<	"\n";
         }

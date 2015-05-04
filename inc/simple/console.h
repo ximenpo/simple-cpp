@@ -55,7 +55,7 @@ public:
     // set and get title of console window
     static	void			set_title(const std::string& str);
     static	void			set_title(const char* str);
-    static	std::string		get_title();
+    static	std::string		title();
 };
 
 #endif

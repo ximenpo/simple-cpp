@@ -153,7 +153,7 @@ calculator::variable calculator::calculate(const char* p, int len) {
         if(p[pos] == '-') neg =!neg;
         pos++;
     }
-    calculator::variable d1 = this->get_number(p + pos, move);
+    calculator::variable d1 = this->search_number(p + pos, move);
     if(neg) d1 = -d1;
     pos += move;
 
@@ -167,7 +167,7 @@ calculator::variable calculator::calculate(const char* p, int len) {
                 if(p[pos] == '-') neg =!neg;
                 pos++;
             }
-            calculator::variable d2 = this->get_number(p + pos, move);
+            calculator::variable d2 = this->search_number(p + pos, move);
             if(neg) d2 = -d2;
             pos += move;
             if(c == '*') d1 *= d2;
@@ -185,7 +185,7 @@ calculator::variable calculator::calculate(const char* p, int len) {
 
 #define FX(FUNK,LEN,BIN,DO) if(!strncmp(p,FUNK,LEN)) { move = LEN + funk(p+LEN,BIN,x,y); { DO; } }
 
-calculator::variable calculator::get_number(const char *p, int &move) {
+calculator::variable calculator::search_number(const char *p, int &move) {
     calculator::variable x,y;
     switch (tolower(*p)) {
     case 'a':

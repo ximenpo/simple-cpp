@@ -134,14 +134,14 @@ private:
     }
 
 // *---------------------------------------------------------------*
-    long get_count(long _ref)
+    long size(long _ref)
 // *---------------------------------------------------------------*
     {
         long count = _ref;
 
         subnodes_type &children = this->m_subnodes;
         for ( subnodes_iterator iter = children.begin(); iter != children.end(); iter++ )
-            count += iter->second.get_count(1);
+            count += iter->second.size(1);
 
         return count;
     }
@@ -174,7 +174,7 @@ protected:
     }
 
 // *---------------------------------------------------------------*
-    node_ptr get_root_ref(void)
+    node_ptr root_ref(void)
 // *---------------------------------------------------------------*
     {
         return this->m_parent;
@@ -213,14 +213,14 @@ public:
     }
 
 // *---------------------------------------------------------------*
-    subnodes_type &get_subnodes(void)
+    subnodes_type &subnodes(void)
 // *---------------------------------------------------------------*
     {
         return this->m_subnodes;
     }
 
 // *---------------------------------------------------------------*
-    node_ref get_parent(void)
+    node_ref parent(void)
 // *---------------------------------------------------------------*
     {
         if ( this->m_parent == NULL )
@@ -229,18 +229,18 @@ public:
     }
 
 // *---------------------------------------------------------------*
-    node_ref get_root(void)
+    node_ref root(void)
 // *---------------------------------------------------------------*
     {
         if ( this->m_parent == NULL )
             return *this;
 
-        node_ptr parent = this->m_parent->get_root_ref();
+        node_ptr parent = this->m_parent->root_ref();
         node_ptr last   = this->m_parent;
 
         while ( parent ) {
             last   = parent;
-            parent = parent->get_root_ref();
+            parent = parent->root_ref();
         }
 
         return *last;
@@ -254,14 +254,14 @@ public:
     }
 
 // *---------------------------------------------------------------*
-    data_type &get_data(void)
+    data_type &data(void)
 // *---------------------------------------------------------------*
     {
         return this->m_data;
     }
 
 // *---------------------------------------------------------------*
-    key_type &get_key(void)
+    key_type &key(void)
 // *---------------------------------------------------------------*
     {
         return this->m_key;
@@ -317,14 +317,14 @@ public:
     }
 
 // *---------------------------------------------------------------*
-    long get_deep(void)
+    long deep(void)
 // *---------------------------------------------------------------*
     {
         return this->m_deep;
     }
 
 // *---------------------------------------------------------------*
-    long get_id(void)
+    long id(void)
 // *---------------------------------------------------------------*
     {
         return this->m_id;
@@ -334,14 +334,14 @@ public:
     bool operator==( node_ref _obj)
 // *---------------------------------------------------------------*
     {
-        return this->m_id == _obj.get_id();
+        return this->m_id == _obj.id();
     }
 
 // *---------------------------------------------------------------*
     bool operator!=( node_ref _obj)
 // *---------------------------------------------------------------*
     {
-        return this->m_id != _obj.get_id();
+        return this->m_id != _obj.id();
     }
 
 // *---------------------------------------------------------------*
@@ -363,13 +363,13 @@ public:
 // *---------------------------------------------------------------*
     {
         this->init();
-        this->m_id        = const_cast<tree_node &>(_obj).get_id();
-        this->m_key       = const_cast<tree_node &>(_obj).get_key();
-        this->m_data      = const_cast<tree_node &>(_obj).get_data();
-        this->m_subnodes  = const_cast<tree_node &>(_obj).get_subnodes();
-        this->m_deep      = const_cast<tree_node &>(_obj).get_deep();
-        this->m_parent    = &(const_cast<tree_node &>(_obj).get_parent());
-        this->m_shortcuts = const_cast<tree_node &>(_obj).get_shortcuts();
+        this->m_id        = const_cast<tree_node &>(_obj).id();
+        this->m_key       = const_cast<tree_node &>(_obj).key();
+        this->m_data      = const_cast<tree_node &>(_obj).data();
+        this->m_subnodes  = const_cast<tree_node &>(_obj).subnodes();
+        this->m_deep      = const_cast<tree_node &>(_obj).deep();
+        this->m_parent    = &(const_cast<tree_node &>(_obj).parent());
+        this->m_shortcuts = const_cast<tree_node &>(_obj).shortcuts();
 
         std::string name = "";
         _GenericCall sortfunc = NULL;
@@ -443,9 +443,9 @@ public:
         if ( this->m_parent == NULL )
             retnode = this;
         else
-            retnode = &this->get_root();
+            retnode = &this->root();
 
-        if ( retnode->get_key() != _parm[0] )
+        if ( retnode->key() != _parm[0] )
             return node_ptr(NULL);
 
         for ( size_t i = 1; i < _parm.size(); i++ ) {
@@ -473,12 +473,12 @@ public:
         if ( this->m_parent == NULL )
             return _parm;
 
-        _parm.push_back(this->m_parent->get_key());
+        _parm.push_back(this->m_parent->key());
 
-        node_ptr parent = this->m_parent->get_root_ref();
+        node_ptr parent = this->m_parent->root_ref();
         while ( parent ) {
-            _parm.push_back(parent->get_key());
-            parent = parent->get_root_ref();
+            _parm.push_back(parent->key());
+            parent = parent->root_ref();
         }
 
         std::reverse(_parm.begin(), _parm.end());
@@ -630,7 +630,7 @@ public:
     long size(void)
 // *---------------------------------------------------------------*
     {
-        return this->get_count(1);
+        return this->size(1);
     }
 
 // *---------------------------------------------------------------*
@@ -665,10 +665,10 @@ public:
     }
 
 // *---------------------------------------------------------------*
-    shortcuts_type &get_shortcuts(void)
+    shortcuts_type &shortcuts(void)
 // *---------------------------------------------------------------*
     {
-        return this->is_root() ? this->m_shortcuts : this->get_root().get_shortcuts();
+        return this->is_root() ? this->m_shortcuts : this->root().shortcuts();
     }
 
 // *---------------------------------------------------------------*
@@ -677,7 +677,7 @@ public:
     {
         deque<key_type> keys;
         this->get_node_full_address(keys);
-        this->get_root().add_shortcut(_label, keys);
+        this->root().add_shortcut(_label, keys);
         return *this;
     }
 
@@ -685,7 +685,7 @@ public:
     node_ref add_shortcut( std::string _label,  std::deque<key_type> &_parm)
 // *---------------------------------------------------------------*
     {
-        this->get_root().get_shortcuts()[_label] = _parm;
+        this->root().shortcuts()[_label] = _parm;
         return *this;
     }
 
@@ -695,11 +695,11 @@ public:
     {
         node_ptr retnode = NULL;
 
-        if ( _parm.size() == 0 || this->get_root().get_shortcuts().size() == 0 )
+        if ( _parm.size() == 0 || this->root().shortcuts().size() == 0 )
             return node_ptr(NULL);
 
-        shortcuts_iterator iter = this->get_root().get_shortcuts().find(_parm);
-        if ( iter == this->get_root().get_shortcuts().end() )
+        shortcuts_iterator iter = this->root().shortcuts().find(_parm);
+        if ( iter == this->root().shortcuts().end() )
             return node_ptr(NULL);
 
         return this->get_node_by_full_address(iter->second);

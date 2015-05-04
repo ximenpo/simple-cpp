@@ -206,7 +206,7 @@ void	console::set_title(const char* str) {
     SetConsoleTitle(str);
 }
 
-std::string	console::get_title() {
+std::string	console::title() {
     char szWindowTitle[MAX_PATH] = {0};
     GetConsoleTitle(szWindowTitle, sizeof(szWindowTitle));
 

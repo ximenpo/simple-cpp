@@ -106,19 +106,19 @@ public:
     typedef	RootType	root_class_type;
 
 public:
-    const ClassInfo*	get_class_info() {
+    const ClassInfo*	class_info() {
         return	this->do_get_class_info();
     }
 
 public:
     //	Note: you can override this static func for custom class name .
-    static	const char*			get_static_class_name() {
+    static	const char*			static_class_name() {
         return typeid(RootType).name();
     }
 
-    static	const ClassInfo*	get_static_class_info() {
+    static	const ClassInfo*	static_class_info() {
         static	ClassInfo	s_class_info_(
-            RootType::get_static_class_name(),
+            RootType::static_class_name(),
             sizeof(RootType),
             0,
             &Creator::create,
@@ -130,7 +130,7 @@ public:
     //	override
 protected:
     virtual	const ClassInfo*	do_get_class_info() {
-        return	RootType::get_static_class_info();
+        return	RootType::static_class_info();
     }
 };
 
@@ -144,21 +144,21 @@ public:
     typedef	typename BaseType::root_class_type	root_class_type;
 
 public:
-    const ClassInfo*	get_class_info() {
+    const ClassInfo*	class_info() {
         return	this->do_get_class_info();
     }
 
 public:
     //	Note: you can override this static func for custom class name .
-    static	const char*			get_static_class_name() {
+    static	const char*			static_class_name() {
         return typeid(Type).name();
     }
 
-    static	const ClassInfo*	get_static_class_info() {
+    static	const ClassInfo*	static_class_info() {
         static	ClassInfo	s_class_info_(
-            Type::get_static_class_name(),
+            Type::static_class_name(),
             sizeof(Type),
-            BaseType::get_static_class_info(),
+            BaseType::static_class_info(),
             &Creator::create,
             &Creator::destroy
         );
@@ -167,7 +167,7 @@ public:
 
 protected:
     virtual	const ClassInfo*	do_get_class_info() {
-        return	Type::get_static_class_info();
+        return	Type::static_class_info();
     }
 };
 

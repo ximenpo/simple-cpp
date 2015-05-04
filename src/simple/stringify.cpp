@@ -16,8 +16,8 @@ static	bool	stringify_data_visit_array(stringify_data& data, stringify_data_visi
 static	bool	stringify_data_visit_object(stringify_data& data, stringify_data_visitor& visitor, node_id id);
 
 static	bool	stringify_data_visit_value(stringify_data& data, stringify_data_visitor& visitor, node_id id) {
-    NODE_TYPE		type	= get_node_type(id);
-    unsigned long	index	= get_node_index(id);
+    NODE_TYPE		type	= node_type(id);
+    unsigned long	index	= node_index(id);
     switch(type) {
     case NODE_VALUE: {
         node_value&	node	= data.values[index];
@@ -42,8 +42,8 @@ static	bool	stringify_data_visit_value(stringify_data& data, stringify_data_visi
 }
 
 static	bool	stringify_data_visit_container(stringify_data& data, stringify_data_visitor& visitor, node_id id) {
-    NODE_TYPE		type	= get_node_type(id);
-    unsigned long	index	= get_node_index(id);
+    NODE_TYPE		type	= node_type(id);
+    unsigned long	index	= node_index(id);
 
     node_container*	node	= 0;
     switch(type) {
@@ -71,8 +71,8 @@ static	bool	stringify_data_visit_container(stringify_data& data, stringify_data_
 }
 
 static	bool	stringify_data_visit_array(stringify_data& data, stringify_data_visitor& visitor, node_id id) {
-    NODE_TYPE		type	= get_node_type(id);
-    unsigned long	index	= get_node_index(id);
+    NODE_TYPE		type	= node_type(id);
+    unsigned long	index	= node_index(id);
 
     std::string*	name	= 0;
     node_container*	node	= 0;
@@ -99,7 +99,7 @@ static	bool	stringify_data_visit_array(stringify_data& data, stringify_data_visi
     id_list::const_iterator	it		= node->items.begin();
     id_list::const_iterator	it_end	= node->items.end();
     for(; it != it_end; ++it) {
-        switch(get_node_type(*it)) {
+        switch(node_type(*it)) {
         case NODE_VALUE: {
             if(!stringify_data_visit_value(data, visitor, *it)) {
                 return	false;
@@ -127,8 +127,8 @@ static	bool	stringify_data_visit_array(stringify_data& data, stringify_data_visi
 }
 
 static	bool	stringify_data_visit_object(stringify_data& data, stringify_data_visitor& visitor, node_id id) {
-    NODE_TYPE		type	= get_node_type(id);
-    unsigned long	index	= get_node_index(id);
+    NODE_TYPE		type	= node_type(id);
+    unsigned long	index	= node_index(id);
 
     std::string*	name	= 0;
     node_container*	node	= 0;
@@ -155,7 +155,7 @@ static	bool	stringify_data_visit_object(stringify_data& data, stringify_data_vis
     id_list::const_iterator	it		= node->items.begin();
     id_list::const_iterator	it_end	= node->items.end();
     for(; it != it_end; ++it) {
-        switch(get_node_type(*it)) {
+        switch(node_type(*it)) {
         case NODE_NAMED_VALUE: {
             if(!stringify_data_visit_value(data, visitor, *it)) {
                 return	false;
@@ -198,7 +198,7 @@ bool	stringify_data::accept(stringify_data_visitor& visitor) {
         return	false;
     }
 
-    switch(get_node_type(root)) {
+    switch(node_type(root)) {
     case NODE_VALUE: {
         if(!stringify_data_visit_value(*this, visitor, root)) {
             return	false;
@@ -228,7 +228,7 @@ bool	stringify_data::fetch(const std::string& path, stringify::node_id* node_id,
 
     std::deque<std::string>::iterator	it		= strs.begin();
     std::deque<std::string>::iterator	it_end	= strs.end();
-    // ºöÂÔµÚÒ»¸ö¿ÕÏî[¿ÉÒÔ±íÊ¾Îªroot]
+    // ï¿½ï¿½ï¿½Ôµï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½Ô±ï¿½Ê¾Îªroot]
     if(!strs.empty() && string_trim(it->c_str()).empty()) {
         ++it;
     }
@@ -247,8 +247,8 @@ bool	stringify_data::fetch(const std::string& path, stringify::node_id* node_id,
 }
 
 bool	stringify_data::fetch(stringify::node_id node_id, std::string** value, std::string** name) {
-    unsigned long	index	= get_node_index(node_id);
-    switch(get_node_type(node_id)) {
+    unsigned long	index	= node_index(node_id);
+    switch(node_type(node_id)) {
     case NODE_VALUE: {
         if(index >= values.size()) {
             break;
@@ -285,8 +285,8 @@ bool	stringify_data::fetch(stringify::node_id node_id, std::string** value, std:
 }
 
 bool	stringify_data::fetch(stringify::node_id node_id, stringify::node_container** container, std::string** name) {
-    unsigned long	index	= get_node_index(node_id);
-    switch(get_node_type(node_id)) {
+    unsigned long	index	= node_index(node_id);
+    switch(node_type(node_id)) {
     case NODE_CONTAINER: {
         if(index >= containers.size()) {
             break;
@@ -364,9 +364,9 @@ bool	stringify_data::fetch(stringify::node_id node_id, const std::string& child_
     id_list::const_iterator		it		= container->items.begin();
     id_list::const_iterator		it_end	= container->items.end();
     for(; it != it_end; ++it) {
-        switch(get_node_type(*it)) {
+        switch(node_type(*it)) {
         case NODE_NAMED_VALUE: {
-            if(named_values[get_node_index(*it)].name == child_name) {
+            if(named_values[node_index(*it)].name == child_name) {
                 if(0 != child_id) {
                     *child_id	= *it;
                 }
@@ -375,7 +375,7 @@ bool	stringify_data::fetch(stringify::node_id node_id, const std::string& child_
         }
         break;
         case NODE_NAMED_CONTAINER: {
-            if(named_containers[get_node_index(*it)].name == child_name) {
+            if(named_containers[node_index(*it)].name == child_name) {
                 if(0 != child_id) {
                     *child_id	= *it;
                 }
@@ -409,7 +409,7 @@ bool	stringify_data::fetch(stringify::node_id node_id, const std::string& child_
 }
 
 bool	stringify_data::add_root(stringify::node_value** new_root, stringify::node_id* new_id_ptr) {
-    if(NODE_NONE != get_node_type(root)) {
+    if(NODE_NONE != node_type(root)) {
         return	false;
     }
     this->values.push_back(node_value());
@@ -426,7 +426,7 @@ bool	stringify_data::add_root(stringify::node_value** new_root, stringify::node_
 }
 
 bool	stringify_data::add_root(stringify::node_container** new_root, stringify::node_id* new_id_ptr) {
-    if(NODE_NONE != get_node_type(root)) {
+    if(NODE_NONE != node_type(root)) {
         return	false;
     }
     this->containers.push_back(node_container());
@@ -488,27 +488,27 @@ bool	stringify_data::add_container(const std::string& path,	stringify::node_cont
 
     stringify::node_id	id	= root, tmp_id;
     node_container*	container	= 0;
-    if(NODE_NONE == get_node_type(root) && !this->add_root(&container, &id)) {
+    if(NODE_NONE == node_type(root) && !this->add_root(&container, &id)) {
         return	false;
     } else {
-        if(NODE_CONTAINER != get_node_type(id) || get_node_index(id) >= containers.size()) {
+        if(NODE_CONTAINER != node_type(id) || node_index(id) >= containers.size()) {
             return	false;
         }
-        container	= &containers[get_node_index(id)];
+        container	= &containers[node_index(id)];
     }
 
     std::deque<std::string>::iterator	it		= strs.begin();
     std::deque<std::string>::iterator	it_end	= strs.end();
-    // ºöÂÔµÚÒ»¸ö¿ÕÏî[¿ÉÒÔ±íÊ¾Îªroot]
+    // ï¿½ï¿½ï¿½Ôµï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½Ô±ï¿½Ê¾Îªroot]
     if(!strs.empty() && string_trim(it->c_str()).empty()) {
         ++it;
     }
     for(; it != it_end; ++it) {
         string_trim(*it);
         if(!this->fetch(id, *it, &tmp_id)) {
-            // Ìí¼Ó¶ÔÏó
+            // ï¿½ï¿½ï¿½Ó¶ï¿½ï¿½ï¿½
             this->add_container(id, *it, &container, &tmp_id);
-        } else if(get_node_type(tmp_id) != NODE_NAMED_CONTAINER) {
+        } else if(node_type(tmp_id) != NODE_NAMED_CONTAINER) {
             return	false;
         }
         id	= tmp_id;
@@ -576,17 +576,17 @@ bool	stringify_data::has(const std::string& path, unsigned long child_index) {
 
 bool	stringify_data::has_value(const std::string& path) {
     stringify::node_id	id;
-    return	this->fetch(path, &id) && (get_node_type(id) == NODE_VALUE || get_node_type(id) == NODE_NAMED_VALUE);
+    return	this->fetch(path, &id) && (node_type(id) == NODE_VALUE || node_type(id) == NODE_NAMED_VALUE);
 }
 
 bool	stringify_data::has_value(const std::string& path, const std::string& child_name) {
     stringify::node_id	id;
-    return	this->fetch(path, &id) && this->fetch(id, child_name, &id) && (get_node_type(id) == NODE_VALUE || get_node_type(id) == NODE_NAMED_VALUE);
+    return	this->fetch(path, &id) && this->fetch(id, child_name, &id) && (node_type(id) == NODE_VALUE || node_type(id) == NODE_NAMED_VALUE);
 }
 
 bool	stringify_data::has_value(const std::string& path, unsigned long child_index) {
     stringify::node_id	id;
-    return	this->fetch(path, &id) && this->fetch(id, child_index, &id) && (get_node_type(id) == NODE_VALUE || get_node_type(id) == NODE_NAMED_VALUE);
+    return	this->fetch(path, &id) && this->fetch(id, child_index, &id) && (node_type(id) == NODE_VALUE || node_type(id) == NODE_NAMED_VALUE);
 }
 
 std::string		stringify_data::get_value(const std::string& path, const std::string& default_value) {
@@ -651,24 +651,24 @@ bool	stringify_data::set_value(const std::string& path, unsigned long child_inde
 
 bool	stringify_data::has_container(const std::string& path) {
     stringify::node_id	id;
-    return	this->fetch(path, &id) && (get_node_type(id) == NODE_CONTAINER || get_node_type(id) == NODE_NAMED_CONTAINER);
+    return	this->fetch(path, &id) && (node_type(id) == NODE_CONTAINER || node_type(id) == NODE_NAMED_CONTAINER);
 }
 
 bool	stringify_data::has_container(const std::string& path, const std::string& child_name) {
     stringify::node_id	id;
-    return	this->fetch(path, &id) && this->fetch(id, child_name, &id) && (get_node_type(id) == NODE_CONTAINER || get_node_type(id) == NODE_NAMED_CONTAINER);
+    return	this->fetch(path, &id) && this->fetch(id, child_name, &id) && (node_type(id) == NODE_CONTAINER || node_type(id) == NODE_NAMED_CONTAINER);
 }
 
 bool	stringify_data::has_container(const std::string& path, unsigned long child_index) {
     stringify::node_id	id;
-    return	this->fetch(path, &id) && this->fetch(id, child_index, &id) && (get_node_type(id) == NODE_CONTAINER || get_node_type(id) == NODE_NAMED_CONTAINER);
+    return	this->fetch(path, &id) && this->fetch(id, child_index, &id) && (node_type(id) == NODE_CONTAINER || node_type(id) == NODE_NAMED_CONTAINER);
 }
 
 stringify::node_container*	stringify_data::get_container(const std::string& path) {
     stringify::node_id	id;
     stringify::node_container*	ret	= 0;
     if(		this->fetch(path, &id)
-            && (get_node_type(id) == NODE_CONTAINER || get_node_type(id) == NODE_NAMED_CONTAINER)
+            && (node_type(id) == NODE_CONTAINER || node_type(id) == NODE_NAMED_CONTAINER)
             &&	fetch(id, &ret, 0)) {
         return	ret;
     }
@@ -680,7 +680,7 @@ stringify::node_container*	stringify_data::get_container(const std::string& path
     stringify::node_container*	ret	= 0;
     if(		this->fetch(path, &id)
             &&	this->fetch(id, child_name, &id)
-            &&	(get_node_type(id) == NODE_CONTAINER || get_node_type(id) == NODE_NAMED_CONTAINER)
+            &&	(node_type(id) == NODE_CONTAINER || node_type(id) == NODE_NAMED_CONTAINER)
             &&	fetch(id, &ret, 0)) {
         return	ret;
     }
@@ -692,7 +692,7 @@ stringify::node_container*	stringify_data::get_container(const std::string& path
     stringify::node_container*	ret	= 0;
     if(		this->fetch(path, &id)
             &&	this->fetch(id, child_index, &id)
-            &&	(get_node_type(id) == NODE_CONTAINER || get_node_type(id) == NODE_NAMED_CONTAINER)
+            &&	(node_type(id) == NODE_CONTAINER || node_type(id) == NODE_NAMED_CONTAINER)
             &&	fetch(id, &ret, 0)) {
         return	ret;
     }
@@ -707,15 +707,15 @@ void	stringify_data_builder::do_before_add_value(const char* err_msg) {
     node_id	curr_id	= stack_.back();
 
     bool	context_valid	= false;
-    switch(get_node_type(curr_id)) {
+    switch(node_type(curr_id)) {
     case NODE_NONE://root
         context_valid	= true;
         break;
     case NODE_CONTAINER: //array item
-        context_valid	= (data_.containers[get_node_index(curr_id)].is_array);
+        context_valid	= (data_.containers[node_index(curr_id)].is_array);
         break;
     case NODE_NAMED_CONTAINER: //object item
-        context_valid	= (data_.named_containers[get_node_index(curr_id)].is_array);
+        context_valid	= (data_.named_containers[node_index(curr_id)].is_array);
         break;
     default:
         break;
@@ -728,15 +728,15 @@ void	stringify_data_builder::do_before_add_value(const char* err_msg) {
 void	stringify_data_builder::do_after_add_value(node_id new_id) {
     node_id	curr_id	= stack_.back();
 
-    switch(get_node_type(curr_id)) {
+    switch(node_type(curr_id)) {
     case NODE_NONE:// change root value
         data_.root	= new_id, stack_.pop_back();
         break;
     case NODE_CONTAINER: //	append
-        data_.containers[get_node_index(curr_id)].items.push_back(new_id);
+        data_.containers[node_index(curr_id)].items.push_back(new_id);
         break;
     case NODE_NAMED_CONTAINER: //append
-        data_.named_containers[get_node_index(curr_id)].items.push_back(new_id);
+        data_.named_containers[node_index(curr_id)].items.push_back(new_id);
         break;
     default:
         break;
@@ -751,12 +751,12 @@ void	stringify_data_builder::do_before_add_named_value(const char* err_msg) {
     node_id	curr_id	= stack_.back();
 
     bool	context_valid	= false;
-    switch(get_node_type(curr_id)) {
+    switch(node_type(curr_id)) {
     case NODE_CONTAINER: //object item
-        context_valid	= !(data_.containers[get_node_index(curr_id)].is_array);
+        context_valid	= !(data_.containers[node_index(curr_id)].is_array);
         break;
     case NODE_NAMED_CONTAINER: //object item
-        context_valid	= !(data_.named_containers[get_node_index(curr_id)].is_array);
+        context_valid	= !(data_.named_containers[node_index(curr_id)].is_array);
         break;
     default:
         break;
@@ -769,12 +769,12 @@ void	stringify_data_builder::do_before_add_named_value(const char* err_msg) {
 void	stringify_data_builder::do_after_add_named_value(node_id new_id) {
     node_id	curr_id	= stack_.back();
 
-    switch(get_node_type(curr_id)) {
+    switch(node_type(curr_id)) {
     case NODE_CONTAINER: // append
-        data_.containers[get_node_index(curr_id)].items.push_back(new_id);
+        data_.containers[node_index(curr_id)].items.push_back(new_id);
         break;
     case NODE_NAMED_CONTAINER: // append
-        data_.named_containers[get_node_index(curr_id)].items.push_back(new_id);
+        data_.named_containers[node_index(curr_id)].items.push_back(new_id);
         break;
     default:
         break;
