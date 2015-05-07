@@ -17,8 +17,8 @@ unsigned short	__stdcall	htons (unsigned short	hostshort);
 #	include	<netinet/in.h>
 #endif
 
-#include "simple/buffer.h"
-#include "simple/string.h"
+#include "buffer.h"
+#include "string.h"
 
 buffer_tag::SIZE_TAG	buffer_size_tag(int value) {
     return	(0 == value)?									buffer_tag::TAG_0

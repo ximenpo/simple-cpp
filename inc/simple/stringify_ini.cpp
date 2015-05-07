@@ -2,8 +2,8 @@
 #include	<cassert>
 #include	<deque>
 
-#include	"simple/string.h"
-#include	"simple/stringify.h"
+#include	"string.h"
+#include	"stringify.h"
 
 struct	stringify_data_ini_visitor	:	public stringify_data_visitor {
     virtual		bool	visit_begin() {

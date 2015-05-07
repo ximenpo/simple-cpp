@@ -3,4 +3,4 @@
 #	pragma	warning(disable: 4996)
 #endif
 
-#include	"simple/third/zlib/infback.c"
+#include	"third/zlib/infback.c"

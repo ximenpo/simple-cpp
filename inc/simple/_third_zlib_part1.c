@@ -7,8 +7,8 @@
 #   include <unistd.h>
 #endif
 
-#include	"simple/third/zlib/compress.c"
-#include	"simple/third/zlib/uncompr.c"
-#include	"simple/third/zlib/inflate.c"
-#include	"simple/third/zlib/adler32.c"
-#include	"simple/third/zlib/gzlib.c"
+#include	"third/zlib/compress.c"
+#include	"third/zlib/uncompr.c"
+#include	"third/zlib/inflate.c"
+#include	"third/zlib/adler32.c"
+#include	"third/zlib/gzlib.c"

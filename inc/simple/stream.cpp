@@ -1,4 +1,4 @@
 
-#include	"simple/stream.h"
+#include	"stream.h"
 
-#include	"simple/third/mandatory_input/mandatory_input.cpp"
+#include	"third/mandatory_input/mandatory_input.cpp"

@@ -1,7 +1,7 @@
 
 #include	<string>
 #include	<istream>
-#include	"simple/csv.h"
+#include	"csv.h"
 
 static	bool	ignore_crlf(std::istream& is) {
     while(!is.eof()) {

@@ -1,7 +1,7 @@
 
 #include <algorithm>
-#include "simple/timer.h"
-#include "simple/procedure.h"
+#include "timer.h"
+#include "procedure.h"
 
 timer::timer()
     :	action_last_id_(0)

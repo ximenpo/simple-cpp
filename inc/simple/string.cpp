@@ -1,4 +1,4 @@
-#include "simple/string.h"
+#include "string.h"
 
 #include	<cassert>
 #include    <cstdarg>
@@ -7,7 +7,7 @@
 #include	<vector>
 #include	<memory>
 
-#include	"simple/third/ConvertUTF.h"
+#include	"third/ConvertUTF.h"
 
 #if	defined(_WIN32)
 #	include	<windows.h>

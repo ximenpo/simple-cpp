@@ -1,2 +1,2 @@
 
-#include	"simple/third/sha1/sha1.c"
+#include	"third/sha1/sha1.c"

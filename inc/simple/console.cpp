@@ -1,10 +1,10 @@
-#include "simple/console.h"
+#include "console.h"
 
 //
 //	代码实现
 //
 #if	defined(_WIN32)
-#	include	"console_win32.inc"
+#	include	"_impls/console_win32.inc"
 #else
-#	include	"console_unix.inc"
+#	include	"_impls/console_unix.inc"
 #endif

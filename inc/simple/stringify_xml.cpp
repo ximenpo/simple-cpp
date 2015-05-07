@@ -2,10 +2,10 @@
 #include	<cassert>
 #include	<deque>
 
-#include	"simple/string.h"
-#include	"simple/stringify.h"
+#include	"string.h"
+#include	"stringify.h"
 
-#include	"simple/third/pugixml.hpp"
+#include	"third/pugixml.hpp"
 
 struct	stringify_data_xml_visitor	:	public stringify_data_visitor {
     virtual		bool	visit_begin() {

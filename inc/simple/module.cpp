@@ -1,5 +1,5 @@
 
-#include	"simple/module.h"
+#include	"module.h"
 
 ///	handle define.
 #ifdef	_WIN32

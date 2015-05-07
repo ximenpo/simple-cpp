@@ -1,2 +1,2 @@
 
-#include	"simple/third/jWrite.c"
+#include	"third/jWrite.c"

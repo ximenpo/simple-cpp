@@ -1,7 +1,7 @@
 
-#include	"simple/third/CombFromRepSet.cpp"
-#include	"simple/third/CombWithRep.cpp"
-#include	"simple/third/FindCombByIdx.cpp"
-#include	"simple/third/FindTotalComb.cpp"
-#include	"simple/third/IndexCombination.cpp"
+#include	"third/CombFromRepSet.cpp"
+#include	"third/CombWithRep.cpp"
+#include	"third/FindCombByIdx.cpp"
+#include	"third/FindTotalComb.cpp"
+#include	"third/IndexCombination.cpp"
 

@@ -1,10 +1,10 @@
 
 #include	<string>
 #include	<memory>
-#include  <iterator>
+#include	<iterator>
 
-#include	"simple/third/MimeCodes.cpp"
-#include  "simple/third/url_parser.h"
+#include	"third/MimeCodes.cpp"
+#include	"third/url_parser.h"
 
 bool  string_parse_url(const char* url,
                        std::string *scheme,

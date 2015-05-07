@@ -3,4 +3,4 @@
 #	pragma	warning(disable: 4996)
 #endif
 
-#include	"simple/third/zlib/zutil.c"
+#include	"third/zlib/zutil.c"

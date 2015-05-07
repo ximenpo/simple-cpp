@@ -3,6 +3,6 @@
 #	pragma	warning(disable: 4996)
 #endif
 
-#include	"simple/third/zlib/crc32.c"
-#include	"simple/third/zlib/deflate.c"
-#include	"simple/third/zlib/inftrees.c"
+#include	"third/zlib/crc32.c"
+#include	"third/zlib/deflate.c"
+#include	"third/zlib/inftrees.c"

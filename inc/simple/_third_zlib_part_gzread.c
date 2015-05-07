@@ -8,4 +8,4 @@
 #endif
 
 
-#include	"simple/third/zlib/gzread.c"
+#include	"third/zlib/gzread.c"

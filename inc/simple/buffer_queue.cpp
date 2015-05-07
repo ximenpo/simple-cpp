@@ -1,7 +1,7 @@
 #include <deque>
 #include <algorithm>
 
-#include "simple/buffer.h"
+#include "buffer.h"
 
 struct	buffer_queue::Data {
     bool				buffer_can_merge;

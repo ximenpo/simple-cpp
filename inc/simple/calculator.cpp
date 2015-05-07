@@ -4,7 +4,7 @@
 #include	<cstring>
 #include	<sstream>
 
-#include	"simple/calculator.h"
+#include	"calculator.h"
 
 static	const	double	PI	= 3.1415926535897932384626433832795;
 static	const	double	E	= 2.71828182845904523536;

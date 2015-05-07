@@ -1,6 +1,6 @@
 
-#include	"simple/stringify.h"
-#include	"simple/string.h"
+#include	"stringify.h"
+#include	"string.h"
 
 #include	<stdexcept>
 
