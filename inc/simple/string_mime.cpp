@@ -3,8 +3,8 @@
 #include	<memory>
 #include	<iterator>
 
-#include	"third/MimeCodes.cpp"
-#include	"third/url_parser.h"
+#include	"_third/MimeCodes.cpp"
+#include	"_third/url_parser.h"
 
 bool  string_parse_url(const char* url,
                        std::string *scheme,

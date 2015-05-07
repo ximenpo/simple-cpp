@@ -8,4 +8,4 @@
 #endif
 
 
-#include	"third/zlib/gzwrite.c"
+#include	"_third/zlib/gzwrite.c"

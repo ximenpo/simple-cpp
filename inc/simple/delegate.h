@@ -3,8 +3,8 @@
 
 #include	<cstring>
 
-#include	"third/FastDelegate.h"
-#include	"third/FastDelegateBind.h"
+#include	"_third/FastDelegate.h"
+#include	"_third/FastDelegateBind.h"
 
 using		fastdelegate::FastDelegate0;
 using		fastdelegate::FastDelegate1;

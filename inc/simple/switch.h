@@ -19,6 +19,6 @@
 #define		COND7(A0,A1,A2,A3,A4,A5,A6)					SWITCH_FLAGS_A6(A0,A1,A2,A3,A4,A5,A6)
 #define		COND8(A0,A1,A2,A3,A4,A5,A6,A7)				SWITCH_FLAGS_A7(A0,A1,A2,A3,A4,A5,A6,A7)
 
-#include "third/switch_flags.h"
+#include "_third/switch_flags.h"
 
 #endif

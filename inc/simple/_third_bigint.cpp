@@ -1,14 +1,14 @@
 
-#include	"third/bigint/BigUnsignedInABase.cc"
+#include	"_third/bigint/BigUnsignedInABase.cc"
 
 #if		defined(DTRT_ALIASED)
 #	undef	DTRT_ALIASED
 #endif
-#include	"third/bigint/BigInteger.cc"
+#include	"_third/bigint/BigInteger.cc"
 
 #if		defined(DTRT_ALIASED)
 #	undef	DTRT_ALIASED
 #endif
-#include	"third/bigint/BigUnsigned.cc"
-#include	"third/bigint/BigIntegerAlgorithms.cc"
-#include	"third/bigint/BigIntegerUtils.cc"
+#include	"_third/bigint/BigUnsigned.cc"
+#include	"_third/bigint/BigIntegerAlgorithms.cc"
+#include	"_third/bigint/BigIntegerUtils.cc"

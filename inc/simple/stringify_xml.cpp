@@ -5,7 +5,7 @@
 #include	"string.h"
 #include	"stringify.h"
 
-#include	"third/pugixml.hpp"
+#include	"_third/pugixml.hpp"
 
 struct	stringify_data_xml_visitor	:	public stringify_data_visitor {
     virtual		bool	visit_begin() {

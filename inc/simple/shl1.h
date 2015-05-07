@@ -3,7 +3,7 @@
 
 extern	"C" {
 
-#include	"third/sha1/sha1.h"
+#include	"_third/sha1/sha1.h"
 
 }
 

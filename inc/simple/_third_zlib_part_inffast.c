@@ -3,4 +3,4 @@
 #	pragma	warning(disable: 4996)
 #endif
 
-#include	"third/zlib/inffast.c"
+#include	"_third/zlib/inffast.c"

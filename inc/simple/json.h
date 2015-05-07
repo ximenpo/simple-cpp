@@ -3,11 +3,11 @@
 
 extern	"C" {
 
-#include	"third/jRead.h"
-#include	"third/jWrite.h"
+#include	"_third/jRead.h"
+#include	"_third/jWrite.h"
 
 }
 
-#include	"third/json.h"
+#include	"_third/json.h"
 
 #endif

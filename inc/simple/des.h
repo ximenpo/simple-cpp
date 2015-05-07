@@ -3,7 +3,7 @@
 
 extern	"C" {
 
-#include	"third/des-ka9q/des.h"
+#include	"_third/des-ka9q/des.h"
 
 }
 
