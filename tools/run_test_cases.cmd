@@ -18,10 +18,10 @@ if exist *.module	@del /f /q	*.module
 ;;rem	compile and run the tests.
 if "%OSTYPE%"=="cygwin"	(
 	gcc	tests/dummy_module.cpp		-shared	-o dummy.module	-D NDEBUG	-lstdc++
-	gcc	src/simple/*.cpp src/simple/*.c tests/main.cpp tests/%test_files%.cpp	-o _test.exe	-D NDEBUG	-I inc	-I tests	-lstdc++
+	gcc	inc/simple/*.cpp inc/simple/*.c tests/main.cpp tests/%test_files%.cpp	-o _test.exe	-D NDEBUG	-I inc	-I tests	-lstdc++
 ) else (
-	cl	tests/dummy_module.cpp		/LD	/Fedummy.module	-D NDEBUG
-	cl	src/simple\*.cpp src/simple\*.c tests\main.cpp tests\%test_files%.cpp	/Fe_test.exe	-D NDEBUG	/Iinc			/EHa /wd4819
+	cl	tests\dummy_module.cpp		/LD	/Fedummy.module	-D NDEBUG
+	cl	inc\simple\*.cpp inc\simple\*.c tests\main.cpp tests\%test_files%.cpp	/Fe_test.exe	-D NDEBUG	/Iinc			/EHa /wd4819
 )
 if not	exist _test.exe			goto ERROR
 if exist *.obj		@del /f /q	*.obj

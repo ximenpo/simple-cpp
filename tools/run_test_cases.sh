@@ -16,7 +16,7 @@ fi
 
 
 gcc	tests/dummy_module.cpp		-shared	-o dummy.module	-D NDEBUG	-lstdc++
-gcc	src/simple/*.cpp    src/simple/*.c  tests/main.cpp  tests/$test_files.cpp	-o _test.exe	-D NDEBUG	-I inc	-I tests	-lstdc++
+gcc	inc/simple/*.cpp    inc/simple/*.c  tests/main.cpp  tests/$test_files.cpp	-o _test.exe	-D NDEBUG	-I inc	-I tests	-lstdc++
 
 
 if [ -f "_test.exe" ]; then
