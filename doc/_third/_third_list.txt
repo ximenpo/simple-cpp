@@ -22,7 +22,7 @@ pugixml			http://pugixml.org/
 pwgen			http://www.packetizer.com/security/pwgen/
 rapidxml		http://rapidxml.sourceforge.net/
 sha1			http://www.packetizer.com/security/sha1/
-simplethread		https://github.com/cloudwu/simplethread.git
+simplethread		https://github.com/cloudwu/simplethread
 switch_flags		http://www.codeproject.com/Articles/141327/Switching-on-Boolean-Conditions-and-Flags
 SuperEasyJson		http://www.sourceforge.net/p/supereasyjson
 tCNode			http://www.codeproject.com/Articles/837746/Cplusplus-tCNode-template-An-Indexed-Multi-node-Da
