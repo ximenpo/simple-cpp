@@ -11,7 +11,9 @@ DefineImprovedEnum	http://www.codeproject.com/Articles/32000/Improving-C-Enums-A
 DEIntegrator		http://www.codeproject.com/Articles/31550/Fast-Numerical-Integration
 FastDelegate		http://www.codeproject.com/Articles/7150/Member-Function-Pointers-and-the-Fastest-Possible
 Fast DES code		http://www.ka9q.net/code/des/
+handlemap		https://github.com/cloudwu/handlemap
 igloo			http://igloo-testing.org/
+JniWrapper		http://www.codeproject.com/Articles/878355/Wrapping-Java-with-Cplusplus-objects-JNI-OOP
 jRead			http://www.codeproject.com/Articles/885389/jRead-an-in-place-JSON-element-reader
 jWrite			http://www.codeproject.com/Articles/887604/jWrite-a-really-simple-JSON-writer-in-C
 mandatory_input		http://www.codeproject.com/Tips/895386/Cplusplus-Formatted-Input-Made-Easy
@@ -20,6 +22,7 @@ pugixml			http://pugixml.org/
 pwgen			http://www.packetizer.com/security/pwgen/
 rapidxml		http://rapidxml.sourceforge.net/
 sha1			http://www.packetizer.com/security/sha1/
+simplethread		https://github.com/cloudwu/simplethread.git
 switch_flags		http://www.codeproject.com/Articles/141327/Switching-on-Boolean-Conditions-and-Flags
 SuperEasyJson		http://www.sourceforge.net/p/supereasyjson
 tCNode			http://www.codeproject.com/Articles/837746/Cplusplus-tCNode-template-An-Indexed-Multi-node-Da
