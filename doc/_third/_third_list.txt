@@ -18,6 +18,7 @@ jRead			http://www.codeproject.com/Articles/885389/jRead-an-in-place-JSON-elemen
 jWrite			http://www.codeproject.com/Articles/887604/jWrite-a-really-simple-JSON-writer-in-C
 mandatory_input		http://www.codeproject.com/Tips/895386/Cplusplus-Formatted-Input-Made-Easy
 MimeCodes		http://ootips.org/yonat/4dev/
+msinttypes		https://code.google.com/p/msinttypes/
 pugixml			http://pugixml.org/
 pwgen			http://www.packetizer.com/security/pwgen/
 rapidxml		http://rapidxml.sourceforge.net/
