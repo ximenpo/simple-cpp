@@ -762,13 +762,8 @@ buffer& operator<<(buffer& buf, double value) {
 
     buffer_write_tag(buf, tag);
 
-    long netnumber_1 = htonl(1);
-    if(1==netnumber_1) {
-        buf.write(&value, sizeof(value));
-    } else {
-        uint32_t	tmp_v	= htonl(*((uint32_t*)(&value) + 1));
-        buf.write(&tmp_v, sizeof(tmp_v));
-        tmp_v	= htonl(*((uint32_t*)(&value) + 0));
+    {
+        uint64_t    tmp_v   = byte_hton_8(*(uint64_t*)(&value));
         buf.write(&tmp_v, sizeof(tmp_v));
     }
 
@@ -791,16 +786,10 @@ buffer& operator>>(buffer& buf, double& value) {
         return	buf;
     }
 
-    long netnumber_1 = htonl(1);
-    if(1==netnumber_1) {
-        buf.read(&value, sizeof(value));
-    } else {
-        uint8_t	tmp_v[sizeof(double)]	= {0};
-        for(size_t i = sizeof(double); i > 0; --i) {
-            buf.read(&tmp_v[i-1], 1);
-        }
-
-        if(buf.good()) {
+    {
+        uint64_t	tmp_v	= 0;
+        if(buf.read(&tmp_v, sizeof(tmp_v))) {
+            tmp_v	= byte_ntoh_8(tmp_v);
             memcpy(&value, &tmp_v, sizeof(value));
         }
     }
