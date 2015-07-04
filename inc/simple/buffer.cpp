@@ -8,14 +8,9 @@
 
 #if	defined(_WIN32)
 #	include <windows.h>
-#	pragma	comment(lib, "ws2_32")
-unsigned long	__stdcall	ntohl (unsigned long	netlong);
-unsigned short	__stdcall	ntohs (unsigned short	netshort);
-unsigned long	__stdcall	htonl (unsigned long	hostlong);
-unsigned short	__stdcall	htons (unsigned short	hostshort);
-#else
-#	include	<netinet/in.h>
 #endif
+
+#include "byte.h"
 
 #include "buffer.h"
 #include "string.h"
@@ -38,21 +33,23 @@ buffer_tag::SIZE_TAG	buffer_size_tag(intmax_t value) {
     return	(0 == value)?									buffer_tag::TAG_0
             :	(INT8_MIN <= value && value <= INT8_MAX)?	buffer_tag::TAG_1
             :	(INT16_MIN <= value && value <= INT16_MAX)?	buffer_tag::TAG_2
-            :	buffer_tag::TAG_4
+            :	(INT32_MIN <= value && value <= INT16_MAX)?	buffer_tag::TAG_4
+            :	buffer_tag::TAG_8
             ;
 }
 buffer_tag::SIZE_TAG	buffer_size_tag(uintmax_t value) {
     return	(0 == value)?				buffer_tag::TAG_0
             :	(value <= UINT8_MAX)?	buffer_tag::TAG_1
             :	(value <= UINT16_MAX)?	buffer_tag::TAG_2
-            :	buffer_tag::TAG_4
+            :	(value <= UINT32_MAX)?	buffer_tag::TAG_4
+            :	buffer_tag::TAG_8
             ;
 }
 buffer_tag::SIZE_TAG	buffer_size_tag(float value) {
-    return	buffer_tag::TAG_1;
+    return	buffer_tag::TAG_4;
 }
 buffer_tag::SIZE_TAG	buffer_size_tag(double value) {
-    return	buffer_tag::TAG_2;
+    return	buffer_tag::TAG_8;
 }
 buffer_tag::SIZE_TAG	buffer_size_tag(bool value) {
     return	value?	buffer_tag::TAG_1	:	buffer_tag::TAG_0;
@@ -85,12 +82,17 @@ bool	buffer_write_uint_value(buffer& buf, uint8_t size_tag, uintmax_t value) {
     }
     break;
     case buffer_tag::TAG_2: {
-        uint16_t	tmp_v	= htons(uint16_t(value));
+        uint16_t	tmp_v	= byte_hton_2(uint16_t(value));
         return	buf.write(&tmp_v, sizeof(tmp_v));
     }
     break;
     case buffer_tag::TAG_4: {
-        uint32_t	tmp_v	= htonl(uint32_t(value));
+        uint32_t	tmp_v	= byte_hton_4(uint32_t(value));
+        return	buf.write(&tmp_v, sizeof(tmp_v));
+    }
+    break;
+    case buffer_tag::TAG_8: {
+        uint64_t	tmp_v	= byte_hton_8(uint64_t(value));
         return	buf.write(&tmp_v, sizeof(tmp_v));
     }
     break;
@@ -114,7 +116,7 @@ bool	buffer_read_uint_value(buffer& buf, uint8_t size_tag, uintmax_t& value) {
     case buffer_tag::TAG_2: {
         uint16_t	tmp_v	= 0;
         if(buf.read(&tmp_v, sizeof(tmp_v))) {
-            tmp_v	= ntohs(tmp_v);
+            tmp_v	= byte_ntoh_2(tmp_v);
             value	= tmp_v;
         }
     }
@@ -122,7 +124,15 @@ bool	buffer_read_uint_value(buffer& buf, uint8_t size_tag, uintmax_t& value) {
     case buffer_tag::TAG_4: {
         uint32_t	tmp_v	= 0;
         if(buf.read(&tmp_v, sizeof(tmp_v))) {
-            tmp_v	= ntohl(tmp_v);
+            tmp_v	= byte_ntoh_4(tmp_v);
+            value	= tmp_v;
+        }
+    }
+    break;
+    case buffer_tag::TAG_8: {
+        uint64_t	tmp_v	= 0;
+        if(buf.read(&tmp_v, sizeof(tmp_v))) {
+            tmp_v	= byte_ntoh_8(tmp_v);
             value	= tmp_v;
         }
     }
@@ -205,7 +215,10 @@ bool	buffer_read_and_ignore(buffer& buf) {
             todo_bypes	= 2;
             break;
         case buffer_tag::TAG_4:
-            todo_bypes	= 3;
+            todo_bypes	= 4;
+            break;
+        case buffer_tag::TAG_8:
+            todo_bypes	= 8;
             break;
         default:
             return	false;
@@ -217,10 +230,10 @@ bool	buffer_read_and_ignore(buffer& buf) {
         switch(tag.size_tag) {
         case buffer_tag::TAG_0:
             break;
-        case buffer_tag::TAG_1:
+        case buffer_tag::TAG_4:
             todo_bypes	= 4;
             break;
-        case buffer_tag::TAG_2:
+        case buffer_tag::TAG_8:
             todo_bypes	= 8;
             break;
         default:
@@ -405,12 +418,12 @@ buffer& operator<<(buffer& buf, int32_t value) {
     }
     break;
     case buffer_tag::TAG_2: {
-        uint16_t	tmp_v	= htons(uint16_t(value));
+        uint16_t	tmp_v	= byte_hton_2(uint16_t(value));
         buf.write(&tmp_v, sizeof(tmp_v));
     }
     break;
     case buffer_tag::TAG_4: {
-        uint32_t	tmp_v	= htonl(uint32_t(value));
+        uint32_t	tmp_v	= byte_hton_4(uint32_t(value));
         buf.write(&tmp_v, sizeof(tmp_v));
     }
     break;
@@ -481,7 +494,7 @@ buffer& operator>>(buffer& buf, int32_t& value) {
     case buffer_tag::TAG_2: {
         int16_t	tmp_v	= 0;
         if(buf.read(&tmp_v, sizeof(tmp_v))) {
-            tmp_v	= ntohs(tmp_v);
+            tmp_v	= byte_ntoh_2(tmp_v);
             value	= tmp_v;
         }
     }
@@ -489,7 +502,7 @@ buffer& operator>>(buffer& buf, int32_t& value) {
     case buffer_tag::TAG_4: {
         int32_t	tmp_v	= 0;
         if(buf.read(&tmp_v, sizeof(tmp_v))) {
-            tmp_v	= ntohl(tmp_v);
+            tmp_v	= byte_ntoh_4(tmp_v);
             value	= int(tmp_v);
         }
     }
@@ -621,7 +634,7 @@ buffer& operator>>(buffer& buf, bool& value) {
 buffer& operator<<(buffer& buf, float value) {
     buffer_tag	tag	= {
         buffer_tag::TYPE_REAL,
-        buffer_tag::TAG_1
+        buffer_tag::TAG_4
     };
 
     buffer_write_tag(buf, tag);
@@ -644,7 +657,7 @@ buffer& operator>>(buffer& buf, float& value) {
     buffer_tag	tag;
     if(		!buffer_read_tag(buf, tag)
             ||	tag.data_type != buffer_tag::TYPE_REAL
-            ||	tag.size_tag != buffer_tag::TAG_1
+            ||	tag.size_tag != buffer_tag::TAG_4
       ) {
         buf.set_failure();
         return	buf;
@@ -664,7 +677,7 @@ buffer& operator>>(buffer& buf, float& value) {
 buffer& operator<<(buffer& buf, double value) {
     buffer_tag	tag	= {
         buffer_tag::TYPE_REAL,
-        buffer_tag::TAG_2
+        buffer_tag::TAG_8
     };
 
     buffer_write_tag(buf, tag);
@@ -692,7 +705,7 @@ buffer& operator>>(buffer& buf, double& value) {
     buffer_tag	tag;
     if(		!buffer_read_tag(buf, tag)
             ||	tag.data_type != buffer_tag::TYPE_REAL
-            ||	tag.size_tag != buffer_tag::TAG_2
+            ||	tag.size_tag != buffer_tag::TAG_8
       ) {
         buf.set_failure();
         return	buf;

@@ -114,28 +114,35 @@ struct	buffer_tag {
     };
 
     enum	SIZE_TAG {
-        TAG_0,
-        TAG_1,
-        TAG_2,
-        TAG_4,
+        TAG_0,          // 0byte
+        TAG_1,          // 1byte
+        TAG_2,          // 2byte
+        TAG_4,          // 4byte
+        TAG_8,          // 8byte
         TAG_SUM,
     };
 
     // data member
+    // bit [0-3]
     uint8_t	    data_type;
+    // bit [4-6]
+    // 对于bool表示真／假（TAG_1/TAG_0）
+    // 对于其他数字类型表示后续元素字节数
+    // 对于数组/结构表示子元素个数
     uint8_t	    size_tag;
-    bool		version_tag;	// 对于结构而言是版本号,对于数组而言是数据项包含的对象数(当前仅支持1or2)
-    bool		unused_tag;		// 未使用
+    // bit [7]
+    // 对于结构而言表示带有版本号
+    // 对于数组而言表示数据项包含的对象数(当前仅支持1/2)
+    bool		version_tag;
 
     // Serailize/UnSerialize with byte
     uint8_t	pack()const {
-        return uint8_t((unused_tag?0x80:0x00) | (version_tag?0x40:0x00) | (size_tag << 4) | (data_type << 0));
+        return uint8_t((version_tag?0x80:0x00) | (size_tag << 4) | (data_type << 0));
     }
     void			unpack(uint8_t value) {
         data_type	= (value&0x0F);
         size_tag	= ((value&0x30)>>4);
-        version_tag	= (value&0x40) != 0;
-        unused_tag	= (value&0x80) != 0;
+        version_tag	= (value&0x80) != 0;
     }
 };
 
@@ -186,10 +193,12 @@ buffer&		operator>>(buffer& buf, bool& value);
 buffer&		operator<<(buffer& buf, int8_t value);
 buffer&		operator<<(buffer& buf, int16_t value);
 buffer&		operator<<(buffer& buf, int32_t value);
+buffer&		operator<<(buffer& buf, int64_t value);
 
 buffer&		operator>>(buffer& buf, int8_t& value);
 buffer&		operator>>(buffer& buf, int16_t& value);
 buffer&		operator>>(buffer& buf, int32_t& value);
+buffer&		operator>>(buffer& buf, int64_t& value);
 
 //
 //	UINT:	int/char/short
@@ -405,7 +414,7 @@ template<typename SAFE_ARRAY_TYPE, int SAFE_ARRAY_SIZE>
 inline buffer& operator>>(buffer& buf, safe_array<SAFE_ARRAY_TYPE, SAFE_ARRAY_SIZE>& array) {
     size_t  	size;
     uintmax_t	version;
-    buffer_tag		tag;
+    buffer_tag	tag;
     if(		!buffer_read_tag(buf, tag)
             ||	tag.data_type != buffer_tag::TYPE_ARRAY
             ||	!buffer_read_uint_value(buf, tag.size_tag, size)
