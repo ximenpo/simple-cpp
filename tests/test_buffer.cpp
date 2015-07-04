@@ -16,7 +16,7 @@ struct testBufferMsg1 {
     std::string		s;
 };
 buffer& operator>>(buffer& buf, testBufferMsg1& obj) {
-    size_t		size;
+    uintmax_t	size;
     uintmax_t	ver	= 0;
     buffer_tag	tag;
     if(		!buffer_read_tag(buf, tag)
@@ -43,7 +43,7 @@ buffer& operator>>(buffer& buf, testBufferMsg1& obj) {
 }
 
 buffer& operator<<(buffer& buf, const testBufferMsg1& obj) {
-    size_t  	size	= 0;
+    uintmax_t  	size	= 0;
     buffer_tag	tag	= {
         buffer_tag::TYPE_OBJECT,
         buffer_size_tag(size),
