@@ -29,7 +29,7 @@ buffer_tag::SIZE_TAG	buffer_size_tag(uint32_t value) {
             :	buffer_tag::TAG_4
             ;
 }
-buffer_tag::SIZE_TAG	buffer_size_tag(intmax_t value) {
+buffer_tag::SIZE_TAG	buffer_size_tag(int64_t value) {
     return	(0 == value)?									buffer_tag::TAG_0
             :	(INT8_MIN <= value && value <= INT8_MAX)?	buffer_tag::TAG_1
             :	(INT16_MIN <= value && value <= INT16_MAX)?	buffer_tag::TAG_2
@@ -37,13 +37,16 @@ buffer_tag::SIZE_TAG	buffer_size_tag(intmax_t value) {
             :	buffer_tag::TAG_8
             ;
 }
-buffer_tag::SIZE_TAG	buffer_size_tag(uintmax_t value) {
+buffer_tag::SIZE_TAG	buffer_size_tag(uint64_t value) {
     return	(0 == value)?				buffer_tag::TAG_0
             :	(value <= UINT8_MAX)?	buffer_tag::TAG_1
             :	(value <= UINT16_MAX)?	buffer_tag::TAG_2
             :	(value <= UINT32_MAX)?	buffer_tag::TAG_4
             :	buffer_tag::TAG_8
             ;
+}
+buffer_tag::SIZE_TAG	buffer_size_tag(size_t value) {
+    return	buffer_size_tag(uint64_t(value));
 }
 buffer_tag::SIZE_TAG	buffer_size_tag(float value) {
     return	buffer_tag::TAG_4;
@@ -254,7 +257,7 @@ bool	buffer_read_and_ignore(buffer& buf) {
         }
 
         if(tag.data_type == buffer_tag::TYPE_OBJECT) {
-            for(size_t i = 0; i < size; ++i) {
+            for(size_t i = 0; i < size && buf.good(); ++i) {
                 if(!buffer_read_and_ignore(buf)) {
                     return	false;
                 }
@@ -265,8 +268,8 @@ bool	buffer_read_and_ignore(buffer& buf) {
 
         assert(tag.data_type == buffer_tag::TYPE_ARRAY);
 
-        for(size_t i = 0; i < size; ++i) {
-            for(size_t j = 0; j < size; ++j) {
+        for(size_t i = 0; i < size && buf.good(); ++i) {
+            for(size_t j = 0; j < size && buf.good(); ++j) {
                 if(!buffer_read_and_ignore(buf)) {
                     return	false;
                 }
@@ -395,12 +398,15 @@ bool	buffer::read(void* pData, size_t nLen) {
 }
 
 buffer& operator<<(buffer& buf, int8_t value) {
-    return	buf	<< int32_t(value);
+    return	buf	<< int64_t(value);
 }
 buffer& operator<<(buffer& buf, int16_t value) {
-    return	buf	<< int32_t(value);
+    return	buf	<< int64_t(value);
 }
 buffer& operator<<(buffer& buf, int32_t value) {
+    return	buf	<< int64_t(value);
+}
+buffer& operator<<(buffer& buf, int64_t value) {
     buffer_tag	tag	= {
         buffer_tag::TYPE_INT,
         buffer_size_tag(value),
@@ -427,6 +433,11 @@ buffer& operator<<(buffer& buf, int32_t value) {
         buf.write(&tmp_v, sizeof(tmp_v));
     }
     break;
+    case buffer_tag::TAG_8: {
+        uint64_t	tmp_v	= byte_hton_8(uint64_t(value));
+        buf.write(&tmp_v, sizeof(tmp_v));
+    }
+    break;
     }
 
     return	buf;
@@ -435,7 +446,7 @@ buffer& operator<<(buffer& buf, int32_t value) {
 buffer& operator>>(buffer& buf, int8_t& value) {
     value	= 0;
 
-    int8_t	tmp_v;
+    int64_t	tmp_v;
     buf	>> tmp_v;
 
     if(buf.good()) {
@@ -452,7 +463,7 @@ buffer& operator>>(buffer& buf, int8_t& value) {
 buffer& operator>>(buffer& buf, int16_t& value) {
     value	= 0;
 
-    int32_t	tmp_v;
+    int64_t	tmp_v;
     buf	>> tmp_v;
 
     if(buf.good()) {
@@ -467,6 +478,23 @@ buffer& operator>>(buffer& buf, int16_t& value) {
 }
 
 buffer& operator>>(buffer& buf, int32_t& value) {
+    value	= 0;
+
+    int64_t	tmp_v;
+    buf	>> tmp_v;
+
+    if(buf.good()) {
+        if(buffer_size_tag(tmp_v) <= buffer_tag::TAG_4) {
+            value	= int32_t(tmp_v);
+        } else {
+            buf.set_failure();
+        }
+    }
+
+    return	buf;
+}
+
+buffer& operator>>(buffer& buf, int64_t& value) {
     value	= 0;
 
     if(buf.failure()) {
@@ -507,6 +535,14 @@ buffer& operator>>(buffer& buf, int32_t& value) {
         }
     }
     break;
+    case buffer_tag::TAG_8: {
+        int64_t	tmp_v	= 0;
+        if(buf.read(&tmp_v, sizeof(tmp_v))) {
+            tmp_v	= byte_ntoh_8(tmp_v);
+            value	= int(tmp_v);
+        }
+    }
+    break;
     default: {
         buf.set_failure();
     }
@@ -517,12 +553,15 @@ buffer& operator>>(buffer& buf, int32_t& value) {
 }
 
 buffer& operator<<(buffer& buf, uint8_t value) {
-    return	buf	<< uint32_t(value);
+    return	buf	<< uint64_t(value);
 }
 buffer& operator<<(buffer& buf, uint16_t value) {
-    return	buf	<< uint32_t(value);
+    return	buf	<< uint64_t(value);
 }
 buffer& operator<<(buffer& buf, uint32_t value) {
+    return	buf	<< uint64_t(value);
+}
+buffer& operator<<(buffer& buf, uint64_t value) {
     buffer_tag	tag	= {
         buffer_tag::TYPE_UINT,
         buffer_size_tag(value),
@@ -538,7 +577,7 @@ buffer& operator<<(buffer& buf, uint32_t value) {
 buffer& operator>>(buffer& buf, uint8_t& value) {
     value	= 0;
 
-    uint32_t	tmp_v;
+    uint64_t	tmp_v;
     buf	>> tmp_v;
 
     if(buf.good()) {
@@ -555,7 +594,7 @@ buffer& operator>>(buffer& buf, uint8_t& value) {
 buffer& operator>>(buffer& buf, uint16_t& value) {
     value	= 0;
 
-    uint32_t	tmp_v;
+    uint64_t	tmp_v;
     buf	>> tmp_v;
 
     if(buf.good()) {
@@ -572,6 +611,23 @@ buffer& operator>>(buffer& buf, uint16_t& value) {
 buffer& operator>>(buffer& buf, uint32_t& value) {
     value	= 0;
 
+    uint64_t	tmp_v;
+    buf	>> tmp_v;
+
+    if(buf.good()) {
+        if(buffer_size_tag(tmp_v) <= buffer_tag::TAG_4) {
+            value	= uint8_t(tmp_v);
+        } else {
+            buf.set_failure();
+        }
+    }
+
+    return	buf;
+}
+
+buffer& operator>>(buffer& buf, uint64_t& value) {
+    value	= 0;
+
     if(buf.failure()) {
         return	buf;
     }
@@ -586,7 +642,7 @@ buffer& operator>>(buffer& buf, uint32_t& value) {
         return	buf;
     }
 
-    value	= uint32_t(tmp_value);
+    value	= uint64_t(tmp_value);
     return	buf;
 }
 

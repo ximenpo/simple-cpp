@@ -151,8 +151,9 @@ struct	buffer_tag {
 //
 buffer_tag::SIZE_TAG	buffer_size_tag(int32_t value);
 buffer_tag::SIZE_TAG	buffer_size_tag(uint32_t value);
-buffer_tag::SIZE_TAG	buffer_size_tag(intmax_t value);
-buffer_tag::SIZE_TAG	buffer_size_tag(uintmax_t value);
+buffer_tag::SIZE_TAG	buffer_size_tag(int64_t value);
+buffer_tag::SIZE_TAG	buffer_size_tag(uint64_t value);
+buffer_tag::SIZE_TAG	buffer_size_tag(size_t value);
 buffer_tag::SIZE_TAG	buffer_size_tag(float value);
 buffer_tag::SIZE_TAG	buffer_size_tag(double value);
 buffer_tag::SIZE_TAG	buffer_size_tag(bool value);
@@ -303,7 +304,7 @@ inline buffer&		operator<<(buffer& buf, const T& array) {
     //	content.
     size_t	size	= array.size();
     typename T::const_iterator it	= array.begin();
-    for(size_t i = 0; i < size; ++i, ++it) {
+    for(size_t i = 0; i < size && buf.good(); ++i, ++it) {
         buf	<< (*it);
     }
 
@@ -336,7 +337,7 @@ inline buffer&		operator>>(buffer& buf, T& array) {
         }
     }
 
-    for(size_t i = 0; i < size; ++i) {
+    for(size_t i = 0; i < size && buf.good(); ++i) {
         buffer_read_array_item(buf, array);
     }
 
@@ -403,7 +404,7 @@ inline buffer& operator<<(buffer& buf, const safe_array<SAFE_ARRAY_TYPE, SAFE_AR
     }
 
     //	content.
-    for(size_t i = 0; i < SAFE_ARRAY_SIZE; ++i) {
+    for(size_t i = 0; i < SAFE_ARRAY_SIZE && buf.good(); ++i) {
         buf	<< array[i];
     }
 
@@ -435,7 +436,7 @@ inline buffer& operator>>(buffer& buf, safe_array<SAFE_ARRAY_TYPE, SAFE_ARRAY_SI
         }
     }
 
-    for(size_t i = 0; i < SAFE_ARRAY_SIZE; ++i) {
+    for(size_t i = 0; i < SAFE_ARRAY_SIZE && buf.good(); ++i) {
         buf	>> array[i];
     }
 
