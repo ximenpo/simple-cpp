@@ -720,7 +720,7 @@ buffer& operator<<(buffer& buf, float value) {
     buffer_write_tag(buf, tag);
 
     {
-        uint32_t	tmp_v	= htonl(*(uint32_t*)(&value));
+        uint32_t	tmp_v	= byte_hton_4(*(uint32_t*)(&value));
         buf.write(&tmp_v, sizeof(tmp_v));
     }
 
@@ -746,7 +746,7 @@ buffer& operator>>(buffer& buf, float& value) {
     {
         uint32_t	tmp_v	= 0;
         if(buf.read(&tmp_v, sizeof(tmp_v))) {
-            tmp_v	= ntohl(tmp_v);
+            tmp_v	= byte_ntoh_4(tmp_v);
             memcpy(&value, &tmp_v, sizeof(value));
         }
     }
