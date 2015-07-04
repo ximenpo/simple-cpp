@@ -45,9 +45,6 @@ buffer_tag::SIZE_TAG	buffer_size_tag(uint64_t value) {
             :	buffer_tag::TAG_8
             ;
 }
-buffer_tag::SIZE_TAG	buffer_size_tag(size_t value) {
-    return	buffer_size_tag(uint64_t(value));
-}
 buffer_tag::SIZE_TAG	buffer_size_tag(float value) {
     return	buffer_tag::TAG_4;
 }
@@ -57,6 +54,11 @@ buffer_tag::SIZE_TAG	buffer_size_tag(double value) {
 buffer_tag::SIZE_TAG	buffer_size_tag(bool value) {
     return	value?	buffer_tag::TAG_1	:	buffer_tag::TAG_0;
 }
+#if defined(_WIN64) ||  defined(__x86_64__)
+buffer_tag::SIZE_TAG	buffer_size_tag(size_t value) {
+    return	buffer_size_tag(uint64_t(value));
+}
+#endif
 
 bool	buffer_write_tag(buffer& buf, const buffer_tag& tag) {
     uint8_t	flag	= tag.pack();
@@ -645,6 +647,28 @@ buffer& operator>>(buffer& buf, uint64_t& value) {
     value	= uint64_t(tmp_value);
     return	buf;
 }
+
+#if defined(_WIN64) ||  defined(__x86_64__)
+buffer&		operator<<(buffer& buf, size_t value) {
+    return	buf << uint64_t(value);
+}
+buffer&		operator>>(buffer& buf, size_t& value) {
+    value	= 0;
+
+    uint64_t	tmp_v;
+    buf	>> tmp_v;
+
+    if(buf.good()) {
+        if(buffer_size_tag(tmp_v) <= buffer_tag::TAG_4) {
+            value	= uint8_t(tmp_v);
+        } else {
+            buf.set_failure();
+        }
+    }
+
+    return	buf;
+}
+#endif
 
 buffer& operator<<(buffer& buf, bool value) {
     buffer_tag	tag	= {

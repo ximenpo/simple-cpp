@@ -153,10 +153,13 @@ buffer_tag::SIZE_TAG	buffer_size_tag(int32_t value);
 buffer_tag::SIZE_TAG	buffer_size_tag(uint32_t value);
 buffer_tag::SIZE_TAG	buffer_size_tag(int64_t value);
 buffer_tag::SIZE_TAG	buffer_size_tag(uint64_t value);
-buffer_tag::SIZE_TAG	buffer_size_tag(size_t value);
 buffer_tag::SIZE_TAG	buffer_size_tag(float value);
 buffer_tag::SIZE_TAG	buffer_size_tag(double value);
 buffer_tag::SIZE_TAG	buffer_size_tag(bool value);
+
+#if defined(_WIN64) ||  defined(__x86_64__)
+buffer_tag::SIZE_TAG	buffer_size_tag(size_t value);
+#endif
 
 //
 //	基本类型序列化
@@ -213,6 +216,11 @@ buffer&		operator>>(buffer& buf, uint8_t& value);
 buffer&		operator>>(buffer& buf, uint16_t& value);
 buffer&		operator>>(buffer& buf, uint32_t& value);
 buffer&		operator>>(buffer& buf, uint64_t& value);
+
+#if defined(_WIN64) ||  defined(__x86_64__)
+buffer&		operator<<(buffer& buf, size_t value);
+buffer&		operator>>(buffer& buf, size_t& value);
+#endif
 
 //
 //	REAL:	float/double
