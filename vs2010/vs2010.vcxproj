@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\simple-cpp\inc\simple\app.cpp" />
+    <ClCompile Include="..\..\simple-cpp\inc\simple\buffer.cpp" />
+    <ClCompile Include="..\..\simple-cpp\inc\simple\buffer_queue.cpp" />
+    <ClCompile Include="..\..\simple-cpp\inc\simple\calculator.cpp" />
+    <ClCompile Include="..\..\simple-cpp\inc\simple\console.cpp" />
+    <ClCompile Include="..\..\simple-cpp\inc\simple\csv.cpp" />
+    <ClCompile Include="..\..\simple-cpp\inc\simple\module.cpp" />
+    <ClCompile Include="..\..\simple-cpp\inc\simple\rand.cpp" />
+    <ClCompile Include="..\..\simple-cpp\inc\simple\stream.cpp" />
+    <ClCompile Include="..\..\simple-cpp\inc\simple\string.cpp" />
+    <ClCompile Include="..\..\simple-cpp\inc\simple\stringify.cpp" />
+    <ClCompile Include="..\..\simple-cpp\inc\simple\stringify_config.cpp" />
+    <ClCompile Include="..\..\simple-cpp\inc\simple\stringify_ini.cpp" />
+    <ClCompile Include="..\..\simple-cpp\inc\simple\stringify_json.cpp" />
+    <ClCompile Include="..\..\simple-cpp\inc\simple\stringify_lua.cpp" />
+    <ClCompile Include="..\..\simple-cpp\inc\simple\stringify_xml.cpp" />
+    <ClCompile Include="..\..\simple-cpp\inc\simple\string_mime.cpp" />
+    <ClCompile Include="..\..\simple-cpp\inc\simple\timer.cpp" />
+    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_bigint.cpp" />
+    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_combination.cpp" />
+    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_convert_utf.cpp" />
+    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_csvparser.cpp" />
+    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_des.c" />
+    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_jread.c" />
+    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_json.cpp" />
+    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_jwrite.c" />
+    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_md5.c" />
+    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_pugixml.cpp" />
+    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_pwgen.c" />
+    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_sha1.c" />
+    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_url_parser.c" />
+    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_zlib_part1.c" />
+    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_zlib_part2.c" />
+    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_zlib_part_gzclose.c" />
+    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_zlib_part_gzread.c" />
+    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_zlib_part_gzwrite.c" />
+    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_zlib_part_infback.c" />
+    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_zlib_part_inffast.c" />
+    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_zlib_part_trees.c" />
+    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_zlib_zutil.c" />
+    <ClCompile Include="..\src\simple\stream_dump.cpp" />
+    <ClCompile Include="..\tests\main.cpp" />
+    <ClCompile Include="test_cases.cpp" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{4134EC0F-BC22-481B-9AD1-27265FC542FC}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>vs2010</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\inc;..\..\simple-cpp\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4819</DisableSpecificWarnings>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <PreBuildEvent>
+      <Command>@if not exist test_cases.cpp  @echo  // test_cases    &gt;    test_cases.cpp
+</Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\inc;..\..\simple-cpp\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4819</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <PreBuildEvent>
+      <Command>@if not exist test_cases.cpp  @echo  // test_cases    &gt;    test_cases.cpp
+</Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>@echo ------------------------------------
+@echo  running test cases ...
+@$(TargetDir)$(TargetFileName)
+@echo ------------------------------------
+@exit 0</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="test_cases.cpp" />
+    <ClCompile Include="..\tests\main.cpp" />
+    <ClCompile Include="..\src\simple\stream_dump.cpp">
+      <Filter>jiandan-cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_bigint.cpp">
+      <Filter>simple-cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_combination.cpp">
+      <Filter>simple-cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_convert_utf.cpp">
+      <Filter>simple-cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_csvparser.cpp">
+      <Filter>simple-cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_des.c">
+      <Filter>simple-cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_jread.c">
+      <Filter>simple-cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_json.cpp">
+      <Filter>simple-cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_jwrite.c">
+      <Filter>simple-cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_md5.c">
+      <Filter>simple-cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_pugixml.cpp">
+      <Filter>simple-cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_pwgen.c">
+      <Filter>simple-cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_sha1.c">
+      <Filter>simple-cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_url_parser.c">
+      <Filter>simple-cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_zlib_part_gzclose.c">
+      <Filter>simple-cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_zlib_part_gzread.c">
+      <Filter>simple-cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_zlib_part_gzwrite.c">
+      <Filter>simple-cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_zlib_part_infback.c">
+      <Filter>simple-cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_zlib_part_inffast.c">
+      <Filter>simple-cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_zlib_part_trees.c">
+      <Filter>simple-cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_zlib_part1.c">
+      <Filter>simple-cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_zlib_part2.c">
+      <Filter>simple-cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_zlib_zutil.c">
+      <Filter>simple-cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\simple-cpp\inc\simple\app.cpp">
+      <Filter>simple-cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\simple-cpp\inc\simple\buffer.cpp">
+      <Filter>simple-cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\simple-cpp\inc\simple\buffer_queue.cpp">
+      <Filter>simple-cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\simple-cpp\inc\simple\calculator.cpp">
+      <Filter>simple-cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\simple-cpp\inc\simple\console.cpp">
+      <Filter>simple-cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\simple-cpp\inc\simple\csv.cpp">
+      <Filter>simple-cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\simple-cpp\inc\simple\module.cpp">
+      <Filter>simple-cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\simple-cpp\inc\simple\rand.cpp">
+      <Filter>simple-cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\simple-cpp\inc\simple\stream.cpp">
+      <Filter>simple-cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\simple-cpp\inc\simple\string.cpp">
+      <Filter>simple-cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\simple-cpp\inc\simple\string_mime.cpp">
+      <Filter>simple-cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\simple-cpp\inc\simple\stringify.cpp">
+      <Filter>simple-cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\simple-cpp\inc\simple\stringify_config.cpp">
+      <Filter>simple-cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\simple-cpp\inc\simple\stringify_ini.cpp">
+      <Filter>simple-cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\simple-cpp\inc\simple\stringify_json.cpp">
+      <Filter>simple-cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\simple-cpp\inc\simple\stringify_lua.cpp">
+      <Filter>simple-cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\simple-cpp\inc\simple\stringify_xml.cpp">
+      <Filter>simple-cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\simple-cpp\inc\simple\timer.cpp">
+      <Filter>simple-cpp</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="jiandan-cpp">
+      <UniqueIdentifier>{755769a1-cd4a-415d-96d0-19a4177a8843}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="simple-cpp">
+      <UniqueIdentifier>{8b1c8135-5a5d-4c9b-a2b4-51248e01dedf}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
