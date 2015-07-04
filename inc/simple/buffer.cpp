@@ -891,7 +891,7 @@ buffer& operator>>(buffer& buf, std::wstring& value) {
 static	bool	WriteSerialString(buffer& buf, const char* data, unsigned long size) {
     buffer_tag	tag	= {
         buffer_tag::TYPE_STRING,
-        buffer_size_tag(size),
+        buffer_size_tag(uint64_t(size)),
         false
     };
 
@@ -902,8 +902,8 @@ static	bool	WriteSerialString(buffer& buf, const char* data, unsigned long size)
 }
 
 static	unsigned long	ReadSerialString(buffer& buf, char* data, unsigned long size) {
-    unsigned long	size_c;
-    buffer_tag		tag;
+    uintmax_t	size_c;
+    buffer_tag	tag;
     if(		!buffer_read_tag(buf, tag)
             ||	!buffer_read_uint_value(buf, int(tag.size_tag), size_c)
             ||	size_c > GC_SERIALIZE_STRING_MAX_SIZE*3
