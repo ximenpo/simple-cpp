@@ -124,12 +124,12 @@ struct	buffer_tag {
 
     // data member
     // bit [0-3]
-    uint8_t	    data_type;
+    DATA_TYPE    data_type;
     // bit [4-6]
     // 对于bool表示真／假（TAG_1/TAG_0）
     // 对于其他数字类型表示后续元素字节数
     // 对于数组/结构表示子元素个数
-    uint8_t	    size_tag;
+    SIZE_TAG    size_tag;
     // bit [7]
     // 对于结构而言表示带有版本号
     // 对于数组而言表示数据项包含的对象数(当前仅支持1/2)
@@ -140,8 +140,8 @@ struct	buffer_tag {
         return uint8_t((version_tag?0x80:0x00) | (size_tag << 4) | (data_type << 0));
     }
     void			unpack(uint8_t value) {
-        data_type	= (value&0x0F);
-        size_tag	= ((value&0x30)>>4);
+        data_type	= DATA_TYPE(value&0x0F);
+        size_tag	= SIZE_TAG((value&0x30)>>4);
         version_tag	= (value&0x80) != 0;
     }
 };

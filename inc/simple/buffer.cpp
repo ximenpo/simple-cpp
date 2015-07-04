@@ -440,6 +440,10 @@ buffer& operator<<(buffer& buf, int64_t value) {
         buf.write(&tmp_v, sizeof(tmp_v));
     }
     break;
+    default: {
+        buf.set_failure();
+    }
+    break;
     }
 
     return	buf;
