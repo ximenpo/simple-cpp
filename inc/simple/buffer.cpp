@@ -823,7 +823,7 @@ static	bool	WriteSerialString(buffer& buf, const wchar_t* data, unsigned long si
 
     buffer_tag	tag	= {
         buffer_tag::TYPE_STRING,
-        buffer_size_tag(size_c),
+        buffer_size_tag(uint64_t(size_c)),
         false
     };
 
@@ -834,7 +834,7 @@ static	bool	WriteSerialString(buffer& buf, const wchar_t* data, unsigned long si
 }
 
 static	unsigned long	ReadSerialString(buffer& buf, wchar_t* data, unsigned long size) {
-    unsigned long	size_c;
+    uintmax_t       size_c;
     char			tmp_c[GC_SERIALIZE_STRING_MAX_SIZE*3];
 
     buffer_tag	tag;

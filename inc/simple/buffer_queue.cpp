@@ -36,7 +36,7 @@ struct	buffer_queue::Data {
     }
 };
 
-buffer_queue::buffer_queue(bool bCanMergeBuffer, unsigned long nMaxBufferSize) {
+buffer_queue::buffer_queue(bool bCanMergeBuffer, size_t nMaxBufferSize) {
     m_pData		= new Data(bCanMergeBuffer, nMaxBufferSize);
 }
 
