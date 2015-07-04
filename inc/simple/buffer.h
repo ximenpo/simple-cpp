@@ -323,7 +323,7 @@ template<typename T>
 inline buffer&		operator>>(buffer& buf, T& array) {
     array.clear();
 
-    size_t	    size;
+    uintmax_t    size;
     uintmax_t	version;
     buffer_tag	tag;
     if(		!buffer_read_tag(buf, tag)
@@ -376,11 +376,11 @@ buffer&		operator>>(buffer& buf, buffer& value);
 #define		BUFFER_SERIAL_ENUM_(ENUM_TYPE)							\
 inline	buffer& operator<<(buffer& buf, const ENUM_TYPE& value)		\
 {																	\
-	return	buf <<  uint32_t(value);								\
+	return	buf <<  uint64_t(value);								\
 }																	\
 inline	buffer& operator>>(buffer& buf, ENUM_TYPE& value)			\
 {																	\
-	uint32_t value_;												\
+	uint64_t value_;												\
 	buf >> value_;													\
 	value = ENUM_TYPE(value_);										\
 	return buf;														\
@@ -421,7 +421,7 @@ inline buffer& operator<<(buffer& buf, const safe_array<SAFE_ARRAY_TYPE, SAFE_AR
 
 template<typename SAFE_ARRAY_TYPE, int SAFE_ARRAY_SIZE>
 inline buffer& operator>>(buffer& buf, safe_array<SAFE_ARRAY_TYPE, SAFE_ARRAY_SIZE>& array) {
-    size_t  	size;
+    uintmax_t  	size;
     uintmax_t	version;
     buffer_tag	tag;
     if(		!buffer_read_tag(buf, tag)
