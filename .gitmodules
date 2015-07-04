@@ -1,6 +1,0 @@
-[submodule "inc/simple/_third/handlemap"]
-	path = inc/simple/_third/handlemap
-	url = https://github.com/cloudwu/handlemap
-[submodule "inc/simple/_third/simplethread"]
-	path = inc/simple/_third/simplethread
-	url = https://github.com/cloudwu/simplethread.git
