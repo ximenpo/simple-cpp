@@ -181,9 +181,9 @@ bool	buffer_read_raw(buffer& buf, void* pData, size_t& nLen) {
         return	false;
     }
 
-    nLen	= size;
+    nLen	= size_t(size);
 
-    return	buf.read(pData, size);
+    return	buf.read(pData, size_t(size));
 }
 
 bool	buffer_read_and_ignore(buffer& buf) {
@@ -284,7 +284,7 @@ bool	buffer_read_and_ignore(buffer& buf) {
     }
     }
 
-    return	buf.read(0, todo_bypes);
+    return	buf.read(0, size_t(todo_bypes));
 }
 
 static	const	size_t      GC_SERIALIZE_STRING_MAX_SIZE	= 4096;
@@ -834,7 +834,7 @@ static	unsigned long	ReadSerialString(buffer& buf, wchar_t* data, unsigned long 
     if(		!buffer_read_tag(buf, tag)
             ||	!buffer_read_uint_value(buf, tag.size_tag, size_c)
             ||	size_c > GC_SERIALIZE_STRING_MAX_SIZE*3
-            ||	!buf.read(tmp_c, size_c)
+            ||	!buf.read(tmp_c, size_t(size_c))
       ) {
         buf.set_failure();
         return	0;
@@ -877,7 +877,7 @@ buffer& operator>>(buffer& buf, std::string& value) {
 
 #if	!defined(__GNUC__) || defined (_GLIBCXX_USE_WCHAR_T) || defined (_GLIBCXX_USE_WSTRING)
 buffer& operator<<(buffer& buf, const std::wstring& value) {
-    WriteSerialString(buf, value.c_str(), MinValue(value.size(), GC_SERIALIZE_STRING_MAX_SIZE));
+    WriteSerialString(buf, value.c_str(), (unsigned long)MinValue(value.size(), GC_SERIALIZE_STRING_MAX_SIZE));
 
     return	buf;
 }

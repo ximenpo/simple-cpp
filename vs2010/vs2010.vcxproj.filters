@@ -3,136 +3,290 @@
   <ItemGroup>
     <ClCompile Include="test_cases.cpp" />
     <ClCompile Include="..\tests\main.cpp" />
-    <ClCompile Include="..\src\simple\stream_dump.cpp">
-      <Filter>jiandan-cpp</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_bigint.cpp">
+    <ClCompile Include="..\inc\simple\_third_bigint.cpp">
       <Filter>simple-cpp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_combination.cpp">
+    <ClCompile Include="..\inc\simple\_third_combination.cpp">
       <Filter>simple-cpp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_convert_utf.cpp">
+    <ClCompile Include="..\inc\simple\_third_convert_utf.cpp">
       <Filter>simple-cpp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_csvparser.cpp">
+    <ClCompile Include="..\inc\simple\_third_csvparser.cpp">
       <Filter>simple-cpp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_des.c">
+    <ClCompile Include="..\inc\simple\_third_des.c">
       <Filter>simple-cpp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_jread.c">
+    <ClCompile Include="..\inc\simple\_third_handlemap.c">
       <Filter>simple-cpp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_json.cpp">
+    <ClCompile Include="..\inc\simple\_third_jread.c">
       <Filter>simple-cpp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_jwrite.c">
+    <ClCompile Include="..\inc\simple\_third_json.cpp">
       <Filter>simple-cpp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_md5.c">
+    <ClCompile Include="..\inc\simple\_third_jwrite.c">
       <Filter>simple-cpp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_pugixml.cpp">
+    <ClCompile Include="..\inc\simple\_third_md5.c">
       <Filter>simple-cpp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_pwgen.c">
+    <ClCompile Include="..\inc\simple\_third_pugixml.cpp">
       <Filter>simple-cpp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_sha1.c">
+    <ClCompile Include="..\inc\simple\_third_pwgen.c">
       <Filter>simple-cpp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_url_parser.c">
+    <ClCompile Include="..\inc\simple\_third_sha1.c">
       <Filter>simple-cpp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_zlib_part_gzclose.c">
+    <ClCompile Include="..\inc\simple\_third_url_parser.c">
       <Filter>simple-cpp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_zlib_part_gzread.c">
+    <ClCompile Include="..\inc\simple\_third_zlib_part1.c">
       <Filter>simple-cpp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_zlib_part_gzwrite.c">
+    <ClCompile Include="..\inc\simple\_third_zlib_part2.c">
       <Filter>simple-cpp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_zlib_part_infback.c">
+    <ClCompile Include="..\inc\simple\_third_zlib_part_gzclose.c">
       <Filter>simple-cpp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_zlib_part_inffast.c">
+    <ClCompile Include="..\inc\simple\_third_zlib_part_gzread.c">
       <Filter>simple-cpp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_zlib_part_trees.c">
+    <ClCompile Include="..\inc\simple\_third_zlib_part_gzwrite.c">
       <Filter>simple-cpp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_zlib_part1.c">
+    <ClCompile Include="..\inc\simple\_third_zlib_part_infback.c">
       <Filter>simple-cpp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_zlib_part2.c">
+    <ClCompile Include="..\inc\simple\_third_zlib_part_inffast.c">
       <Filter>simple-cpp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\simple-cpp\inc\simple\_third_zlib_zutil.c">
+    <ClCompile Include="..\inc\simple\_third_zlib_part_trees.c">
       <Filter>simple-cpp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\simple-cpp\inc\simple\app.cpp">
+    <ClCompile Include="..\inc\simple\_third_zlib_zutil.c">
       <Filter>simple-cpp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\simple-cpp\inc\simple\buffer.cpp">
+    <ClCompile Include="..\inc\simple\app.cpp">
       <Filter>simple-cpp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\simple-cpp\inc\simple\buffer_queue.cpp">
+    <ClCompile Include="..\inc\simple\buffer.cpp">
       <Filter>simple-cpp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\simple-cpp\inc\simple\calculator.cpp">
+    <ClCompile Include="..\inc\simple\buffer_queue.cpp">
       <Filter>simple-cpp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\simple-cpp\inc\simple\console.cpp">
+    <ClCompile Include="..\inc\simple\calculator.cpp">
       <Filter>simple-cpp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\simple-cpp\inc\simple\csv.cpp">
+    <ClCompile Include="..\inc\simple\console.cpp">
       <Filter>simple-cpp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\simple-cpp\inc\simple\module.cpp">
+    <ClCompile Include="..\inc\simple\csv.cpp">
       <Filter>simple-cpp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\simple-cpp\inc\simple\rand.cpp">
+    <ClCompile Include="..\inc\simple\module.cpp">
       <Filter>simple-cpp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\simple-cpp\inc\simple\stream.cpp">
+    <ClCompile Include="..\inc\simple\rand.cpp">
       <Filter>simple-cpp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\simple-cpp\inc\simple\string.cpp">
+    <ClCompile Include="..\inc\simple\stream.cpp">
       <Filter>simple-cpp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\simple-cpp\inc\simple\string_mime.cpp">
+    <ClCompile Include="..\inc\simple\string.cpp">
       <Filter>simple-cpp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\simple-cpp\inc\simple\stringify.cpp">
+    <ClCompile Include="..\inc\simple\string_mime.cpp">
       <Filter>simple-cpp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\simple-cpp\inc\simple\stringify_config.cpp">
+    <ClCompile Include="..\inc\simple\stringify.cpp">
       <Filter>simple-cpp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\simple-cpp\inc\simple\stringify_ini.cpp">
+    <ClCompile Include="..\inc\simple\stringify_config.cpp">
       <Filter>simple-cpp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\simple-cpp\inc\simple\stringify_json.cpp">
+    <ClCompile Include="..\inc\simple\stringify_ini.cpp">
       <Filter>simple-cpp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\simple-cpp\inc\simple\stringify_lua.cpp">
+    <ClCompile Include="..\inc\simple\stringify_json.cpp">
       <Filter>simple-cpp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\simple-cpp\inc\simple\stringify_xml.cpp">
+    <ClCompile Include="..\inc\simple\stringify_lua.cpp">
       <Filter>simple-cpp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\simple-cpp\inc\simple\timer.cpp">
+    <ClCompile Include="..\inc\simple\stringify_xml.cpp">
+      <Filter>simple-cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\inc\simple\timer.cpp">
       <Filter>simple-cpp</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="jiandan-cpp">
-      <UniqueIdentifier>{755769a1-cd4a-415d-96d0-19a4177a8843}</UniqueIdentifier>
-    </Filter>
     <Filter Include="simple-cpp">
       <UniqueIdentifier>{8b1c8135-5a5d-4c9b-a2b4-51248e01dedf}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\inc\simple\type.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\aggregation.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\any.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\app.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\array.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\astar.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\binary.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\bit.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\buffer.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\byte.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\calculator.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\class_info.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\combination.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\console.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\creator.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\csv.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\delegate.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\des.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\enum.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\event.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\guard.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\handle_map.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\igloo.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\igloo_alt.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\integrate.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\inttypes.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\jni.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\json.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\lock.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\md5.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\module.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\pow2.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\privilege_table.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\procedure.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\property.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\ptr.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\rand.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\shl1.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\sleep.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\stdint.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\stream.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\string.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\stringify.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\super.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\swap.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\switch.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\thread.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\timer.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\timestamp.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\tree_node.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\inc\simple\define_improved_enum.inc">
+      <Filter>simple-cpp</Filter>
+    </None>
   </ItemGroup>
 </Project>
