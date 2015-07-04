@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1CA53B7D1ACD3DC10040226C /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1CA53B7C1ACD3DC10040226C /* main.cpp */; };
 		1CA53B7F1ACD3E1A0040226C /* test_cases.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1CA53B7E1ACD3E1A0040226C /* test_cases.cpp */; };
+		1CA7E0CE1B47FD5900940604 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1CA7E0CD1B47FD5900940604 /* main.cpp */; };
 		1CC698271B47F492001227BC /* _third_bigint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1CC697CB1B47F492001227BC /* _third_bigint.cpp */; };
 		1CC698281B47F492001227BC /* _third_combination.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1CC697CC1B47F492001227BC /* _third_combination.cpp */; };
 		1CC698291B47F492001227BC /* _third_convert_utf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1CC697CD1B47F492001227BC /* _third_convert_utf.cpp */; };
@@ -66,8 +66,8 @@
 
 /* Begin PBXFileReference section */
 		1CA53B721ACD3D730040226C /* xcode */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = xcode; sourceTree = BUILT_PRODUCTS_DIR; };
-		1CA53B7C1ACD3DC10040226C /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = ../../tests/main.cpp; sourceTree = "<group>"; };
 		1CA53B7E1ACD3E1A0040226C /* test_cases.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = test_cases.cpp; sourceTree = SOURCE_ROOT; };
+		1CA7E0CD1B47FD5900940604 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = ../../tests/main.cpp; sourceTree = "<group>"; };
 		1CC697CB1B47F492001227BC /* _third_bigint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = _third_bigint.cpp; sourceTree = "<group>"; };
 		1CC697CC1B47F492001227BC /* _third_combination.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = _third_combination.cpp; sourceTree = "<group>"; };
 		1CC697CD1B47F492001227BC /* _third_convert_utf.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = _third_convert_utf.cpp; sourceTree = "<group>"; };
@@ -192,7 +192,7 @@
 		1CA53B741ACD3D730040226C /* xcode */ = {
 			isa = PBXGroup;
 			children = (
-				1CA53B7C1ACD3DC10040226C /* main.cpp */,
+				1CA7E0CD1B47FD5900940604 /* main.cpp */,
 				1CA53B7E1ACD3E1A0040226C /* test_cases.cpp */,
 			);
 			path = xcode;
@@ -367,7 +367,6 @@
 				1CC6983A1B47F492001227BC /* _third_zlib_part_trees.c in Sources */,
 				1CC6982B1B47F492001227BC /* _third_des.c in Sources */,
 				1CC698371B47F492001227BC /* _third_zlib_part_gzwrite.c in Sources */,
-				1CA53B7D1ACD3DC10040226C /* main.cpp in Sources */,
 				1CC6983B1B47F492001227BC /* _third_zlib_part1.c in Sources */,
 				1CC698471B47F492001227BC /* stream.cpp in Sources */,
 				1CA53B7F1ACD3E1A0040226C /* test_cases.cpp in Sources */,
@@ -378,6 +377,7 @@
 				1CC6982D1B47F492001227BC /* _third_jread.c in Sources */,
 				1CC698411B47F492001227BC /* calculator.cpp in Sources */,
 				1CC6984E1B47F492001227BC /* stringify_xml.cpp in Sources */,
+				1CA7E0CE1B47FD5900940604 /* main.cpp in Sources */,
 				1CC698271B47F492001227BC /* _third_bigint.cpp in Sources */,
 				1CC6982F1B47F492001227BC /* _third_jwrite.c in Sources */,
 				1CC6983C1B47F492001227BC /* _third_zlib_part2.c in Sources */,
