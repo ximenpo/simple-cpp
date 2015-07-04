@@ -20,24 +20,31 @@ unsigned short	__stdcall	htons (unsigned short	hostshort);
 #include "buffer.h"
 #include "string.h"
 
-buffer_tag::SIZE_TAG	buffer_size_tag(int value) {
+buffer_tag::SIZE_TAG	buffer_size_tag(int32_t value) {
     return	(0 == value)?									buffer_tag::TAG_0
-            :	(SCHAR_MIN <= value && value <= SCHAR_MAX)?	buffer_tag::TAG_1
-            :	(SHRT_MIN <= value && value <= SHRT_MAX)?	buffer_tag::TAG_2
+            :	(INT8_MIN <= value && value <= INT8_MAX)?	buffer_tag::TAG_1
+            :	(INT16_MIN <= value && value <= INT16_MAX)?	buffer_tag::TAG_2
             :	buffer_tag::TAG_4
             ;
 }
-buffer_tag::SIZE_TAG	buffer_size_tag(unsigned long value) {
+buffer_tag::SIZE_TAG	buffer_size_tag(uint32_t value) {
     return	(0 == value)?				buffer_tag::TAG_0
-            :	(value <= UCHAR_MAX)?	buffer_tag::TAG_1
-            :	(value <= USHRT_MAX)?	buffer_tag::TAG_2
+            :	(value <= UINT8_MAX)?	buffer_tag::TAG_1
+            :	(value <= UINT16_MAX)?	buffer_tag::TAG_2
             :	buffer_tag::TAG_4
             ;
 }
-buffer_tag::SIZE_TAG	buffer_size_tag(unsigned int value) {
+buffer_tag::SIZE_TAG	buffer_size_tag(intmax_t value) {
+    return	(0 == value)?									buffer_tag::TAG_0
+            :	(INT8_MIN <= value && value <= INT8_MAX)?	buffer_tag::TAG_1
+            :	(INT16_MIN <= value && value <= INT16_MAX)?	buffer_tag::TAG_2
+            :	buffer_tag::TAG_4
+            ;
+}
+buffer_tag::SIZE_TAG	buffer_size_tag(uintmax_t value) {
     return	(0 == value)?				buffer_tag::TAG_0
-            :	(value <= UCHAR_MAX)?	buffer_tag::TAG_1
-            :	(value <= USHRT_MAX)?	buffer_tag::TAG_2
+            :	(value <= UINT8_MAX)?	buffer_tag::TAG_1
+            :	(value <= UINT16_MAX)?	buffer_tag::TAG_2
             :	buffer_tag::TAG_4
             ;
 }
@@ -52,12 +59,12 @@ buffer_tag::SIZE_TAG	buffer_size_tag(bool value) {
 }
 
 bool	buffer_write_tag(buffer& buf, const buffer_tag& tag) {
-    unsigned char	flag	= tag.pack();
+    uint8_t	flag	= tag.pack();
     return	buf.write(&flag, sizeof(flag));
 }
 
 bool	buffer_read_tag(buffer& buf, buffer_tag& tag) {
-    unsigned char	type_flag;
+    uint8_t	type_flag;
     if(!buf.read(&type_flag, sizeof(type_flag))) {
         return	false;
     }
@@ -66,24 +73,24 @@ bool	buffer_read_tag(buffer& buf, buffer_tag& tag) {
     return	true;
 }
 
-bool	buffer_write_uint_value(buffer& buf, int size_tag, unsigned long value) {
+bool	buffer_write_uint_value(buffer& buf, uint8_t size_tag, uintmax_t value) {
     switch(size_tag) {
     case buffer_tag::TAG_0: {
         return	buf.good();
     }
     break;
     case buffer_tag::TAG_1: {
-        unsigned char	tmp_v	= (unsigned char)value;
+        uint8_t	tmp_v	= uint8_t(value);
         return	buf.write(&tmp_v, sizeof(tmp_v));
     }
     break;
     case buffer_tag::TAG_2: {
-        unsigned short	tmp_v	= htons((unsigned short)value);
+        uint16_t	tmp_v	= htons(uint16_t(value));
         return	buf.write(&tmp_v, sizeof(tmp_v));
     }
     break;
     case buffer_tag::TAG_4: {
-        unsigned long	tmp_v	= htonl((unsigned long)value);
+        uint32_t	tmp_v	= htonl(uint32_t(value));
         return	buf.write(&tmp_v, sizeof(tmp_v));
     }
     break;
@@ -92,20 +99,20 @@ bool	buffer_write_uint_value(buffer& buf, int size_tag, unsigned long value) {
     return	false;
 }
 
-bool	buffer_read_uint_value(buffer& buf, int size_tag, unsigned long& value) {
+bool	buffer_read_uint_value(buffer& buf, uint8_t size_tag, uintmax_t& value) {
     switch(size_tag) {
     case buffer_tag::TAG_0:
         value = 0;
         break;
     case buffer_tag::TAG_1: {
-        unsigned char	tmp_v	= 0;
+        uint8_t	tmp_v	= 0;
         if(buf.read(&tmp_v, sizeof(tmp_v))) {
             value	= tmp_v;
         }
     }
     break;
     case buffer_tag::TAG_2: {
-        unsigned short	tmp_v	= 0;
+        uint16_t	tmp_v	= 0;
         if(buf.read(&tmp_v, sizeof(tmp_v))) {
             tmp_v	= ntohs(tmp_v);
             value	= tmp_v;
@@ -113,7 +120,7 @@ bool	buffer_read_uint_value(buffer& buf, int size_tag, unsigned long& value) {
     }
     break;
     case buffer_tag::TAG_4: {
-        unsigned long	tmp_v	= 0;
+        uint32_t	tmp_v	= 0;
         if(buf.read(&tmp_v, sizeof(tmp_v))) {
             tmp_v	= ntohl(tmp_v);
             value	= tmp_v;
@@ -121,6 +128,7 @@ bool	buffer_read_uint_value(buffer& buf, int size_tag, unsigned long& value) {
     }
     break;
     default: {
+        value   = 0;
         return	false;
     }
     break;
@@ -129,7 +137,7 @@ bool	buffer_read_uint_value(buffer& buf, int size_tag, unsigned long& value) {
     return	true;
 }
 
-bool	buffer_write_raw(buffer& buf, const void* pData, unsigned long nLen) {
+bool	buffer_write_raw(buffer& buf, const void* pData, size_t nLen) {
     buffer_tag	tag	= {
         buffer_tag::TYPE_RAW,
         buffer_size_tag(nLen),
@@ -138,7 +146,7 @@ bool	buffer_write_raw(buffer& buf, const void* pData, unsigned long nLen) {
 
     //	begin tag.
     if(		!buffer_write_tag(buf, tag)
-            ||	!buffer_write_uint_value(buf, int(tag.size_tag), nLen)
+            ||	!buffer_write_uint_value(buf, tag.size_tag, nLen)
       ) {
         return	false;
     }
@@ -146,12 +154,12 @@ bool	buffer_write_raw(buffer& buf, const void* pData, unsigned long nLen) {
     return	buf.write(pData, nLen);
 }
 
-bool	buffer_read_raw(buffer& buf, void* pData, unsigned long& nLen) {
-    unsigned long	size;
-    buffer_tag		tag;
+bool	buffer_read_raw(buffer& buf, void* pData, size_t& nLen) {
+    uintmax_t	size;
+    buffer_tag	tag;
     if(		!buffer_read_tag(buf, tag)
             ||	tag.data_type != buffer_tag::TYPE_RAW
-            ||	!buffer_read_uint_value(buf, int(tag.size_tag), size)
+            ||	!buffer_read_uint_value(buf, tag.size_tag, size)
             ||	size > nLen
       ) {
         buf.set_failure();
@@ -164,13 +172,13 @@ bool	buffer_read_raw(buffer& buf, void* pData, unsigned long& nLen) {
 }
 
 bool	buffer_read_and_ignore(buffer& buf) {
-    unsigned long	size;
-    buffer_tag		tag;
+    uintmax_t	size;
+    buffer_tag	tag;
     if(!buffer_read_tag(buf, tag)) {
         return	false;
     }
 
-    unsigned long	todo_bypes	= 0;
+    uintmax_t	todo_bypes	= 0;
     switch(tag.data_type) {
     case buffer_tag::TYPE_NONE:
         break;	// nothing to read.
@@ -179,7 +187,7 @@ bool	buffer_read_and_ignore(buffer& buf) {
     case buffer_tag::TYPE_RAW:
     case buffer_tag::TYPE_STRING: {
         // string & raw read len, and read data.
-        if(!buffer_read_uint_value(buf, int(tag.size_tag), todo_bypes)) {
+        if(!buffer_read_uint_value(buf, tag.size_tag, todo_bypes)) {
             return	false;
         }
     }
@@ -223,17 +231,17 @@ bool	buffer_read_and_ignore(buffer& buf) {
     case buffer_tag::TYPE_ARRAY:
     case buffer_tag::TYPE_OBJECT: {
         // array & object -> read size, version, and contents.
-        if(!buffer_read_uint_value(buf, int(tag.size_tag), size)) {
+        if(!buffer_read_uint_value(buf, tag.size_tag, size)) {
             return	false;
         }
 
-        unsigned char	version	= 0;
+        uint8_t	version	= 0;
         if(tag.version_tag) {
             buf.read(&version, 1);
         }
 
         if(tag.data_type == buffer_tag::TYPE_OBJECT) {
-            for(unsigned long i = 0; i < size; ++i) {
+            for(size_t i = 0; i < size; ++i) {
                 if(!buffer_read_and_ignore(buf)) {
                     return	false;
                 }
@@ -244,8 +252,8 @@ bool	buffer_read_and_ignore(buffer& buf) {
 
         assert(tag.data_type == buffer_tag::TYPE_ARRAY);
 
-        for(unsigned long i = 0; i < size; ++i) {
-            for(unsigned long j = 0; j < size; ++j) {
+        for(size_t i = 0; i < size; ++i) {
+            for(size_t j = 0; j < size; ++j) {
                 if(!buffer_read_and_ignore(buf)) {
                     return	false;
                 }
@@ -261,27 +269,27 @@ bool	buffer_read_and_ignore(buffer& buf) {
     return	buf.read(0, todo_bypes);
 }
 
-static	const	unsigned long	GC_SERIALIZE_STRING_MAX_SIZE	= 4096;
-static	inline	unsigned long	MinValue(unsigned long l, unsigned long r) {
+static	const	size_t      GC_SERIALIZE_STRING_MAX_SIZE	= 4096;
+static	inline	uintmax_t   MinValue(uintmax_t l, uintmax_t r) {
     return	l <= r ? l : r;
 }
 
 
-buffer::buffer(unsigned long nMaxSize)
+buffer::buffer(size_t nMaxSize)
     :	buf_owner_(true)
     ,	failure_(false)
     ,	data_(0)
     ,	capacity_(0)
     ,	size_(0)
     ,	offset_(0) {
-    data_	=	new	unsigned char[nMaxSize];
-    capacity_=	nMaxSize;
+    data_	    = new	uint8_t[nMaxSize];
+    capacity_   = nMaxSize;
 }
 
-buffer::buffer(const void* pBuf, unsigned long nLen)
+buffer::buffer(const void* pBuf, size_t nLen)
     :	buf_owner_(false)
     ,	failure_(false)
-    ,	data_((unsigned char*)pBuf)
+    ,	data_((uint8_t*)pBuf)
     ,	capacity_(nLen)
     ,	size_(nLen)
     ,	offset_(0) {
@@ -295,15 +303,15 @@ buffer::~buffer() {
 }
 
 std::string buffer::dump() {
-    const	int	NUMBER_SUM_PER_LINE	= 16;
+    const size_t	NUMBER_SUM_PER_LINE	= 16;
 
-    unsigned long			size	= this->size();
-    const unsigned char*	pBuffer	= static_cast<const unsigned char*>(this->data());
+    size_t			size	= this->size();
+    const uint8_t*	pBuffer	= static_cast<const uint8_t*>(this->data());
 
     char buf[4]	= {0};
     std::string line;
     line.reserve(1024 * 4);
-    for(unsigned long i = 0; i < size; ++i) {
+    for(size_t i = 0; i < size; ++i) {
         if(i > 0 && i % NUMBER_SUM_PER_LINE == 0) {
             line	+= "\n";
         }
@@ -315,14 +323,14 @@ std::string buffer::dump() {
 }
 
 std::ostream& buffer::dump(std::ostream& os) {
-    const	int	NUMBER_SUM_PER_LINE	= 16;
+    const	size_t	NUMBER_SUM_PER_LINE	= 16;
 
-    unsigned long			size	= this->size();
-    const unsigned char*	pBuffer	= static_cast<const unsigned char*>(this->data());
+    size_t			size	= this->size();
+    const uint8_t*	pBuffer	= static_cast<const uint8_t*>(this->data());
 
     char buf[4]	= {0};
     std::string line;
-    for(unsigned long i = 0; i < size; ++i) {
+    for(size_t i = 0; i < size; ++i) {
         if(i > 0 && i % NUMBER_SUM_PER_LINE == 0) {
             os	<<	"\n";
         }
@@ -333,7 +341,7 @@ std::ostream& buffer::dump(std::ostream& os) {
     return os;
 }
 
-bool buffer::write(const void* pData, unsigned long nLen) {
+bool buffer::write(const void* pData, size_t nLen) {
     assert(0 != pData);
     assert((offset_ + nLen) <= capacity_);
 
@@ -354,7 +362,7 @@ bool buffer::write(const void* pData, unsigned long nLen) {
     return true;
 }
 
-bool	buffer::read(void* pData, unsigned long nLen) {
+bool	buffer::read(void* pData, size_t nLen) {
     assert((size_ - offset_) >= nLen);
 
     if(failure()) {
@@ -373,16 +381,13 @@ bool	buffer::read(void* pData, unsigned long nLen) {
     return true;
 }
 
-buffer& operator<<(buffer& buf, signed char value) {
-    return	buf	<< (signed int)value;
+buffer& operator<<(buffer& buf, int8_t value) {
+    return	buf	<< int32_t(value);
 }
-buffer& operator<<(buffer& buf, signed short value) {
-    return	buf	<< (signed int)value;
+buffer& operator<<(buffer& buf, int16_t value) {
+    return	buf	<< int32_t(value);
 }
-buffer& operator<<(buffer& buf, signed long value) {
-    return	buf	<< (signed int)value;
-}
-buffer& operator<<(buffer& buf, signed int value) {
+buffer& operator<<(buffer& buf, int32_t value) {
     buffer_tag	tag	= {
         buffer_tag::TYPE_INT,
         buffer_size_tag(value),
@@ -395,17 +400,17 @@ buffer& operator<<(buffer& buf, signed int value) {
     case buffer_tag::TAG_0:
         break;
     case buffer_tag::TAG_1: {
-        signed char	tmp_v	= (signed char)value;
+        uint8_t	tmp_v	= uint8_t(value);
         buf.write(&tmp_v, sizeof(tmp_v));
     }
     break;
     case buffer_tag::TAG_2: {
-        signed short	tmp_v	= htons((signed short)value);
+        uint16_t	tmp_v	= htons(uint16_t(value));
         buf.write(&tmp_v, sizeof(tmp_v));
     }
     break;
     case buffer_tag::TAG_4: {
-        signed long	tmp_v	= htonl((signed long)value);
+        uint32_t	tmp_v	= htonl(uint32_t(value));
         buf.write(&tmp_v, sizeof(tmp_v));
     }
     break;
@@ -414,7 +419,41 @@ buffer& operator<<(buffer& buf, signed int value) {
     return	buf;
 }
 
-buffer& operator>>(buffer& buf, signed int& value) {
+buffer& operator>>(buffer& buf, int8_t& value) {
+    value	= 0;
+
+    int8_t	tmp_v;
+    buf	>> tmp_v;
+
+    if(buf.good()) {
+        if(buffer_size_tag(tmp_v) <= buffer_tag::TAG_1) {
+            value	= int8_t(tmp_v);
+        } else {
+            buf.set_failure();
+        }
+    }
+
+    return	buf;
+}
+
+buffer& operator>>(buffer& buf, int16_t& value) {
+    value	= 0;
+
+    int32_t	tmp_v;
+    buf	>> tmp_v;
+
+    if(buf.good()) {
+        if(buffer_size_tag(tmp_v) <= buffer_tag::TAG_2) {
+            value	= int16_t(tmp_v);
+        } else {
+            buf.set_failure();
+        }
+    }
+
+    return	buf;
+}
+
+buffer& operator>>(buffer& buf, int32_t& value) {
     value	= 0;
 
     if(buf.failure()) {
@@ -433,14 +472,14 @@ buffer& operator>>(buffer& buf, signed int& value) {
     case buffer_tag::TAG_0:
         break;
     case buffer_tag::TAG_1: {
-        signed char	tmp_v	= 0;
+        int8_t	tmp_v	= 0;
         if(buf.read(&tmp_v, sizeof(tmp_v))) {
             value	= tmp_v;
         }
     }
     break;
     case buffer_tag::TAG_2: {
-        signed short	tmp_v	= 0;
+        int16_t	tmp_v	= 0;
         if(buf.read(&tmp_v, sizeof(tmp_v))) {
             tmp_v	= ntohs(tmp_v);
             value	= tmp_v;
@@ -448,7 +487,7 @@ buffer& operator>>(buffer& buf, signed int& value) {
     }
     break;
     case buffer_tag::TAG_4: {
-        signed long	tmp_v	= 0;
+        int32_t	tmp_v	= 0;
         if(buf.read(&tmp_v, sizeof(tmp_v))) {
             tmp_v	= ntohl(tmp_v);
             value	= int(tmp_v);
@@ -464,148 +503,77 @@ buffer& operator>>(buffer& buf, signed int& value) {
     return	buf;
 }
 
-buffer& operator<<(buffer& buf, unsigned char value) {
-    return	buf	<< (unsigned int)(value);
+buffer& operator<<(buffer& buf, uint8_t value) {
+    return	buf	<< uint32_t(value);
 }
-buffer& operator<<(buffer& buf, unsigned short value) {
-    return	buf	<< (unsigned int)(value);
+buffer& operator<<(buffer& buf, uint16_t value) {
+    return	buf	<< uint32_t(value);
 }
-buffer& operator<<(buffer& buf, unsigned long value) {
-    return	buf	<< (unsigned int)(value);
-}
-buffer& operator<<(buffer& buf, unsigned int value) {
+buffer& operator<<(buffer& buf, uint32_t value) {
     buffer_tag	tag	= {
         buffer_tag::TYPE_UINT,
-        buffer_size_tag((unsigned long)value),
+        buffer_size_tag(value),
         false
     };
 
     buffer_write_tag(buf, tag);
-    buffer_write_uint_value(buf, int(tag.size_tag), value);
+    buffer_write_uint_value(buf, tag.size_tag, value);
 
     return	buf;
 }
 
-buffer& operator>>(buffer& buf, unsigned int& value) {
+buffer& operator>>(buffer& buf, uint8_t& value) {
+    value	= 0;
+
+    uint32_t	tmp_v;
+    buf	>> tmp_v;
+
+    if(buf.good()) {
+        if(buffer_size_tag(tmp_v) <= buffer_tag::TAG_1) {
+            value	= uint8_t(tmp_v);
+        } else {
+            buf.set_failure();
+        }
+    }
+
+    return	buf;
+}
+
+buffer& operator>>(buffer& buf, uint16_t& value) {
+    value	= 0;
+
+    uint32_t	tmp_v;
+    buf	>> tmp_v;
+
+    if(buf.good()) {
+        if(buffer_size_tag(tmp_v) <= buffer_tag::TAG_2) {
+            value	= uint8_t(tmp_v);
+        } else {
+            buf.set_failure();
+        }
+    }
+
+    return	buf;
+}
+
+buffer& operator>>(buffer& buf, uint32_t& value) {
     value	= 0;
 
     if(buf.failure()) {
         return	buf;
     }
 
-    unsigned long	tmp_value;
-    buffer_tag		tag;
+    uintmax_t	tmp_value;
+    buffer_tag	tag;
     if(		!buffer_read_tag(buf, tag)
             ||	tag.data_type != buffer_tag::TYPE_UINT
-            ||	!buffer_read_uint_value(buf, int(tag.size_tag), tmp_value)
+            ||	!buffer_read_uint_value(buf, tag.size_tag, tmp_value)
       ) {
         buf.set_failure();
         return	buf;
     }
 
-    value	= (unsigned int)tmp_value;
-    return	buf;
-}
-
-buffer& operator>>(buffer& buf, signed char& value) {
-    value	= 0;
-
-    int	tmp_v;
-    buf	>> tmp_v;
-
-    if(buf.good()) {
-        if(buffer_size_tag(tmp_v) <= buffer_tag::TAG_1) {
-            value	= (signed char)tmp_v;
-        } else {
-            buf.set_failure();
-        }
-    }
-
-    return	buf;
-}
-
-buffer& operator>>(buffer& buf, signed short& value) {
-    value	= 0;
-
-    int	tmp_v;
-    buf	>> tmp_v;
-
-    if(buf.good()) {
-        if(buffer_size_tag(tmp_v) <= buffer_tag::TAG_2) {
-            value	= (signed short)tmp_v;
-        } else {
-            buf.set_failure();
-        }
-    }
-
-    return	buf;
-}
-
-buffer& operator>>(buffer& buf, signed long& value) {
-    value	= 0;
-
-    int	tmp_v;
-    buf	>> tmp_v;
-
-    if(buf.good()) {
-        if(buffer_size_tag(tmp_v) <= buffer_tag::TAG_4) {
-            value	= (signed long)tmp_v;
-        } else {
-            buf.set_failure();
-        }
-    }
-
-    return	buf;
-}
-
-buffer& operator>>(buffer& buf, unsigned char& value) {
-    value	= 0;
-
-    unsigned int	tmp_v;
-    buf	>> tmp_v;
-
-    if(buf.good()) {
-        if(buffer_size_tag(tmp_v) <= buffer_tag::TAG_1) {
-            value	= (unsigned char)tmp_v;
-        } else {
-            buf.set_failure();
-        }
-    }
-
-    return	buf;
-}
-
-buffer& operator>>(buffer& buf, unsigned short& value) {
-    value	= 0;
-
-    unsigned int	tmp_v;
-    buf	>> tmp_v;
-
-    if(buf.good()) {
-        if(buffer_size_tag(tmp_v) <= buffer_tag::TAG_2) {
-            value	= (unsigned short)tmp_v;
-        } else {
-            buf.set_failure();
-        }
-    }
-
-    return	buf;
-}
-
-buffer& operator>>(buffer& buf, unsigned long& value) {
-    value	= 0;
-
-    unsigned int	tmp_v;
-    buf	>> tmp_v;
-
-    if(buf.good()) {
-        if(buffer_size_tag(tmp_v) <= buffer_tag::TAG_4) {
-            value	= (unsigned long)tmp_v;
-        } else {
-            buf.set_failure();
-        }
-    }
-
+    value	= uint32_t(tmp_value);
     return	buf;
 }
 
@@ -659,7 +627,7 @@ buffer& operator<<(buffer& buf, float value) {
     buffer_write_tag(buf, tag);
 
     {
-        unsigned long	tmp_v	= htonl(*(unsigned long*)(&value));
+        uint32_t	tmp_v	= htonl(*(uint32_t*)(&value));
         buf.write(&tmp_v, sizeof(tmp_v));
     }
 
@@ -683,7 +651,7 @@ buffer& operator>>(buffer& buf, float& value) {
     }
 
     {
-        unsigned long	tmp_v	= 0;
+        uint32_t	tmp_v	= 0;
         if(buf.read(&tmp_v, sizeof(tmp_v))) {
             tmp_v	= ntohl(tmp_v);
             memcpy(&value, &tmp_v, sizeof(value));
@@ -705,10 +673,9 @@ buffer& operator<<(buffer& buf, double value) {
     if(1==netnumber_1) {
         buf.write(&value, sizeof(value));
     } else {
-        // µÍÎ»ÔÚÇ°
-        unsigned long	tmp_v	= htonl(*((unsigned long*)(&value) + 1));
+        uint32_t	tmp_v	= htonl(*((uint32_t*)(&value) + 1));
         buf.write(&tmp_v, sizeof(tmp_v));
-        tmp_v	= htonl(*((unsigned long*)(&value) + 0));
+        tmp_v	= htonl(*((uint32_t*)(&value) + 0));
         buf.write(&tmp_v, sizeof(tmp_v));
     }
 
@@ -735,8 +702,8 @@ buffer& operator>>(buffer& buf, double& value) {
     if(1==netnumber_1) {
         buf.read(&value, sizeof(value));
     } else {
-        unsigned char	tmp_v[sizeof(double)]	= {0};
-        for(unsigned long i = sizeof(double); i > 0; --i) {
+        uint8_t	tmp_v[sizeof(double)]	= {0};
+        for(size_t i = sizeof(double); i > 0; --i) {
             buf.read(&tmp_v[i-1], 1);
         }
 
@@ -847,7 +814,7 @@ static	bool	WriteSerialString(buffer& buf, const char* data, unsigned long size)
     };
 
     return	(	buffer_write_tag(buf, tag)
-                &&		buffer_write_uint_value(buf, int(tag.size_tag), size)
+                &&		buffer_write_uint_value(buf, tag.size_tag, size)
                 &&		buf.write(data, size)
            );
 }
@@ -916,8 +883,8 @@ buffer& operator<<(buffer& buf, const buffer& value) {
 }
 
 buffer& operator>>(buffer& buf, buffer& value) {
-    unsigned long nLen = value.capacity();
-    std::auto_ptr<unsigned char>	pData(new unsigned char[nLen]);
+    size_t nLen = value.capacity();
+    std::auto_ptr<uint8_t>	pData(new uint8_t[nLen]);
     if (!buffer_read_raw(buf, pData.get(), nLen)) {
         value.set_failure();
     } else {

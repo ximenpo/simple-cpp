@@ -5,11 +5,11 @@
 
 struct	buffer_queue::Data {
     bool				buffer_can_merge;
-    unsigned long		buffer_capacity;
+    size_t		        buffer_capacity;
     std::deque<buffer*>	used_list;
     std::deque<buffer*>	free_list;
 
-    Data(bool bCanMergeBuffer, unsigned long nMaxBufferSize)
+    Data(bool bCanMergeBuffer, size_t nMaxBufferSize)
         :	buffer_can_merge(bCanMergeBuffer), buffer_capacity(nMaxBufferSize) {
     }
 

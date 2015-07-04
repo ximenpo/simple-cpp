@@ -16,9 +16,9 @@ struct testBufferMsg1 {
     std::string		s;
 };
 buffer& operator>>(buffer& buf, testBufferMsg1& obj) {
-    unsigned long		size;
-    unsigned long		ver	= 0;
-    buffer_tag			tag;
+    size_t		size;
+    uintmax_t	ver	= 0;
+    buffer_tag	tag;
     if(		!buffer_read_tag(buf, tag)
             ||	tag.data_type != buffer_tag::TYPE_OBJECT
             ||	!buffer_read_uint_value(buf, tag.size_tag, size)
@@ -43,8 +43,8 @@ buffer& operator>>(buffer& buf, testBufferMsg1& obj) {
 }
 
 buffer& operator<<(buffer& buf, const testBufferMsg1& obj) {
-    unsigned long	size	= 0;
-    buffer_tag		tag	= {
+    size_t  	size	= 0;
+    buffer_tag	tag	= {
         buffer_tag::TYPE_OBJECT,
         buffer_size_tag(size),
         0 != 0,
@@ -246,7 +246,7 @@ Context(buffer_context) {
     Spec(dump_usage) {
         buffer	buf;
         for(size_t i = 0; i < 32; ++i) {
-            buf	<<	i;
+            buf	<<	uint32_t(i);
         }
 
         std::ostringstream	os;

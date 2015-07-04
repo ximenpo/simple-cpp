@@ -1,6 +1,8 @@
 #ifndef BUFFER_H_66BC65DB_AFF6_43C8_8654_D1A2801635E2
 #define BUFFER_H_66BC65DB_AFF6_43C8_8654_D1A2801635E2
 
+#include "stdint.h"
+
 #include <cassert>
 #include <iosfwd>
 
@@ -18,8 +20,8 @@
 //
 class buffer {
 public:
-    explicit	buffer(unsigned long nMaxSize = BUFFER_DEFAULT_SIZE);
-    explicit	buffer(const void* pBuf, unsigned long nLen);
+    explicit	buffer(size_t nMaxSize = BUFFER_DEFAULT_SIZE);
+    explicit	buffer(const void* pBuf, size_t nLen);
 
     ~buffer();
 
@@ -41,20 +43,20 @@ public:
         return data_;
     }
     // 获取数据大小
-    unsigned long	size()const {
+    size_t      size()const {
         return size_;
     }
     // 获取数据大小
-    unsigned long	capacity()const {
+    size_t      capacity()const {
         return capacity_;
     }
 
     // 获取当前读取偏移
-    unsigned long	pos()const {
+    size_t      pos()const {
         return offset_;
     }
     // 获取当前读取的数据
-    const void*	data_from_curr_pos()const {
+    const void* data_from_curr_pos()const {
         return &data_[offset_];
     }
 
@@ -72,9 +74,9 @@ public:
 
 public:
     // 写入指定长度字节数
-    bool		write(const void* pData, unsigned long nLen);
+    bool		write(const void* pData, size_t nLen);
     // 读出指定长度字节数
-    bool		read(void* pData, unsigned long nLen);
+    bool		read(void* pData, size_t nLen);
 
 public:
     // 将数据包内容以十六进制的方式输出为文本内容
@@ -82,12 +84,12 @@ public:
     std::ostream&	dump(std::ostream& os);
 
 private:
-    bool				buf_owner_;
-    bool				failure_;
-    unsigned char*		data_;
-    unsigned long		capacity_;
-    unsigned long		size_;
-    unsigned long		offset_;
+    bool        buf_owner_;
+    bool        failure_;
+    uint8_t*    data_;
+    size_t      capacity_;
+    size_t      size_;
+    size_t      offset_;
 
 private:
     buffer(const buffer& rhs);
@@ -99,15 +101,15 @@ private:
 //
 struct	buffer_tag {
     enum	DATA_TYPE {
-        TYPE_NONE,			// nothing, dummy data
-        TYPE_RAW,			// byte array
-        TYPE_BOOL,			// boolean
-        TYPE_INT,			// int8, int16, int32
-        TYPE_UINT,			// uint8, uint16, uint32
-        TYPE_REAL,			// float, double
-        TYPE_STRING,		// UTF-8 strings
-        TYPE_ARRAY,			// array
-        TYPE_OBJECT,		// key/value pairs
+        TYPE_NONE,		// nothing, dummy data
+        TYPE_RAW,		// byte array
+        TYPE_BOOL,		// boolean
+        TYPE_INT,		// int8, int16, int32
+        TYPE_UINT,		// uint8, uint16, uint32
+        TYPE_REAL,		// float, double
+        TYPE_STRING,	// UTF-8 strings
+        TYPE_ARRAY,		// array
+        TYPE_OBJECT,	// key/value pairs
         TYPE_SUM,
     };
 
@@ -120,16 +122,16 @@ struct	buffer_tag {
     };
 
     // data member
-    unsigned long	data_type;
-    unsigned long	size_tag;
-    bool			version_tag;	// 对于结构而言是版本号,对于数组而言是数据项包含的对象数(当前仅支持1or2)
-    bool			unused_tag;		// 未使用
+    uint8_t	    data_type;
+    uint8_t	    size_tag;
+    bool		version_tag;	// 对于结构而言是版本号,对于数组而言是数据项包含的对象数(当前仅支持1or2)
+    bool		unused_tag;		// 未使用
 
     // Serailize/UnSerialize with byte
-    unsigned char	pack()const {
-        return (unsigned char)((unused_tag?0x80:0x00) | (version_tag?0x40:0x00) | (size_tag << 4) | (data_type << 0));
+    uint8_t	pack()const {
+        return uint8_t((unused_tag?0x80:0x00) | (version_tag?0x40:0x00) | (size_tag << 4) | (data_type << 0));
     }
-    void			unpack(unsigned char value) {
+    void			unpack(uint8_t value) {
         data_type	= (value&0x0F);
         size_tag	= ((value&0x30)>>4);
         version_tag	= (value&0x40) != 0;
@@ -140,9 +142,10 @@ struct	buffer_tag {
 //
 // size byte
 //
-buffer_tag::SIZE_TAG	buffer_size_tag(int value);
-buffer_tag::SIZE_TAG	buffer_size_tag(unsigned long value);
-buffer_tag::SIZE_TAG	buffer_size_tag(unsigned int value);
+buffer_tag::SIZE_TAG	buffer_size_tag(int32_t value);
+buffer_tag::SIZE_TAG	buffer_size_tag(uint32_t value);
+buffer_tag::SIZE_TAG	buffer_size_tag(intmax_t value);
+buffer_tag::SIZE_TAG	buffer_size_tag(uintmax_t value);
 buffer_tag::SIZE_TAG	buffer_size_tag(float value);
 buffer_tag::SIZE_TAG	buffer_size_tag(double value);
 buffer_tag::SIZE_TAG	buffer_size_tag(bool value);
@@ -157,14 +160,14 @@ buffer_tag::SIZE_TAG	buffer_size_tag(bool value);
 bool		buffer_write_tag(buffer& buf, const buffer_tag& tag);
 bool		buffer_read_tag(buffer& buf, buffer_tag& tag);
 
-bool		buffer_write_uint_value(buffer& buf, int size_tag, unsigned long value);
-bool		buffer_read_uint_value(buffer& buf, int size_tag, unsigned long& value);
+bool		buffer_write_uint_value(buffer& buf, uint8_t size_tag, uintmax_t value);
+bool		buffer_read_uint_value(buffer& buf, uint8_t size_tag, uintmax_t& value);
 
 //
 //	Raw:	byte array
 //
-bool		buffer_write_raw(buffer& buf, const void* pData, unsigned long nLen);
-bool		buffer_read_raw(buffer& buf, void* pData, unsigned long& nLen);
+bool		buffer_write_raw(buffer& buf, const void* pData, size_t nLen);
+bool		buffer_read_raw(buffer& buf, void* pData, size_t& nLen);
 
 //
 //	None:	ignore
@@ -180,28 +183,26 @@ buffer&		operator>>(buffer& buf, bool& value);
 //
 //	INT:	int/char/short
 //
-buffer&		operator<<(buffer& buf, signed int value);
-buffer&		operator<<(buffer& buf, signed char value);
-buffer&		operator<<(buffer& buf, signed short value);
-buffer&		operator<<(buffer& buf, signed long value);
+buffer&		operator<<(buffer& buf, int8_t value);
+buffer&		operator<<(buffer& buf, int16_t value);
+buffer&		operator<<(buffer& buf, int32_t value);
 
-buffer&		operator>>(buffer& buf, signed int& value);
-buffer&		operator>>(buffer& buf, signed char& value);
-buffer&		operator>>(buffer& buf, signed short& value);
-buffer&		operator>>(buffer& buf, signed long& value);
+buffer&		operator>>(buffer& buf, int8_t& value);
+buffer&		operator>>(buffer& buf, int16_t& value);
+buffer&		operator>>(buffer& buf, int32_t& value);
 
 //
 //	UINT:	int/char/short
 //
-buffer&		operator<<(buffer& buf, unsigned int value);
-buffer&		operator<<(buffer& buf, unsigned char value);
-buffer&		operator<<(buffer& buf, unsigned short value);
-buffer&		operator<<(buffer& buf, unsigned long value);
+buffer&		operator<<(buffer& buf, uint8_t value);
+buffer&		operator<<(buffer& buf, uint16_t value);
+buffer&		operator<<(buffer& buf, uint32_t value);
+buffer&		operator<<(buffer& buf, uint64_t value);
 
-buffer&		operator>>(buffer& buf, unsigned int& value);
-buffer&		operator>>(buffer& buf, unsigned char& value);
-buffer&		operator>>(buffer& buf, unsigned short& value);
-buffer&		operator>>(buffer& buf, unsigned long& value);
+buffer&		operator>>(buffer& buf, uint8_t& value);
+buffer&		operator>>(buffer& buf, uint16_t& value);
+buffer&		operator>>(buffer& buf, uint32_t& value);
+buffer&		operator>>(buffer& buf, uint64_t& value);
 
 //
 //	REAL:	float/double
@@ -227,11 +228,11 @@ buffer&		operator>>(buffer& buf, std::wstring& value);
 //	Array:	vector/deque/set/list/map/pair
 //
 template<typename T>
-static	unsigned long	buffer_array_version_tag(const T& array) {
+static	uint32_t	buffer_array_version_tag(const T& array) {
     return	0;
 }
 template<class KEY, class VALUE>
-static	unsigned long	buffer_array_version_tag(const std::map<KEY,VALUE>& array) {
+static	uint32_t	buffer_array_version_tag(const std::map<KEY,VALUE>& array) {
     return	2;
 }
 
@@ -270,8 +271,8 @@ inline buffer&		operator>>(buffer& buf, std::pair<KEY, VALUE>& obj) {
 
 template<typename T>
 inline buffer&		operator<<(buffer& buf, const T& array) {
-    unsigned long	version		= buffer_array_version_tag(array);
-    buffer_tag		tag	= {
+    uintmax_t	version		= buffer_array_version_tag(array);
+    buffer_tag	tag	= {
         buffer_tag::TYPE_ARRAY,
         buffer_size_tag(array.size()),
         version >= 2
@@ -291,9 +292,9 @@ inline buffer&		operator<<(buffer& buf, const T& array) {
     }
 
     //	content.
-    unsigned long	size			= array.size();
+    size_t	size	= array.size();
     typename T::const_iterator it	= array.begin();
-    for(unsigned long i = 0; i < size; ++i, ++it) {
+    for(size_t i = 0; i < size; ++i, ++it) {
         buf	<< (*it);
     }
 
@@ -304,12 +305,12 @@ template<typename T>
 inline buffer&		operator>>(buffer& buf, T& array) {
     array.clear();
 
-    unsigned long	size;
-    unsigned long	version;
+    size_t	    size;
+    uintmax_t	version;
     buffer_tag	tag;
     if(		!buffer_read_tag(buf, tag)
             ||	tag.data_type != buffer_tag::TYPE_ARRAY
-            ||	!buffer_read_uint_value(buf, int(tag.size_tag), size)
+            ||	!buffer_read_uint_value(buf, tag.size_tag, size)
       ) {
         buf.set_failure();
         return	buf;
@@ -326,7 +327,7 @@ inline buffer&		operator>>(buffer& buf, T& array) {
         }
     }
 
-    for(unsigned long i = 0; i < size; ++i) {
+    for(size_t i = 0; i < size; ++i) {
         buffer_read_array_item(buf, array);
     }
 
@@ -357,11 +358,11 @@ buffer&		operator>>(buffer& buf, buffer& value);
 #define		BUFFER_SERIAL_ENUM_(ENUM_TYPE)							\
 inline	buffer& operator<<(buffer& buf, const ENUM_TYPE& value)		\
 {																	\
-	return	buf <<  int(value);										\
+	return	buf <<  uint32_t(value);								\
 }																	\
 inline	buffer& operator>>(buffer& buf, ENUM_TYPE& value)			\
 {																	\
-	int value_;														\
+	uint32_t value_;												\
 	buf >> value_;													\
 	value = ENUM_TYPE(value_);										\
 	return buf;														\
@@ -372,8 +373,8 @@ inline	buffer& operator>>(buffer& buf, ENUM_TYPE& value)			\
 //
 template<typename SAFE_ARRAY_TYPE, int SAFE_ARRAY_SIZE>
 inline buffer& operator<<(buffer& buf, const safe_array<SAFE_ARRAY_TYPE, SAFE_ARRAY_SIZE>& array) {
-    unsigned long	version		= buffer_array_version_tag(array);
-    buffer_tag		tag	= {
+    uintmax_t	version		= buffer_array_version_tag(array);
+    buffer_tag	tag	= {
         buffer_tag::TYPE_ARRAY,
         buffer_size_tag(SAFE_ARRAY_SIZE),
         version >= 2
@@ -402,8 +403,8 @@ inline buffer& operator<<(buffer& buf, const safe_array<SAFE_ARRAY_TYPE, SAFE_AR
 
 template<typename SAFE_ARRAY_TYPE, int SAFE_ARRAY_SIZE>
 inline buffer& operator>>(buffer& buf, safe_array<SAFE_ARRAY_TYPE, SAFE_ARRAY_SIZE>& array) {
-    unsigned long	size;
-    unsigned long	version;
+    size_t  	size;
+    uintmax_t	version;
     buffer_tag		tag;
     if(		!buffer_read_tag(buf, tag)
             ||	tag.data_type != buffer_tag::TYPE_ARRAY
@@ -439,7 +440,7 @@ inline buffer& operator>>(buffer& buf, safe_array<SAFE_ARRAY_TYPE, SAFE_ARRAY_SI
 //
 class	buffer_queue {
 public:
-    explicit			buffer_queue(bool bCanMergeBuffer = true, unsigned long nMaxBufferSize	= BUFFER_DEFAULT_SIZE);
+    explicit			buffer_queue(bool bCanMergeBuffer = true, size_t nMaxBufferSize	= BUFFER_DEFAULT_SIZE);
     ~buffer_queue();
 
 public:
