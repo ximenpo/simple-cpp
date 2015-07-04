@@ -246,7 +246,7 @@ Context(buffer_context) {
     Spec(dump_usage) {
         buffer	buf;
         for(size_t i = 0; i < 32; ++i) {
-            buf	<<	uint32_t(i);
+            buf	<<	i;
         }
 
         std::ostringstream	os;
