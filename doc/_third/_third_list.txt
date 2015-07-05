@@ -28,3 +28,4 @@ switch_flags		http://www.codeproject.com/Articles/141327/Switching-on-Boolean-Co
 SuperEasyJson		http://www.sourceforge.net/p/supereasyjson
 tCNode			http://www.codeproject.com/Articles/837746/Cplusplus-tCNode-template-An-Indexed-Multi-node-Da
 url_parser		http://draft.scyphus.co.jp/lang/c/url_parser.html
+xxtea			http://en.wikipedia.org/wiki/XXTEA
