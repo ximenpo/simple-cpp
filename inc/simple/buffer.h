@@ -124,7 +124,7 @@ struct	buffer_tag {
 
     // data member
     // bit [0-3]
-    DATA_TYPE    data_type;
+    DATA_TYPE   data_type;
     // bit [4-6]
     // 对于bool表示真／假（TAG_1/TAG_0）
     // 对于其他数字类型表示后续元素字节数
@@ -136,10 +136,10 @@ struct	buffer_tag {
     bool		version_tag;
 
     // Serailize/UnSerialize with byte
-    uint8_t	pack()const {
+    uint8_t	    pack()const {
         return uint8_t((version_tag?0x80:0x00) | (size_tag << 4) | (data_type << 0));
     }
-    void			unpack(uint8_t value) {
+    void		unpack(uint8_t value) {
         data_type	= DATA_TYPE(value&0x0F);
         size_tag	= SIZE_TAG((value&0x30)>>4);
         version_tag	= (value&0x80) != 0;

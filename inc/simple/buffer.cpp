@@ -208,7 +208,8 @@ bool	buffer_read_and_ignore(buffer& buf) {
     }
     break;
     case buffer_tag::TYPE_INT:
-    case buffer_tag::TYPE_UINT: {
+    case buffer_tag::TYPE_UINT:
+    case buffer_tag::TYPE_REAL: {
         // int & uint read direct data.
         switch(tag.size_tag) {
         case buffer_tag::TAG_0:
@@ -230,25 +231,31 @@ bool	buffer_read_and_ignore(buffer& buf) {
         }
     }
     break;
-    case buffer_tag::TYPE_REAL: {
-        // float & double read 4/8 data.
-        switch(tag.size_tag) {
-        case buffer_tag::TAG_0:
-            break;
-        case buffer_tag::TAG_4:
-            todo_bypes	= 4;
-            break;
-        case buffer_tag::TAG_8:
-            todo_bypes	= 8;
-            break;
-        default:
+    case buffer_tag::TYPE_ARRAY: {
+        if(!buffer_read_uint_value(buf, tag.size_tag, size)) {
             return	false;
         }
+
+        if(tag.version_tag) {
+            for(size_t i = 0; i < size && buf.good(); ++i) {
+                if(!buffer_read_and_ignore(buf)) {
+                    return	false;
+                }
+                if(!buffer_read_and_ignore(buf)) {
+                    return	false;
+                }
+            }
+        } else {
+            for(size_t i = 0; i < size && buf.good(); ++i) {
+                if(!buffer_read_and_ignore(buf)) {
+                    return	false;
+                }
+            }
+        }
+
     }
     break;
-    case buffer_tag::TYPE_ARRAY:
     case buffer_tag::TYPE_OBJECT: {
-        // array & object -> read size, version, and contents.
         if(!buffer_read_uint_value(buf, tag.size_tag, size)) {
             return	false;
         }
@@ -258,23 +265,9 @@ bool	buffer_read_and_ignore(buffer& buf) {
             buf.read(&version, 1);
         }
 
-        if(tag.data_type == buffer_tag::TYPE_OBJECT) {
-            for(size_t i = 0; i < size && buf.good(); ++i) {
-                if(!buffer_read_and_ignore(buf)) {
-                    return	false;
-                }
-            }
-
-            break;
-        }
-
-        assert(tag.data_type == buffer_tag::TYPE_ARRAY);
-
         for(size_t i = 0; i < size && buf.good(); ++i) {
-            for(size_t j = 0; j < size && buf.good(); ++j) {
-                if(!buffer_read_and_ignore(buf)) {
-                    return	false;
-                }
+            if(!buffer_read_and_ignore(buf)) {
+                return	false;
             }
         }
     }
