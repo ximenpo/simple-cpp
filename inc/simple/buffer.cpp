@@ -256,13 +256,13 @@ bool	buffer_read_and_ignore(buffer& buf) {
     }
     break;
     case buffer_tag::TYPE_OBJECT: {
-        if(!buffer_read_uint_value(buf, tag.size_tag, size)) {
-            return	false;
+        uint8_t	version	= 0;
+        if(tag.version_tag && !buf.read(&version, 1)) {
+            return  false;
         }
 
-        uint8_t	version	= 0;
-        if(tag.version_tag) {
-            buf.read(&version, 1);
+        if(!buffer_read_uint_value(buf, tag.size_tag, size)) {
+            return	false;
         }
 
         for(size_t i = 0; i < size && buf.good(); ++i) {
