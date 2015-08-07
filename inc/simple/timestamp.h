@@ -3,9 +3,17 @@
 
 #include <climits>
 
+//
+//#define   TIMESTAMP_TICKCOUNT()   GetTickCount()
+//
+
 inline	unsigned long	timestamp_tickcount();
 
-#if	defined(_WIN32)
+#if defined(TIMESTAMP_TICKCOUNT)
+inline	unsigned long	timestamp_tickcount() {
+    return  TIMESTAMP_TICKCOUNT();
+}
+#elif	defined(_WIN32)
 extern	"C"	unsigned long	__stdcall	GetTickCount(void);
 inline	unsigned long	timestamp_tickcount() {
     return	GetTickCount();
@@ -87,8 +95,8 @@ private:
     volatile	unsigned long		tickcount_last_;		//	最后一次TickCount值
     volatile	unsigned long		tickcount_begin_;		//	初始TickCount值
 
-    volatile	double				timestamp_;				//	最后一次时间戳值
-    volatile	double				timestamp_begin_;		//	初始时间戳值
+    volatile	double     			timestamp_;				//	最后一次时间戳值
+    volatile	double     			timestamp_begin_;		//	初始时间戳值
 };
 
 #endif
