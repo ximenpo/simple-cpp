@@ -30,7 +30,7 @@ Context(timer_context) {
         stage	= 1;
         PROCEDURE_YIELD_(false);
         stage	= 2;
-        PROCEDURE_WAIT_(timing, 1.0, false);
+        PROCEDURE_SLEEP_(timing, 1.0, false);
         stage	= 3;
         PROCEDURE_END_(true);
     }
@@ -40,7 +40,7 @@ Context(timer_context) {
         stage	= 1;
         PROCEDUREEX_YIELD();
         stage	= 2;
-        PROCEDUREEX_WAIT(timing, 1.0);
+        PROCEDUREEX_SLEEP(timing, 1.0);
         stage	= 3;
         PROCEDUREEX_END();
     }

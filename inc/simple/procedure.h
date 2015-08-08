@@ -95,8 +95,10 @@ namespace {
 #define		PROCEDURE_BEGIN_RUNLOOP_(PC,DATA,NAME)	PROCEDURE_I_PREPARE(PC);PROCEDURE_I_DATA_DECLARE(DATA,NAME);switch(PROCEDURE_I_STATE()){ case -1: case 0: {PROCEDURE_I_DATA_CREATE(DATA);}
 #define		PROCEDURE_YIELD()						{ PROCEDURE_I_STATE() = __LINE__; return;		case __LINE__: ; }
 #define		PROCEDURE_YIELD_(R)						{ PROCEDURE_I_STATE() = __LINE__; return (R);	case __LINE__: ; }
-#define		PROCEDURE_WAIT(PT, S)					{(PT)->start_timestamp = (PT)->current_timestamp; while(!(PT)->check_expired(S)){PROCEDURE_YIELD();}}
-#define		PROCEDURE_WAIT_(PT, S, R)				{(PT)->start_timestamp = (PT)->current_timestamp; while(!(PT)->check_expired(S)){PROCEDURE_YIELD_(R);}}
+#define		PROCEDURE_SLEEP(PT, S)					{(PT)->start_timestamp = (PT)->current_timestamp; while(!(PT)->check_expired(S)){PROCEDURE_YIELD();}}
+#define		PROCEDURE_SLEEP_(PT, S, R)				{(PT)->start_timestamp = (PT)->current_timestamp; while(!(PT)->check_expired(S)){PROCEDURE_YIELD_(R);}}
+#define		PROCEDURE_WAIT(COND, PT, S)				{(PT)->start_timestamp = (PT)->current_timestamp; while(!(PT)->check_expired(S) && !(COND)){PROCEDURE_YIELD();}}
+#define		PROCEDURE_WAIT_(COND, PT, S, R)			{(PT)->start_timestamp = (PT)->current_timestamp; while(!(PT)->check_expired(S) && !(COND)){PROCEDURE_YIELD_(R);}}
 #define		PROCEDURE_STOP()						{ PROCEDURE_I_CLEAR(); return;		case __LINE__: ; }
 #define		PROCEDURE_STOP_(R)						{ PROCEDURE_I_CLEAR(); return (R);	case __LINE__: ; }
 #define		PROCEDURE_END()							{ break; default: PROCEDURE_HANDLE_ERROR() ; } } {PROCEDURE_I_CLEAR();} return;
@@ -156,7 +158,7 @@ namespace {
 }
 
 #if		!defined(PROCEDURE_EX_HANDLE_ERROR)
-#define		PROCEDURE_EX_HANDLE_ERROR()			PROCEDURE_HANDLE_ERROR()
+#define		PROCEDURE_EX_HANDLE_ERROR()				PROCEDURE_HANDLE_ERROR()
 #endif
 
 //
@@ -167,7 +169,8 @@ namespace {
 #define		PROCEDUREEX_BEGIN_RUNLOOP(PC)				PROCEDURE_EI_PREPARE(PC);switch(PROCEDURE_EI_STATE()){ case -1: case 0:
 #define		PROCEDUREEX_BEGIN_RUNLOOP_(PC,DATA,NAME)	PROCEDURE_EI_PREPARE(PC);PROCEDURE_EI_DATA_DECLARE(DATA,NAME);switch(CONITNUATION_EI_STATE()){ case -1: case 0: {PROCEDURE_EI_DATA_CREATE(DATA);}
 #define		PROCEDUREEX_YIELD()							{ PROCEDURE_EI_POP_LEVEL();PROCEDURE_EI_STATE() = __LINE__; return false;		case __LINE__: ; }
-#define		PROCEDUREEX_WAIT(PT, S)						{(PT)->start_timestamp = (PT)->current_timestamp; while(!(PT)->check_expired(S)){PROCEDUREEX_YIELD();}}
+#define		PROCEDUREEX_SLEEP(PT, S)					{(PT)->start_timestamp = (PT)->current_timestamp; while(!(PT)->check_expired(S)){PROCEDUREEX_YIELD();}}
+#define		PROCEDUREEX_WAIT(COND, PT, S)				{(PT)->start_timestamp = (PT)->current_timestamp; while(!(PT)->check_expired(S) && !(COND)){PROCEDUREEX_YIELD();}}
 #define		PROCEDUREEX_STOP()							{ PROCEDURE_EI_CLEAR(); return true;			case __LINE__: ; }
 #define		PROCEDUREEX_END()							{ break; default: PROCEDURE_EX_HANDLE_ERROR() ; } } {PROCEDURE_EI_CLEAR();} return true;
 
