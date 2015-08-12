@@ -55,18 +55,18 @@ Context(procedure_context_usage) {
         AssertThat(simple_procedure(&ctx), Equals(4));
 
         AssertThat(ctx.is_running(), IsTrue());
-        AssertThat(ctx.is_finished(), IsFalse());
+        AssertThat(ctx.is_done(), IsFalse());
         AssertThat(simple_procedure(&ctx), Equals(5));
         AssertThat(ctx.is_running(), IsFalse());
-        AssertThat(ctx.is_finished(), IsTrue());
+        AssertThat(ctx.is_done(), IsTrue());
 
         AssertThat(simple_procedure(&ctx), Equals(5));
-        AssertThat(ctx.is_finished(), IsTrue());
+        AssertThat(ctx.is_done(), IsTrue());
 
         ctx.goto_label(&global_lbl);
         AssertThat(simple_procedure(&ctx), Equals(3));
         AssertThat(ctx.is_running(), IsTrue());
-        AssertThat(ctx.is_finished(), IsFalse());
+        AssertThat(ctx.is_done(), IsFalse());
     }
 
     Spec(with_local_data) {
@@ -80,7 +80,7 @@ Context(procedure_context_usage) {
         AssertThat(complex_procedure(&ctx), Equals(0));
 
         AssertThat(ctx.is_running(), IsFalse());
-        AssertThat(ctx.is_finished(), IsTrue());
+        AssertThat(ctx.is_done(), IsTrue());
     }
 
     Spec(RUNLOOP_usage) {
@@ -92,16 +92,16 @@ Context(procedure_context_usage) {
         AssertThat(simple_loop_procedure(&ctx), Equals(2));
 
         AssertThat(ctx.is_running(), IsTrue());
-        AssertThat(ctx.is_finished(), IsFalse());
+        AssertThat(ctx.is_done(), IsFalse());
         AssertThat(simple_loop_procedure(&ctx), Equals(0));
         AssertThat(ctx.is_running(), IsFalse());
-        AssertThat(ctx.is_finished(), IsTrue());
+        AssertThat(ctx.is_done(), IsTrue());
 
         // loop again
         AssertThat(simple_loop_procedure(&ctx), Equals(1));
         AssertThat(simple_loop_procedure(&ctx), Equals(2));
         AssertThat(ctx.is_running(), IsTrue());
-        AssertThat(ctx.is_finished(), IsFalse());
+        AssertThat(ctx.is_done(), IsFalse());
     }
 
     Spec(save_label_usage) {
@@ -183,6 +183,6 @@ Context(procedure_context_ex_usage) {
         AssertThat(data, Equals(2));
 
         AssertThat(ctx.is_running(), IsTrue());
-        AssertThat(ctx.is_finished(), IsFalse());
+        AssertThat(ctx.is_done(), IsFalse());
     }
 };

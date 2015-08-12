@@ -47,10 +47,15 @@ public:
         delete procedure_data__;
         procedure_data__ = 0;
     }
+    void    done() {
+        procedure_state__ = -1;
+        delete procedure_data__;
+        procedure_data__ = 0;
+    }
     bool	is_running() {
         return (procedure_state__ > 0);
     }
-    bool	is_finished() {
+    bool	is_done() {
         return (procedure_state__ < 0);
     }
 
@@ -121,11 +126,16 @@ public:
         level_ = 0;
         contexts_.clear();
     }
+    void    done() {
+        if(level_ >= 0) {
+            contexts_[0].done();
+        }
+    }
     bool	is_running() {
         return (!contexts_.empty() && contexts_[0].is_running());
     }
-    bool	is_finished() {
-        return (contexts_.empty() || contexts_[0].is_finished());
+    bool	is_done() {
+        return (contexts_.empty() || contexts_[0].is_done());
     }
 
 public:
