@@ -139,3 +139,20 @@ void	string_ellipsis(std::string& str, size_t nShowLen) {
     str.assign(dbuf.get());
     return;
 }
+
+extern	"C"	int GeneratePassword(   int length,
+                                    int special,
+                                    char *password);
+std::string		string_generate(size_t length, bool use_special_chars) {
+    std::auto_ptr<char>	buf(new char[length]);
+    if(0 == GeneratePassword(int(length), use_special_chars, buf.get())) {
+        return	std::string(buf.get(), length);
+    }
+
+    std::string	str;
+    str.reserve(length);
+    for(size_t i = 0; i < length; ++i) {
+        str.push_back('a' + rand()%26);
+    }
+    return	str;
+}
