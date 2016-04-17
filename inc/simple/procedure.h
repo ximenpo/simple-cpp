@@ -127,7 +127,7 @@ public:
         contexts_.clear();
     }
     void    done() {
-        if(level_ >= 0) {
+        if(level_ == 0) {
             contexts_[0].done();
         }
     }

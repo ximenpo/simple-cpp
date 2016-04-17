@@ -7,6 +7,13 @@
 #   include <unistd.h>
 #endif
 
+//
+//	disable gcc compiler warnings.
+//
+#ifdef __GNUC__
+#	pragma  GCC diagnostic ignored  "-Wshift-negative-value"
+#endif
+
 #include	"_third/zlib/compress.c"
 #include	"_third/zlib/uncompr.c"
 #include	"_third/zlib/inflate.c"
