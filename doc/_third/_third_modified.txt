@@ -1,4 +1,5 @@
 inc/simple
-	any.h				modified from	third/any.h
-	ptr.h				modified from	third/any_ptr.h
-	define_improved_enum.inc	modified from	third/DefineImprovedEnum.inc
+	any.h						modified from	_third/any.h
+	ptr.h						modified from	_third/any_ptr.h
+	define_improved_enum.inc	modified from	_third/DefineImprovedEnum.inc
+	fsm.h						modified from	_third/StateMachineCompact/StateMachine.h/cpp

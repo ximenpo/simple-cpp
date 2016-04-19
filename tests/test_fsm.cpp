@@ -37,54 +37,54 @@ public:
 
 private:
     // state machine state functions
-    void ST_Idle(EventData*);
-    void ST_Stop(EventData*);
+    void ST_Idle(fsm_event*);
+    void ST_Stop(fsm_event*);
     void ST_Start(MotorFSMData*);
     void ST_ChangeSpeed(MotorFSMData*);
 
     // state map to define state function order
-    BEGIN_STATE_MAP
-    STATE_MAP_ENTRY(&MotorFSM::ST_Idle)
-    STATE_MAP_ENTRY(&MotorFSM::ST_Stop)
-    STATE_MAP_ENTRY(&MotorFSM::ST_Start)
-    STATE_MAP_ENTRY(&MotorFSM::ST_ChangeSpeed)
-    END_STATE_MAP
+    FSM_STATE_MAP_BEGIN()
+    FSM_STATE_ENTRY(&MotorFSM::ST_Idle)
+    FSM_STATE_ENTRY(&MotorFSM::ST_Stop)
+    FSM_STATE_ENTRY(&MotorFSM::ST_Start)
+    FSM_STATE_ENTRY(&MotorFSM::ST_ChangeSpeed)
+    FSM_STATE_MAP_END();
 };
 
 // halt MotorFSM external event
 void MotorFSM::Halt(void) {
     // given the Halt event, transition to a new state based upon
     // the current state of the state machine
-    BEGIN_TRANSITION_MAP                      // - Current State -
-    TRANSITION_MAP_ENTRY (EVENT_IGNORED)  // ST_Idle
-    TRANSITION_MAP_ENTRY (CANNOT_HAPPEN)  // ST_Stop
-    TRANSITION_MAP_ENTRY (ST_STOP)        // ST_Start
-    TRANSITION_MAP_ENTRY (ST_STOP)        // ST_ChangeSpeed
-    END_TRANSITION_MAP(NULL)
+    FSM_TRANSITION_MAP_BEGIN()                // - Current State -
+    FSM_TRANSITION_ENTRY (EVENT_IGNORED)  // ST_Idle
+    FSM_TRANSITION_ENTRY (CANNOT_HAPPEN)  // ST_Stop
+    FSM_TRANSITION_ENTRY (ST_STOP)        // ST_Start
+    FSM_TRANSITION_ENTRY (ST_STOP)        // ST_ChangeSpeed
+    FSM_TRANSITION_MAP_END(NULL)
 }
 
 // set MotorFSM speed external event
 void MotorFSM::SetSpeed(MotorFSMData* pData) {
-    BEGIN_TRANSITION_MAP                      // - Current State -
-    TRANSITION_MAP_ENTRY (ST_START)       // ST_Idle
-    TRANSITION_MAP_ENTRY (CANNOT_HAPPEN)  // ST_Stop
-    TRANSITION_MAP_ENTRY (ST_CHANGE_SPEED)// ST_Start
-    TRANSITION_MAP_ENTRY (ST_CHANGE_SPEED)// ST_ChangeSpeed
-    END_TRANSITION_MAP(pData)
+    FSM_TRANSITION_MAP_BEGIN()                // - Current State -
+    FSM_TRANSITION_ENTRY (ST_START)       // ST_Idle
+    FSM_TRANSITION_ENTRY (CANNOT_HAPPEN)  // ST_Stop
+    FSM_TRANSITION_ENTRY (ST_CHANGE_SPEED)// ST_Start
+    FSM_TRANSITION_ENTRY (ST_CHANGE_SPEED)// ST_ChangeSpeed
+    FSM_TRANSITION_MAP_END(pData)
 }
 
 // state machine sits here when MotorFSM is not running
-void MotorFSM::ST_Idle(EventData* pData) {
+void MotorFSM::ST_Idle(fsm_event* pData) {
     //cout << "MotorFSM::ST_Idle" << endl;
 }
 
 // stop the MotorFSM
-void MotorFSM::ST_Stop(EventData* pData) {
+void MotorFSM::ST_Stop(fsm_event* pData) {
     //cout << "MotorFSM::ST_Stop" << endl;
 
     // perform the stop MotorFSM processing here
     // transition to ST_Idle via an internal event
-    InternalEvent(ST_IDLE);
+    fire_event(ST_IDLE);
 }
 
 // start the MotorFSM going
