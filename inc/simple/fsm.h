@@ -3,4 +3,13 @@
 
 #include	"_third/StateMachineCompact/StateMachine.h"
 
+#if     defined(END_STATE_MAP)
+#   undef   END_STATE_MAP
+#   define  END_STATE_MAP \
+   { StateFunc(0) }\
+   }; \
+   return &StateMap[0]; }
+
+#endif
+
 #endif
