@@ -10,6 +10,23 @@
    }; \
    return &StateMap[0]; }
 
+//
+//  fsm event params
+//
+class   fsm_event   : public    EventData {};
+
+//
+//  fsm impls.
+//
+class   fsm : public StateMachine {
+public:
+    fsm(unsigned char states_sum):StateMachine(states_sum) {}
+
+    unsigned char   current_state() {
+        return  currentState;
+    }
+};
+
 #endif
 
 #endif

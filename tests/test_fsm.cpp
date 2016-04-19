@@ -7,7 +7,7 @@ using	std::endl;
 
 #include	"simple/fsm.h"
 
-struct MotorFSMData : public EventData {
+struct MotorFSMData : public fsm_event {
     int speed;
 
     MotorFSMData(int speed) {
@@ -16,7 +16,7 @@ struct MotorFSMData : public EventData {
 };
 
 // the MotorFSM state machine class
-class MotorFSM : public StateMachine {
+class MotorFSM : public fsm {
 public:
     // state enumeration order must match the order of state
     // method entries in the state map
@@ -29,15 +29,12 @@ public:
     };
 
 public:
-    MotorFSM() : StateMachine(ST_MAX_STATES) {}
+    MotorFSM() : fsm(ST_MAX_STATES) {}
 
     // external events taken by this state machine
     void Halt();
     void SetSpeed(MotorFSMData*);
 
-    E_States	GetState() {
-        return	E_States(currentState);
-    }
 private:
     // state machine state functions
     void ST_Idle(EventData*);
@@ -107,12 +104,12 @@ Context(fsm_usage) {
     Spec(motor_fsm_usage) {
         MotorFSM	fsm;
 
-        AssertThat(fsm.GetState(), Equals(MotorFSM::ST_IDLE));
+        AssertThat(fsm.current_state(), Equals(MotorFSM::ST_IDLE));
         fsm.SetSpeed(new MotorFSMData(10));
-        AssertThat(fsm.GetState(), Equals(MotorFSM::ST_START));
+        AssertThat(fsm.current_state(), Equals(MotorFSM::ST_START));
         fsm.SetSpeed(new MotorFSMData(10));
-        AssertThat(fsm.GetState(), Equals(MotorFSM::ST_CHANGE_SPEED));
+        AssertThat(fsm.current_state(), Equals(MotorFSM::ST_CHANGE_SPEED));
         fsm.Halt();
-        AssertThat(fsm.GetState(), Equals(MotorFSM::ST_IDLE));
+        AssertThat(fsm.current_state(), Equals(MotorFSM::ST_IDLE));
     }
 };
