@@ -14,7 +14,9 @@ inline	unsigned long	timestamp_tickcount() {
     return  TIMESTAMP_TICKCOUNT();
 }
 #elif	defined(_WIN32)
+#	if	!defined(_WINBASE_)
 extern	"C"	unsigned long	__stdcall	GetTickCount(void);
+#	endif
 inline	unsigned long	timestamp_tickcount() {
     return	GetTickCount();
 }
