@@ -168,6 +168,7 @@
 		1CE5E4031CD23645006F6F5B /* timestamp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = timestamp.h; sourceTree = "<group>"; };
 		1CE5E4041CD23645006F6F5B /* tree_node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tree_node.h; sourceTree = "<group>"; };
 		1CE5E4051CD23645006F6F5B /* type.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = type.h; sourceTree = "<group>"; };
+		1CE5E4331CD241DD006F6F5B /* turing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = turing.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -210,6 +211,7 @@
 		1CC30D351AFB0CD600C5EDAF /* simple-cpp */ = {
 			isa = PBXGroup;
 			children = (
+				1CE5E4331CD241DD006F6F5B /* turing.h */,
 				1CE5E3A41CD23645006F6F5B /* _third_bigint.cpp */,
 				1CE5E3A51CD23645006F6F5B /* _third_combination.cpp */,
 				1CE5E3A61CD23645006F6F5B /* _third_convert_utf.cpp */,
