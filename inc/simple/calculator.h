@@ -25,7 +25,9 @@ public:
     }
     //	获取变量值
     bool				fetch_variable(const std::string& key, variable& value) {
-        return	(this->do_find_variable(key.c_str(), value) > 0);
+        int	move	= 0;
+        value	= this->do_find_variable(key.c_str(), move);
+        return	(move > 0);
     }
 
     void				set_use_radian(bool use_radian) {
@@ -41,14 +43,15 @@ public:
 
 protected:
     virtual	void		do_set_variable(const std::string& key, variable value);
-    virtual	int			do_find_variable(const char* buf, variable& var);
+    virtual	variable	do_find_variable(const char* buf, int& move);
+    virtual	variable	do_find_function(const char* buf, int& move);
 
     bool				is_delimiter(char c);
+    int					fetch_func_params(const char *p, int arg_sum, variable &x, variable &y);
 
 private:
     variable			calculate(const char* p, int len);
     variable			search_number(const char *p, int &move);
-    int					funk(const char *p, bool binary, variable &x, variable &y);
 
 private:
     bool				use_radian_;

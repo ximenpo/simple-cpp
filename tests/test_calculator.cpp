@@ -7,12 +7,12 @@ using namespace igloo;
 
 class	MyCalculator	: public calculator {
 protected:
-    virtual	int			do_find_variable(const char* buf, variable& var) {
+    virtual	variable	do_find_variable(const char* buf, int& move) {
         if(strncmp(buf, "x1", 2) == 0 && is_delimiter(buf[2])) {
-            var	= 10;
-            return	2;
+            move	= 2;
+            return	10;
         }
-        return	calculator::do_find_variable(buf, var);
+        return	calculator::do_find_variable(buf, move);
     }
 };
 
