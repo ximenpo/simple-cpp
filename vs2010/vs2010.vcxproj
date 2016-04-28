@@ -12,14 +12,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\inc\simple\app.cpp" />
+    <ClCompile Include="..\inc\simple\btea.c" />
     <ClCompile Include="..\inc\simple\buffer.cpp" />
     <ClCompile Include="..\inc\simple\buffer_queue.cpp" />
     <ClCompile Include="..\inc\simple\calculator.cpp" />
     <ClCompile Include="..\inc\simple\console.cpp" />
     <ClCompile Include="..\inc\simple\csv.cpp" />
+    <ClCompile Include="..\inc\simple\lock.c" />
     <ClCompile Include="..\inc\simple\module.cpp" />
     <ClCompile Include="..\inc\simple\rand.cpp" />
-    <ClCompile Include="..\inc\simple\stream.cpp" />
     <ClCompile Include="..\inc\simple\string.cpp" />
     <ClCompile Include="..\inc\simple\stringify.cpp" />
     <ClCompile Include="..\inc\simple\stringify_config.cpp" />
@@ -27,6 +28,7 @@
     <ClCompile Include="..\inc\simple\stringify_json.cpp" />
     <ClCompile Include="..\inc\simple\stringify_lua.cpp" />
     <ClCompile Include="..\inc\simple\stringify_xml.cpp" />
+    <ClCompile Include="..\inc\simple\string_ex.cpp" />
     <ClCompile Include="..\inc\simple\string_mime.cpp" />
     <ClCompile Include="..\inc\simple\timer.cpp" />
     <ClCompile Include="..\inc\simple\_third_bigint.cpp" />
@@ -38,6 +40,7 @@
     <ClCompile Include="..\inc\simple\_third_jread.c" />
     <ClCompile Include="..\inc\simple\_third_json.cpp" />
     <ClCompile Include="..\inc\simple\_third_jwrite.c" />
+    <ClCompile Include="..\inc\simple\_third_mandatory_input.cpp" />
     <ClCompile Include="..\inc\simple\_third_md5.c" />
     <ClCompile Include="..\inc\simple\_third_pugixml.cpp" />
     <ClCompile Include="..\inc\simple\_third_pwgen.c" />
@@ -63,9 +66,11 @@
     <ClInclude Include="..\inc\simple\astar.h" />
     <ClInclude Include="..\inc\simple\binary.h" />
     <ClInclude Include="..\inc\simple\bit.h" />
+    <ClInclude Include="..\inc\simple\btea.h" />
     <ClInclude Include="..\inc\simple\buffer.h" />
     <ClInclude Include="..\inc\simple\byte.h" />
     <ClInclude Include="..\inc\simple\calculator.h" />
+    <ClInclude Include="..\inc\simple\checksum.h" />
     <ClInclude Include="..\inc\simple\class_info.h" />
     <ClInclude Include="..\inc\simple\combination.h" />
     <ClInclude Include="..\inc\simple\console.h" />
@@ -75,6 +80,7 @@
     <ClInclude Include="..\inc\simple\des.h" />
     <ClInclude Include="..\inc\simple\enum.h" />
     <ClInclude Include="..\inc\simple\event.h" />
+    <ClInclude Include="..\inc\simple\fsm.h" />
     <ClInclude Include="..\inc\simple\guard.h" />
     <ClInclude Include="..\inc\simple\handle_map.h" />
     <ClInclude Include="..\inc\simple\igloo.h" />

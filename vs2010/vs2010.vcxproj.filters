@@ -30,6 +30,9 @@
     <ClCompile Include="..\inc\simple\_third_jwrite.c">
       <Filter>simple-cpp</Filter>
     </ClCompile>
+    <ClCompile Include="..\inc\simple\_third_mandatory_input.cpp">
+      <Filter>simple-cpp</Filter>
+    </ClCompile>
     <ClCompile Include="..\inc\simple\_third_md5.c">
       <Filter>simple-cpp</Filter>
     </ClCompile>
@@ -43,12 +46,6 @@
       <Filter>simple-cpp</Filter>
     </ClCompile>
     <ClCompile Include="..\inc\simple\_third_url_parser.c">
-      <Filter>simple-cpp</Filter>
-    </ClCompile>
-    <ClCompile Include="..\inc\simple\_third_zlib_part1.c">
-      <Filter>simple-cpp</Filter>
-    </ClCompile>
-    <ClCompile Include="..\inc\simple\_third_zlib_part2.c">
       <Filter>simple-cpp</Filter>
     </ClCompile>
     <ClCompile Include="..\inc\simple\_third_zlib_part_gzclose.c">
@@ -69,10 +66,19 @@
     <ClCompile Include="..\inc\simple\_third_zlib_part_trees.c">
       <Filter>simple-cpp</Filter>
     </ClCompile>
+    <ClCompile Include="..\inc\simple\_third_zlib_part1.c">
+      <Filter>simple-cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\inc\simple\_third_zlib_part2.c">
+      <Filter>simple-cpp</Filter>
+    </ClCompile>
     <ClCompile Include="..\inc\simple\_third_zlib_zutil.c">
       <Filter>simple-cpp</Filter>
     </ClCompile>
     <ClCompile Include="..\inc\simple\app.cpp">
+      <Filter>simple-cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\inc\simple\btea.c">
       <Filter>simple-cpp</Filter>
     </ClCompile>
     <ClCompile Include="..\inc\simple\buffer.cpp">
@@ -90,16 +96,19 @@
     <ClCompile Include="..\inc\simple\csv.cpp">
       <Filter>simple-cpp</Filter>
     </ClCompile>
+    <ClCompile Include="..\inc\simple\lock.c">
+      <Filter>simple-cpp</Filter>
+    </ClCompile>
     <ClCompile Include="..\inc\simple\module.cpp">
       <Filter>simple-cpp</Filter>
     </ClCompile>
     <ClCompile Include="..\inc\simple\rand.cpp">
       <Filter>simple-cpp</Filter>
     </ClCompile>
-    <ClCompile Include="..\inc\simple\stream.cpp">
+    <ClCompile Include="..\inc\simple\string.cpp">
       <Filter>simple-cpp</Filter>
     </ClCompile>
-    <ClCompile Include="..\inc\simple\string.cpp">
+    <ClCompile Include="..\inc\simple\string_ex.cpp">
       <Filter>simple-cpp</Filter>
     </ClCompile>
     <ClCompile Include="..\inc\simple\string_mime.cpp">
@@ -133,9 +142,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\inc\simple\type.h">
-      <Filter>simple-cpp</Filter>
-    </ClInclude>
     <ClInclude Include="..\inc\simple\aggregation.h">
       <Filter>simple-cpp</Filter>
     </ClInclude>
@@ -157,6 +163,9 @@
     <ClInclude Include="..\inc\simple\bit.h">
       <Filter>simple-cpp</Filter>
     </ClInclude>
+    <ClInclude Include="..\inc\simple\btea.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
     <ClInclude Include="..\inc\simple\buffer.h">
       <Filter>simple-cpp</Filter>
     </ClInclude>
@@ -164,6 +173,9 @@
       <Filter>simple-cpp</Filter>
     </ClInclude>
     <ClInclude Include="..\inc\simple\calculator.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\checksum.h">
       <Filter>simple-cpp</Filter>
     </ClInclude>
     <ClInclude Include="..\inc\simple\class_info.h">
@@ -191,6 +203,9 @@
       <Filter>simple-cpp</Filter>
     </ClInclude>
     <ClInclude Include="..\inc\simple\event.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\fsm.h">
       <Filter>simple-cpp</Filter>
     </ClInclude>
     <ClInclude Include="..\inc\simple\guard.h">
@@ -281,6 +296,9 @@
       <Filter>simple-cpp</Filter>
     </ClInclude>
     <ClInclude Include="..\inc\simple\tree_node.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\type.h">
       <Filter>simple-cpp</Filter>
     </ClInclude>
   </ItemGroup>
