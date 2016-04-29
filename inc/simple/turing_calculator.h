@@ -17,6 +17,7 @@
 //  GOTO_IF(:label, cond)   goto :label position if cond > 0
 //  STOP()                  stop the machine
 //
+//  EQ(x,y)                 return 1 if x==y, 0 otherwise
 //  GT(x,y)                 return 1 if x>y, 0 otherwise
 //  LT(x,y)                 return 1 if x<y, 0 otherwise
 //  NOT(x)                  return 1 if x<=0, 0 otherwise

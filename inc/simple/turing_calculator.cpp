@@ -99,9 +99,9 @@ calculator::variable	turing_calculator::do_find_function(const char* buf, int& m
         FX("GOTO_IF(",  8,2, if(machine_ && y > 0.0)machine_->set_instruction_address(int(x)); return variable(y>0?1:0););
         FX("GT(",       3,2, return x>y?1.0:0.0;);
         break;
-    // case 'C':
-    //     FX("CMP(",      4,2, return (std::abs(x-y) <= DBL_EPSILON)?0:x>y?1.0:-1.0;);
-    //     break;
+    case 'E':
+        FX("EQ(",       3,2, return (std::abs(x-y) <= DBL_EPSILON)?1.0:0.0;);
+        break;
     case 'L':
         FX("LT(",       3,2, return x<y?1.0:0.0;);
         break;
