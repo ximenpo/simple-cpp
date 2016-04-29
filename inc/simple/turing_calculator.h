@@ -13,6 +13,14 @@
 //  [@str  = asdf ] define a str var named @str and value si ' asdf '
 //  [:label]        define a lable var named @label for goto jump
 //
+//  GOTO(:label)            goto :label position directly
+//  GOTO_IF(:label, cond)   goto :label position if cond > 0
+//  STOP()                  stop the machine
+//
+//  GT(x,y)                 return 1 if x>y, 0 otherwise
+//  LT(x,y)                 return 1 if x<y, 0 otherwise
+//  NOT(x)                  return 1 if x<=0, 0 otherwise
+//
 class   turing_calculator : public calculator {
 public:
     turing_calculator();
@@ -53,6 +61,7 @@ protected:
     virtual bool        do_preprocess_instructions();
 
 private:
+    turing_machine*         machine_;
     const char**            instructions_;
     size_t                  instructions_sum_;
     std::deque<std::string> str_variables_;

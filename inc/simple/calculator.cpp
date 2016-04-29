@@ -74,7 +74,6 @@ calculator::variable calculator::do_find_function(const char* buf, int& move) {
         FX("exp("  ,4,1, return ::exp(x););
         break;
     case 'i':
-        // X:complex to double	FX("im("   ,3,0, return x.imag(););
         FX("int("  ,4,1, if(x<0) return ::ceil(x); return ::floor(x););
         break;
     case 'l':

@@ -5,7 +5,7 @@
 #include    "string.h"
 #include    "turing_calculator.h"
 
-turing_calculator::turing_calculator():instructions_(0), instructions_sum_(0) {
+turing_calculator::turing_calculator():machine_(0), instructions_(0), instructions_sum_(0) {
 }
 
 turing_calculator::~turing_calculator() {
@@ -60,9 +60,25 @@ bool turing_calculator::fetch_label_variable(const std::string& key, int& value)
     return  true;
 }
 
-bool    turing_calculator::execute_instruction(turing_machine*, int instruction_address) {
-    // TODO:
-    return  false;
+bool    turing_calculator::execute_instruction(turing_machine* machine, int instruction_address) {
+    if(instruction_address < 0 || instruction_address >= instructions_sum_) {
+        return  false;
+    }
+
+    const char* pstr    = instructions_[instruction_address];
+    switch(*pstr) {
+    case 0:
+    case ':':
+    case '@': {
+        return  true;
+    }
+    }
+
+    machine_    = machine;
+    variable    result;
+    bool        succeed  = execute(pstr, result);
+    machine_    = 0;
+    return  succeed;
 }
 
 void    turing_calculator::do_reset() {
@@ -79,15 +95,21 @@ calculator::variable	turing_calculator::do_find_function(const char* buf, int& m
     calculator::variable x,y;
     switch (*buf) {
     case 'G':
-        FX("GOTO("  ,   5,1, return variable(1););
-        FX("GOTO_IF(",  8,2, return variable(1););
+        FX("GOTO("  ,   5,1, if(machine_)machine_->set_instruction_address(int(x)); return variable(1););
+        FX("GOTO_IF(",  8,2, if(machine_ && y > 0.0)machine_->set_instruction_address(int(x)); return variable(y>0?1:0););
+        FX("GT(",       3,2, return x>y?1.0:0.0;);
         break;
-    case 'c':
-        FX("cmp(",      4,2, return (std::abs(x-y) < DBL_EPSILON)?0:x>y?1.0:-1.0;);
+    // case 'C':
+    //     FX("CMP(",      4,2, return (std::abs(x-y) <= DBL_EPSILON)?0:x>y?1.0:-1.0;);
+    //     break;
+    case 'L':
+        FX("LT(",       3,2, return x<y?1.0:0.0;);
         break;
-    case 'm':
-        FX("max(",      4,2, return (x > y ? x : y););
-        FX("min(",      4,2, return (x < y ? x : y););
+    case 'N':
+        FX("NOT(",      4,1, return x<=0.0?1.0:0.0;);
+        break;
+    case 'S':
+        FX("STOP(",     5,0, if(machine_)machine_->stop(); return variable(1););
         break;
     }
     return	calculator::do_find_function(buf, move);
@@ -102,6 +124,7 @@ bool    turing_calculator::do_preprocess_instructions() {
                 pstr++;
             }
 
+            instructions_[i]    = pstr;// ignore white spaces
             switch(*pstr) {
             case '@': {//str variable define
                 std::string name;

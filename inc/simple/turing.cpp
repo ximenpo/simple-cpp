@@ -47,7 +47,7 @@ bool	turing_machine::run(bool step_run) {
             &&  instruction_executor
          ) {
         result  = instruction_executor(this, pos_++);
-        if(step_run) {
+        if(step_run || !result) {
             break;
         }
     }
