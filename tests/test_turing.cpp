@@ -5,18 +5,11 @@ using namespace igloo;
 #include	<cstring>
 #include	"simple/turing.h"
 
-const char*     simple_turing_instruction_reader(turing_machine&, int address) {
-    if(address > 5) {
-        return  0;
-    }
-    return  (address == 5)?"STOP":"1";
-}
-
-bool            simple_turing_instruction_executor(turing_machine& machine, const char* instruction) {
-    if(0 == instruction) {
+bool            simple_turing_instruction_executor(turing_machine& machine, int instruction_address) {
+    if(instruction_address > 5) {
         return  false;
     }
-    if(0 == strcmp(instruction, "STOP")) {
+    if(instruction_address == 5) {
         machine.stop();
     }
     return  true;
@@ -37,7 +30,6 @@ Context(turing_context) {
 
     Spec(basic_usage) {
         turing_machine  vm;
-        vm.instruction_reader.bind(simple_turing_instruction_reader);
         vm.instruction_executor.bind(simple_turing_instruction_executor);
 
         vm.start();

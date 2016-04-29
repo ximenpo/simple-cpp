@@ -12,11 +12,8 @@ public:
     }
 
 public:
-    //  delegates
-    delegate<const char*(turing_machine&, int address)>         instruction_reader;
-    delegate<bool(turing_machine&, const char* instruction)>    instruction_executor;// true if succeed
-    delegate<bool(turing_machine&, const char* err)>            instruction_error_handler;// true if handled
-
+    //  executor delegates
+    delegate<bool(turing_machine&, int address)>        instruction_executor;// true if succeed
 public:
     // start/stop machine
     bool	start() {
@@ -53,25 +50,13 @@ public:
     //  run loop, return false if there's something wrong.
     bool	run(bool step_run) {
         bool    result = false;
+
         while(  started_
                 &&  !paused_
                 &&  pos_ >= 0
-                &&  instruction_reader
                 &&  instruction_executor
              ) {
-            result  = instruction_executor(
-                          *this,
-                          instruction_reader(*this, pos_++)
-                      );
-
-            if(!result) {
-                if(     !instruction_error_handler
-                        ||  !instruction_error_handler(*this, "something wrong")
-                  ) {
-                    break;
-                }
-            }
-
+            result  = instruction_executor(*this, pos_++);
             if(step_run) {
                 break;
             }
