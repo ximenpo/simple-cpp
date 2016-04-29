@@ -135,6 +135,12 @@
     <ClCompile Include="..\inc\simple\timer.cpp">
       <Filter>simple-cpp</Filter>
     </ClCompile>
+    <ClCompile Include="..\inc\simple\turing.cpp">
+      <Filter>simple-cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\inc\simple\turing_calculator.cpp">
+      <Filter>simple-cpp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="simple-cpp">
@@ -299,6 +305,12 @@
       <Filter>simple-cpp</Filter>
     </ClInclude>
     <ClInclude Include="..\inc\simple\type.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\turing.h">
+      <Filter>simple-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\simple\turing_calculator.h">
       <Filter>simple-cpp</Filter>
     </ClInclude>
   </ItemGroup>

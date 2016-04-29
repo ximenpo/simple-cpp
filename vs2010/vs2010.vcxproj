@@ -31,6 +31,8 @@
     <ClCompile Include="..\inc\simple\string_ex.cpp" />
     <ClCompile Include="..\inc\simple\string_mime.cpp" />
     <ClCompile Include="..\inc\simple\timer.cpp" />
+    <ClCompile Include="..\inc\simple\turing.cpp" />
+    <ClCompile Include="..\inc\simple\turing_calculator.cpp" />
     <ClCompile Include="..\inc\simple\_third_bigint.cpp" />
     <ClCompile Include="..\inc\simple\_third_combination.cpp" />
     <ClCompile Include="..\inc\simple\_third_convert_utf.cpp" />
@@ -111,6 +113,8 @@
     <ClInclude Include="..\inc\simple\timer.h" />
     <ClInclude Include="..\inc\simple\timestamp.h" />
     <ClInclude Include="..\inc\simple\tree_node.h" />
+    <ClInclude Include="..\inc\simple\turing.h" />
+    <ClInclude Include="..\inc\simple\turing_calculator.h" />
     <ClInclude Include="..\inc\simple\type.h" />
   </ItemGroup>
   <ItemGroup>

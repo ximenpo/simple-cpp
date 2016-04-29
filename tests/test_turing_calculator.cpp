@@ -95,7 +95,7 @@ Context(turing_calculator_context) {
         MyTuringCalculator  calc;
 
         const char* media[] = {
-            "@s1 =西门坡",
+            "@s1 =ximenpo",
             ":begin",
             "v1 = 1",
             ":loop",
@@ -122,14 +122,14 @@ Context(turing_calculator_context) {
         AssertThat(var,         EqualsWithDelta(6, 0.001));
         AssertThat(var,         Equals(6));
 
-        AssertThat(calc.name,   Equals("西门坡 - 5"));
+        AssertThat(calc.name,   Equals("ximenpo - 5"));
     }
 
     Spec(stop_usage) {
         MyTuringCalculator  calc;
 
         const char* media[] = {
-            "@s1 =西门坡",
+            "@s1 =ximenpo",
             ":begin",
             "v1 = 1",
             ":loop",

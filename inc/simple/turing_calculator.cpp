@@ -15,7 +15,7 @@ turing_calculator::~turing_calculator() {
 size_t   turing_calculator::set_str_variable(const std::string& key, const std::string& value) {
     variable    str_index;
     if(fetch_variable(key, str_index)) {
-        str_variables_[str_index]   = value;
+        str_variables_[size_t(str_index)]   = value;
         return  size_t(str_index);
     }
 
@@ -61,7 +61,7 @@ bool turing_calculator::fetch_label_variable(const std::string& key, int& value)
 }
 
 bool    turing_calculator::execute_instruction(turing_machine* machine, int instruction_address) {
-    if(instruction_address < 0 || instruction_address >= instructions_sum_) {
+    if(instruction_address < 0 || instruction_address >= int(instructions_sum_)) {
         return  false;
     }
 
