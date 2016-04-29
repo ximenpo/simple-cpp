@@ -9,6 +9,6 @@ Context(sleep_usage) {
         unsigned long	begin_stamp	= timestamp_tickcount();
         sleep_seconds(1);
         unsigned long	end_stamp	= timestamp_tickcount();
-        AssertThat(end_stamp - begin_stamp,	EqualsWithDelta(1000, 20));//18ms
+        AssertThat(end_stamp - begin_stamp,	EqualsWithDelta(1000, 100));
     }
 };
