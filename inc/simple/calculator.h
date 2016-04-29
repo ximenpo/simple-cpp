@@ -24,11 +24,7 @@ public:
         this->do_set_variable(key, value);
     }
     //	获取变量值
-    bool				fetch_variable(const std::string& key, variable& value) {
-        int	move	= 0;
-        value	= this->do_find_variable(key.c_str(), move);
-        return	(move > 0);
-    }
+    bool				fetch_variable(const std::string& key, variable& value);
 
     void				set_use_radian(bool use_radian) {
         use_radian_	= use_radian;
@@ -42,6 +38,7 @@ public:
     }
 
 protected:
+    virtual	void		do_reset();
     virtual	void		do_set_variable(const std::string& key, variable value);
     virtual	variable	do_find_variable(const char* buf, int& move);
     virtual	variable	do_find_function(const char* buf, int& move);

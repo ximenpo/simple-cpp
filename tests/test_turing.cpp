@@ -5,12 +5,12 @@ using namespace igloo;
 #include	<cstring>
 #include	"simple/turing.h"
 
-bool            simple_turing_instruction_executor(turing_machine& machine, int instruction_address) {
+bool            simple_turing_instruction_executor(turing_machine* machine, int instruction_address) {
     if(instruction_address > 5) {
         return  false;
     }
     if(instruction_address == 5) {
-        machine.stop();
+        machine->stop();
     }
     return  true;
 }

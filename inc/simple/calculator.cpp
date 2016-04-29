@@ -17,6 +17,7 @@ static double	Factorial(double x) {
 }
 
 void calculator::reset() {
+    this->do_reset();
     err_msg_.clear();
     variables_.clear();
 }
@@ -25,8 +26,20 @@ bool calculator::is_delimiter(char c) {
     return (c=='+' || c=='-' || c=='*' || c=='/' || c=='%' || c==',' || c==')' || c==0 );
 }
 
+bool calculator::fetch_variable(const std::string& key, variable& value) {
+    variable_list::const_iterator   it  = variables_.find(key);
+    if(it != variables_.end()) {
+        value   = it->second;
+        return  true;
+    }
+    return  false;
+}
+
 void calculator::do_set_variable(const std::string& key, calculator::variable value) {
     variables_[key] = value;
+}
+
+void calculator::do_reset() {
 }
 
 calculator::variable calculator::do_find_variable(const char* buf, int& move) {
@@ -92,7 +105,7 @@ calculator::variable calculator::do_find_function(const char* buf, int& move) {
         FX("("     ,1,1, return x;)
         break;
     }
-    return	move;
+    return	variable(0.0);
 }
 #undef	FX
 
