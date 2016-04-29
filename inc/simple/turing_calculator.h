@@ -10,6 +10,7 @@
 //
 //  turing_calculator(added flow control and label&str defines)
 //
+//  [#....]         comment
 //  [@str  = asdf ] define a str var named @str and value si ' asdf '
 //  [:label]        define a lable var named @label for goto jump
 //

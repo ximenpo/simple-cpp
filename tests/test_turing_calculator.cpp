@@ -100,6 +100,7 @@ Context(turing_calculator_context) {
             "v1 = 1",
             ":loop",
             "v1 = v1 + 1",
+            "# comment here",
             "GOTO_IF(:end, GT(v1, 5))",
             "set_name(@s1, v1)",
             "GOTO(:loop)",

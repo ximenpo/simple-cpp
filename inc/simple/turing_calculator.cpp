@@ -68,6 +68,7 @@ bool    turing_calculator::execute_instruction(turing_machine* machine, int inst
     const char* pstr    = instructions_[instruction_address];
     switch(*pstr) {
     case 0:
+    case '#':
     case ':':
     case '@': {
         return  true;
