@@ -5,7 +5,9 @@
 #include	<cstring>
 #include	<memory>
 
-#include	"_third/ConvertUTF.h"
+#if	!defined(UNI_REPLACEMENT_CHAR)
+#	include	"_third/ConvertUTF.h"
+#endif
 
 #if	defined(_WIN32)
 #	include	<windows.h>
