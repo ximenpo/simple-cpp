@@ -5,7 +5,7 @@
 #include    "string.h"
 #include    "turing_calculator.h"
 
-turing_calculator::turing_calculator():machine_(0), instructions_(0), instructions_sum_(0) {
+turing_calculator::turing_calculator():machine_(0), instructions_(0), instructions_sum_(0), yield_execution_(false) {
 }
 
 turing_calculator::~turing_calculator() {
@@ -62,9 +62,11 @@ bool turing_calculator::fetch_label_variable(const std::string& key, int& value)
 
 bool    turing_calculator::execute_instruction(turing_machine* machine, int instruction_address) {
     if(instruction_address < 0 || instruction_address >= int(instructions_sum_)) {
+        this->set_error_message("invalid instruction address");
         return  false;
     }
 
+    this->set_error_message("");
     const char* pstr    = instructions_[instruction_address];
     switch(*pstr) {
     case 0:
@@ -75,11 +77,14 @@ bool    turing_calculator::execute_instruction(turing_machine* machine, int inst
     }
     }
 
-    machine_    = machine;
+    machine_            = machine;
+    yield_execution_    = false;
+
     variable    result;
     bool        succeed  = execute(pstr, result);
+
     machine_    = 0;
-    return  succeed;
+    return  succeed && !yield_execution_;
 }
 
 void    turing_calculator::do_reset() {
@@ -95,13 +100,16 @@ void    turing_calculator::do_reset() {
 calculator::variable	turing_calculator::do_find_function(const char* buf, int& move) {
     calculator::variable x,y;
     switch (*buf) {
+    case 'A':
+        FX("AND(",      4,2, return ((std::abs(x) <= DBL_EPSILON) && (std::abs(y) <= DBL_EPSILON))?1.0:0.0;);
+        break;
+    case 'E':
+        FX("EQ(",       3,2, return (std::abs(x-y) <= DBL_EPSILON)?1.0:0.0;);
+        break;
     case 'G':
         FX("GOTO("  ,   5,1, if(machine_)machine_->set_instruction_address(int(x)); return variable(1););
         FX("GOTO_IF(",  8,2, if(machine_ && y > 0.0)machine_->set_instruction_address(int(x)); return variable(y>0?1:0););
         FX("GT(",       3,2, return x>y?1.0:0.0;);
-        break;
-    case 'E':
-        FX("EQ(",       3,2, return (std::abs(x-y) <= DBL_EPSILON)?1.0:0.0;);
         break;
     case 'L':
         FX("LT(",       3,2, return x<y?1.0:0.0;);
@@ -109,8 +117,14 @@ calculator::variable	turing_calculator::do_find_function(const char* buf, int& m
     case 'N':
         FX("NOT(",      4,1, return x<=0.0?1.0:0.0;);
         break;
+    case 'O':
+        FX("OR(",       3,2, return ((std::abs(x) <= DBL_EPSILON) || (std::abs(y) <= DBL_EPSILON))?1.0:0.0;);
+        break;
     case 'S':
         FX("STOP(",     5,0, if(machine_)machine_->stop(); return variable(1););
+        break;
+    case 'Y':
+        FX("YIELD(",    6,0, this->yield_execution_ = true; return variable(1););
         break;
     }
     return	calculator::do_find_function(buf, move);

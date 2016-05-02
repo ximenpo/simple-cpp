@@ -16,12 +16,16 @@
 //
 //  GOTO(:label)            goto :label position directly
 //  GOTO_IF(:label, cond)   goto :label position if cond > 0
+//  YIELD()                 break execution
 //  STOP()                  stop the machine
 //
 //  EQ(x,y)                 return 1 if x==y, 0 otherwise
 //  GT(x,y)                 return 1 if x>y, 0 otherwise
 //  LT(x,y)                 return 1 if x<y, 0 otherwise
+//
 //  NOT(x)                  return 1 if x<=0, 0 otherwise
+//  AND(x, y)               return x && y
+//  OR(x, y)                return x || y
 //
 class   turing_calculator : public calculator {
 public:
@@ -66,6 +70,7 @@ private:
     turing_machine*         machine_;
     const char**            instructions_;
     size_t                  instructions_sum_;
+    bool                    yield_execution_;
     std::deque<std::string> str_variables_;
 };
 

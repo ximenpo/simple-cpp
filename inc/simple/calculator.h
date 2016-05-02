@@ -46,6 +46,10 @@ protected:
     bool				is_delimiter(char c);
     int					fetch_func_params(const char *p, int arg_sum, variable &x, variable &y);
 
+    void                set_error_message(const std::string& msg) {
+        err_msg_    = msg;
+    }
+
 private:
     variable			calculate(const char* p, int len);
     variable			search_number(const char *p, int &move);
