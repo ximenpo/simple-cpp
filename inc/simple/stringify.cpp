@@ -413,7 +413,7 @@ bool	stringify_data::add_root(stringify::node_value** new_root, stringify::node_
         return	false;
     }
     this->values.push_back(node_value());
-    node_id		new_id		= make_node_id(NODE_VALUE, this->values.size() - 1);
+    node_id		new_id		= make_node_id(NODE_VALUE, (unsigned long)this->values.size() - 1);
     node_value&	new_node	= this->values.back();
     root	= new_id;
     if(0 != new_root) {
@@ -430,7 +430,7 @@ bool	stringify_data::add_root(stringify::node_container** new_root, stringify::n
         return	false;
     }
     this->containers.push_back(node_container());
-    node_id			new_id		= make_node_id(NODE_CONTAINER, this->containers.size() - 1);
+    node_id			new_id		= make_node_id(NODE_CONTAINER, (unsigned long)this->containers.size() - 1);
     node_container&	new_node	= this->containers.back();
     new_node.is_array	= false;
     root	= new_id;
@@ -449,7 +449,7 @@ bool	stringify_data::add_container(stringify::node_id container_id, stringify::n
         return	false;
     }
     this->containers.push_back(node_container());
-    node_id			new_id		= make_node_id(NODE_CONTAINER, this->containers.size() - 1);
+    node_id			new_id		= make_node_id(NODE_CONTAINER, (unsigned long)this->containers.size() - 1);
     node_container&	new_node	= this->containers.back();
     container->items.push_back(new_id);
     new_node.is_array	= false;
@@ -468,7 +468,7 @@ bool	stringify_data::add_container(stringify::node_id container_id, const std::s
         return	false;
     }
     this->named_containers.push_back(node_named_container());
-    node_id					new_id		= make_node_id(NODE_NAMED_CONTAINER, this->named_containers.size() - 1);
+    node_id					new_id		= make_node_id(NODE_NAMED_CONTAINER, (unsigned long)this->named_containers.size() - 1);
     node_named_container&	new_node	= this->named_containers.back();
     new_node.is_array	= false;
     new_node.name		= child_name;
@@ -528,7 +528,7 @@ bool	stringify_data::add_value(stringify::node_id container_id, stringify::node_
         return	false;
     }
     this->values.push_back(node_value());
-    node_id		new_id		= make_node_id(NODE_VALUE, this->values.size() - 1);
+    node_id		new_id		= make_node_id(NODE_VALUE, (unsigned long)this->values.size() - 1);
     node_value&	new_node	= this->values.back();
     container->items.push_back(new_id);
     if(0 != new_node_ptr) {
@@ -546,7 +546,7 @@ bool	stringify_data::add_value(stringify::node_id container_id, const std::strin
         return	false;
     }
     this->named_values.push_back(node_named_value());
-    node_id				new_id		= make_node_id(NODE_NAMED_VALUE, this->named_values.size() - 1);
+    node_id				new_id		= make_node_id(NODE_NAMED_VALUE, (unsigned long)this->named_values.size() - 1);
     node_named_value&	new_node	= this->named_values.back();
     new_node.name		= child_name;
     container->items.push_back(new_id);
@@ -796,7 +796,7 @@ stringify_data_builder&		stringify_data_builder::value(const std::string& value)
     node_value&	node	= data_.values.back();
     node.value	= value;
 
-    node_id		new_id	= make_node_id(NODE_VALUE, data_.values.size() - 1);
+    node_id		new_id	= make_node_id(NODE_VALUE, (unsigned long)data_.values.size() - 1);
     do_after_add_value(new_id);
     return	*this;
 }
@@ -809,7 +809,7 @@ stringify_data_builder&		stringify_data_builder::value(const std::string& value,
     node.value	= value;
     node.name	= name;
 
-    node_id		new_id	= make_node_id(NODE_NAMED_VALUE, data_.named_values.size() - 1);
+    node_id		new_id	= make_node_id(NODE_NAMED_VALUE, (unsigned long)data_.named_values.size() - 1);
     do_after_add_named_value(new_id);
     return	*this;
 }
@@ -821,7 +821,7 @@ stringify_data_builder&		stringify_data_builder::array_begin() {
     node_container&	node	= data_.containers.back();
     node.is_array		= true;
 
-    node_id		new_id	= make_node_id(NODE_CONTAINER, data_.containers.size() - 1);
+    node_id		new_id	= make_node_id(NODE_CONTAINER, (unsigned long)data_.containers.size() - 1);
     do_after_add_value(new_id);
 
     stack_.push_back(new_id);
@@ -836,7 +836,7 @@ stringify_data_builder&		stringify_data_builder::array_begin(const std::string& 
     node.name		= name;
     node.is_array	= true;
 
-    node_id		new_id	= make_node_id(NODE_NAMED_CONTAINER, data_.named_containers.size() - 1);
+    node_id		new_id	= make_node_id(NODE_NAMED_CONTAINER, (unsigned long)data_.named_containers.size() - 1);
     do_after_add_named_value(new_id);
 
     stack_.push_back(new_id);
@@ -855,7 +855,7 @@ stringify_data_builder&		stringify_data_builder::object_begin() {
     node_container&	node	= data_.containers.back();
     node.is_array		= false;
 
-    node_id		new_id	= make_node_id(NODE_CONTAINER, data_.containers.size() - 1);
+    node_id		new_id	= make_node_id(NODE_CONTAINER, (unsigned long)data_.containers.size() - 1);
     do_after_add_value(new_id);
 
     stack_.push_back(new_id);
@@ -870,7 +870,7 @@ stringify_data_builder&	stringify_data_builder::object_begin(const std::string& 
     node.name		= name;
     node.is_array	= false;
 
-    node_id		new_id	= make_node_id(NODE_NAMED_CONTAINER, data_.named_containers.size() - 1);
+    node_id		new_id	= make_node_id(NODE_NAMED_CONTAINER, (unsigned long)data_.named_containers.size() - 1);
     do_after_add_named_value(new_id);
 
     stack_.push_back(new_id);
