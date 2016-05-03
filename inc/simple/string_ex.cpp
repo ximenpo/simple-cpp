@@ -129,7 +129,7 @@ void	string_ellipsis(std::string& str, size_t nShowLen) {
     memset(dbuf.get(), 0, sizeof(char) * (nSrcLen + 1));
 
 #if	defined(_WIN32)
-    cvt_ret = WideCharToMultiByte (CP_ACP, 0, pwbuf, wRealLen + 1, dbuf.get(),  nSrcLen + 1, NULL, NULL);
+    cvt_ret = WideCharToMultiByte (CP_ACP, 0, pwbuf, int(wRealLen + 1), dbuf.get(),  int(nSrcLen + 1), NULL, NULL);
 #else
     cvt_ret = string_wchar_to_utf8(pwbuf, (wRealLen + 1) * sizeof(wchar_t), dbuf.get(), nSrcLen + 1);
 #endif
