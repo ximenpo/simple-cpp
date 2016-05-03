@@ -94,7 +94,7 @@ void	string_ellipsis(std::string& str, size_t nShowLen) {
 
     size_t  cvt_ret = 0;
 #if	defined(_WIN32)
-    cvt_ret = MultiByteToWideChar(CP_ACP, 0, str.c_str(), nSrcLen, wbuf.get(), wlen);
+    cvt_ret = MultiByteToWideChar(CP_ACP, 0, str.c_str(), int(nSrcLen), wbuf.get(), int(wlen));
 #else
     cvt_ret = string_utf8_to_wchar(str.c_str(), nSrcLen, wbuf.get(), sizeof(wchar_t) * wlen) / sizeof(wchar_t);
 #endif
