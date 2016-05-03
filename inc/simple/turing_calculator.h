@@ -66,6 +66,10 @@ protected:
 
     virtual bool        do_preprocess_instructions();
 
+    turing_machine*     get_matchine() {
+        return	machine_;
+    }
+
 private:
     turing_machine*         machine_;
     const char**            instructions_;
