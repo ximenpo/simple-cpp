@@ -14,7 +14,7 @@ inline    const char* cstr(const std::string& str) {
 struct  cstr_converter {
     template<typename Type>
     const char* operator()(const Type str) {
-        return  cstr(pstr);
+        return  cstr(str);
     }
 };
 
