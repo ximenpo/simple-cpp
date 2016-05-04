@@ -63,6 +63,7 @@ bool turing_calculator::fetch_label_variable(const std::string& key, int& value)
 bool    turing_calculator::execute_instruction(turing_machine* machine, int instruction_address) {
     if(instruction_address < 0 || instruction_address >= int(instructions_sum_)) {
         this->set_error_message("invalid instruction address");
+        machine->stop();
         return  false;
     }
 
