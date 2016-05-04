@@ -304,5 +304,8 @@ inline  std::istream&   operator>>(std::istream& is, string_line& line) {
 inline  std::ostream&   operator<<(std::ostream& os, const string_line& line) {
     return  os << line.data;
 }
+inline  const char*     cstr(const string_line& line) {
+    return  line.data.c_str();
+}
 
 #endif
