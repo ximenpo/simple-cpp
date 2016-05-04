@@ -3,6 +3,7 @@ using namespace igloo;
 
 #include <stdio.h>
 
+#include <iterator>
 #include "simple/string.h"
 
 Context(string_usage) {
@@ -368,6 +369,21 @@ Context(string_usage) {
         AssertThat(string_iless()("aBc", "acB"),		IsTrue());
         AssertThat(string_iless()("acB", "aBc"),		IsFalse());
         AssertThat(string_iless()("aBc", "aBc"),		IsFalse());
+    }
+
+    Spec(string_line_usage) {
+        std::deque<string_line>    lines;
+        std::string str("1 2\n3 4\n5 6\n");
+
+        std::istringstream  is(str);
+        std::ostringstream  os;
+        std::copy(std::istream_iterator<string_line>(is),
+                  std::istream_iterator<string_line>(),
+                  std::back_inserter(lines)
+                 );
+        std::copy(lines.begin(), lines.end(), std::ostream_iterator<string_line>(os, "\n"));
+
+        AssertThat(os.str(),	Equals(str));
     }
 
     Spec(json_escape_usage) {

@@ -288,4 +288,21 @@ struct string_iless : public std::binary_function<const std::string&, const std:
     bool    operator()(const std::string& l, const std::string& r)const;
 };
 
+//
+//  for istream_iterator and ostream_iterator
+//
+struct string_line {
+    std::string data;
+    operator    std::string() {
+        return  data;
+    }
+};
+inline  std::istream&   operator>>(std::istream& is, string_line& line) {
+    std::getline(is, line.data);
+    return  is;
+}
+inline  std::ostream&   operator<<(std::ostream& os, const string_line& line) {
+    return  os << line.data;
+}
+
 #endif
