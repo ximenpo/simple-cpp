@@ -5,6 +5,7 @@
 #include    <string>
 
 #include    "calculator.h"
+#include    "cstr.h"
 #include    "turing.h"
 
 //
@@ -36,12 +37,16 @@ public:
     //  load
     template<typename FwdIt>
     bool            load_instructions(FwdIt begin, size_t sum) {
+        return	load_instructions(begin, sum, cstr_converter());
+    }
+    template<typename FwdIt, typename CStrConverter>
+    bool            load_instructions(FwdIt begin, size_t sum, CStrConverter pred) {
         delete[]    this->instructions_;
         this->instructions_     = new const char*[sum];
         this->instructions_sum_ = sum;
 
         for(size_t i = 0; i < sum; ++i, ++begin) {
-            this->instructions_[i]   = *begin;
+            this->instructions_[i]   = pred(*begin);
         }
 
         return  this->do_preprocess_instructions();
