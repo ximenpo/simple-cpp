@@ -158,3 +158,174 @@ std::string		string_generate(size_t length, bool use_special_chars) {
     }
     return	str;
 }
+
+static	const int	gs_CC_MaxSize	= STRING_CONVERSION_MAX_SIZE;
+static	char		gs_CC_Buffer	[gs_CC_MaxSize * 4];
+static	wchar_t		gs_CC_WBuffer	[gs_CC_MaxSize];
+
+#if		defined(WIN32)
+const char*	string_utf16_to_ansi(const std::wstring& input, size_t* output_size) {
+    size_t	size	= input.size();
+    size_t	size_c	= WideCharToMultiByte(CP_ACP, 0,
+                                          input.c_str(),	int(min(size,gs_CC_MaxSize)),
+                                          gs_CC_Buffer,	int(sizeof(gs_CC_Buffer)/sizeof(gs_CC_Buffer[0])),
+                                          NULL, NULL
+                                       );
+    gs_CC_Buffer[size_c]= 0;
+
+    if(NULL != output_size) {
+        *output_size	= size_c;
+    }
+
+    return	gs_CC_Buffer;
+}
+
+const unsigned short*	string_ansi_to_utf16(const std::string& input, size_t* output_size) {
+    size_t	size	= MultiByteToWideChar(CP_ACP, 0,
+                                          input.c_str(),	int(min(input.size(), gs_CC_MaxSize)),
+                                          gs_CC_WBuffer,	int(sizeof(gs_CC_WBuffer)/sizeof(gs_CC_WBuffer[0]))
+                                     );
+    gs_CC_WBuffer[size]	= 0;
+
+    if(NULL != output_size) {
+        *output_size	= size;
+    }
+
+    return	(unsigned short*)gs_CC_WBuffer;
+}
+
+bool		string_utf16_to_ansi(const std::wstring& input, std::string& output) {
+    size_t	size	= 0;
+    string_utf16_to_ansi(input, &size);
+    output.assign(gs_CC_Buffer, size);
+    return	true;
+}
+
+bool		string_ansi_to_utf16(const std::string& input, std::wstring& output) {
+    size_t	size	= 0;
+    string_ansi_to_utf16(input, &size);
+    output.assign(gs_CC_WBuffer, size);
+    return	true;
+}
+
+const char*	string_utf8_to_ansi(const std::string& input, size_t*	output_size) {
+    size_t	size	= MultiByteToWideChar(CP_UTF8, 0,
+                                          input.c_str(),	int(min(input.size(), gs_CC_MaxSize)),
+                                          gs_CC_WBuffer,	int(sizeof(gs_CC_WBuffer)/sizeof(gs_CC_WBuffer[0]))
+                                     );
+    gs_CC_WBuffer[size]	= 0;
+
+    size_t	size_c	= WideCharToMultiByte(CP_ACP, 0,
+                                          gs_CC_WBuffer,	int(min(size,gs_CC_MaxSize)),
+                                          gs_CC_Buffer,	int(sizeof(gs_CC_Buffer)/sizeof(gs_CC_Buffer[0])),
+                                          NULL, NULL
+                                       );
+    gs_CC_Buffer[size_c]= 0;
+
+    if(NULL != output_size) {
+        *output_size	= size_c;
+    }
+
+    return	gs_CC_Buffer;
+}
+
+const char*	string_ansi_to_utf8(const std::string& input, size_t*	output_size) {
+    size_t	size	= MultiByteToWideChar(CP_ACP, 0,
+                                          input.c_str(),	int(min(input.size(), gs_CC_MaxSize)),
+                                          gs_CC_WBuffer,	int(sizeof(gs_CC_WBuffer)/sizeof(gs_CC_WBuffer[0]))
+                                     );
+    gs_CC_WBuffer[size]	= 0;
+
+    size_t	size_c	= WideCharToMultiByte(CP_UTF8, 0,
+                                          gs_CC_WBuffer,	int(min(size,gs_CC_MaxSize)),
+                                          gs_CC_Buffer,	int(sizeof(gs_CC_Buffer)/sizeof(gs_CC_Buffer[0])),
+                                          NULL, NULL
+                                       );
+    gs_CC_Buffer[size_c]= 0;
+
+    if(NULL != output_size) {
+        *output_size	= size_c;
+    }
+
+    return	gs_CC_Buffer;
+}
+
+#else
+
+const char* string_utf8_to_ansi(const std::string& input, size_t*	output_size) {
+    // 非Windows平台假设Ansi就是UTF-8
+    size_t	size	= input.size();
+    memcpy(gs_CC_Buffer, input.c_str(), size * sizeof(gs_CC_Buffer[0]));
+    gs_CC_Buffer[size]	= 0;
+
+    if(NULL != output_size) {
+        *output_size	= size;
+    }
+
+    return	gs_CC_Buffer;
+}
+
+const char* string_ansi_to_utf8(const std::string& input, size_t*	output_size) {
+    // 非Windows平台假设Ansi就是UTF-8
+    size_t	size	= input.size();
+    memcpy(gs_CC_Buffer, input.c_str(), size * sizeof(gs_CC_Buffer[0]));
+    gs_CC_Buffer[size]	= 0;
+
+    if(NULL != output_size) {
+        *output_size	= size;
+    }
+
+    return	gs_CC_Buffer;
+}
+
+#endif
+
+bool	string_utf8_to_ansi(const std::string& input, std::string& output) {
+    size_t	size	= 0;
+    string_utf8_to_ansi(input, &size);
+    output.assign(gs_CC_Buffer, size);
+    return	true;
+}
+
+bool	string_ansi_to_utf8(const std::string& input, std::string& output) {
+    size_t	size	= 0;
+    string_ansi_to_utf8(input, &size);
+    output.assign(gs_CC_Buffer, size);
+    return	true;
+}
+
+const char* string_wchar_to_ansi(const std::wstring& input,size_t*	output_size) {
+    size_t	bytes	= string_wchar_to_utf8(input.c_str(), input.size() * sizeof(wchar_t),
+                                           gs_CC_Buffer, sizeof(gs_CC_Buffer));
+
+    if(NULL != output_size) {
+        *output_size	= bytes / sizeof(gs_CC_Buffer[0]);
+    }
+
+    return	gs_CC_Buffer;
+}
+
+const wchar_t*	string_ansi_to_wchar(const std::string& input, size_t*	output_size) {
+    size_t	bytes	= string_utf8_to_wchar(input.c_str(), input.size() * sizeof(wchar_t),
+                                           gs_CC_WBuffer, sizeof(gs_CC_WBuffer))/sizeof(gs_CC_WBuffer[0]);
+
+    if(NULL != output_size) {
+        *output_size	= bytes / sizeof(gs_CC_WBuffer[0]);
+    }
+
+    return	gs_CC_WBuffer;
+}
+
+bool string_wchar_to_ansi(const std::wstring& input,std::string& output) {
+    size_t	size	= 0;
+    string_wchar_to_ansi(input, &size);
+    output.assign(gs_CC_Buffer, size);
+    return	true;
+}
+
+bool string_ansi_to_wchar(const std::string& input, std::wstring& output) {
+    size_t	size	= 0;
+    string_ansi_to_wchar(input, &size);
+    output.assign(gs_CC_WBuffer, size);
+    return	true;
+}

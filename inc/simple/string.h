@@ -230,6 +230,36 @@ size_t				string_wchar_to_utf8(const wchar_t* src, size_t src_byte, char* dest, 
 size_t				string_utf8_to_wchar(const char* src, size_t src_byte, wchar_t* dest, size_t dest_byte);
 
 //
+//	!Note:
+//	1.	字符串最大长度为 STRING_CONVERSION_MAX_SIZE
+//	2.	非windows平台，统一认为 Ansi == UTF-8
+//
+
+#ifndef		STRING_CONVERSION_MAX_SIZE
+#	define	STRING_CONVERSION_MAX_SIZE	1024 * 32
+#endif
+
+const char*				string_utf8_to_ansi(const std::string& input, size_t*	output_size = 0);
+const char*				string_ansi_to_utf8(const std::string& input, size_t*	output_size = 0);
+
+bool					string_utf8_to_ansi(const std::string& input, std::string& output);
+bool					string_ansi_to_utf8(const std::string& input, std::string& output);
+
+const char*				string_wchar_to_ansi(const std::wstring& input,size_t*	output_size = 0);
+const wchar_t*			string_ansi_to_wchar(const std::string& input, size_t*	output_size = 0);
+
+bool					string_wchar_to_ansi(const std::wstring& input,std::string& output);
+bool					string_ansi_to_wchar(const std::string& input, std::wstring& output);
+
+#if		defined(WIN32)
+const char*				string_utf16_to_ansi(const std::wstring& input, size_t*	output_size = 0);
+const unsigned short*	string_ansi_to_utf16(const std::string& input, size_t*	output_size = 0);
+
+bool					string_utf16_to_ansi(const std::wstring& input, std::string& output);
+bool					string_ansi_to_utf16(const std::string& input, std::wstring& output);
+#endif
+
+//
 //	string line operations.
 //
 std::string			string_line_escape(const std::string& str);		//escape \\ \n \r
