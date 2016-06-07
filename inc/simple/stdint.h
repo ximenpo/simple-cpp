@@ -6,8 +6,13 @@
 #       define  __STDC_LIMIT_MACROS
 #   endif
 #   include "_third/msinttypes/stdint.h"
+#elif defined(_MSC_VER)
+#		pragma warning (push)
+#		pragma warning (disable : 4005)
+#			include <stdint.h>
+#		pragma warning (pop)
 #else
-#   include <stdint.h>
+#	include <stdint.h>
 #endif
 
 #endif

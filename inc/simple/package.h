@@ -18,7 +18,7 @@ struct	package {
 //
 class	package_handler {
 public:
-    // 返回 -1：错误，返回0：成功发送，返回1：发送/接收过程中 
+    // 返回 -1：错误，返回0：成功发送，返回1：发送/接收过程中
     virtual	int				read_package(package* pPkg)					= 0;
     virtual	int				write_package(package* pPkg)				= 0;
 
