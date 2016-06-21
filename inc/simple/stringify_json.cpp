@@ -84,8 +84,6 @@ static	bool	load_from_json_array(stringify_data& data, stringify::node_id node_i
 static	bool	load_from_json_object(stringify_data& data, stringify::node_id node_id, const json::Object& val);
 
 bool	stringify_from_json_stream(stringify_data& data, std::istream& is) {
-    data.clear();
-
     json::Value	val;
     {
         std::string doc;
