@@ -4,6 +4,7 @@
 #include	<cstdarg>
 #include	<map>
 #include	<deque>
+#include	<iterator>
 #include	<string>
 #include	<sstream>
 #include	<algorithm>
