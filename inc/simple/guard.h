@@ -3,6 +3,20 @@
 
 #include	<stdexcept>
 
+template<typename T>
+struct	guard_status {
+    guard_status(T& status_var, const T& enter_status, const T& leave_status)
+        : status_(status_var), leave_status_(leave_status) {
+        this->status_	= enter_status;
+    }
+    ~guard_status() {
+        this->status_	= this->leave_status_;
+    }
+private:
+    T&	status_;
+    const T& leave_status_;
+};
+
 struct	guard_invoke_times {
     guard_invoke_times(const char* func_name, int max_invoke_times, int& counter)
         :	max_times_(max_invoke_times),	invoke_times_(counter) {
