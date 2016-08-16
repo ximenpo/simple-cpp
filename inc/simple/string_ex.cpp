@@ -260,6 +260,14 @@ const char*	string_ansi_to_utf8(const std::string& input, size_t*	output_size) {
     return	gs_CC_Buffer;
 }
 
+const char* string_wchar_to_ansi(const std::wstring& input,size_t*	output_size) {
+    return	string_utf16_to_ansi(input, output_size);
+}
+
+const wchar_t*	string_ansi_to_wchar(const std::string& input, size_t*	output_size) {
+    return	(const wchar_t*)string_ansi_to_utf16(input, output_size);
+}
+
 #else
 
 const char* string_utf8_to_ansi(const std::string& input, size_t*	output_size) {
@@ -288,22 +296,6 @@ const char* string_ansi_to_utf8(const std::string& input, size_t*	output_size) {
     return	gs_CC_Buffer;
 }
 
-#endif
-
-bool	string_utf8_to_ansi(const std::string& input, std::string& output) {
-    size_t	size	= 0;
-    string_utf8_to_ansi(input, &size);
-    output.assign(gs_CC_Buffer, size);
-    return	true;
-}
-
-bool	string_ansi_to_utf8(const std::string& input, std::string& output) {
-    size_t	size	= 0;
-    string_ansi_to_utf8(input, &size);
-    output.assign(gs_CC_Buffer, size);
-    return	true;
-}
-
 const char* string_wchar_to_ansi(const std::wstring& input,size_t*	output_size) {
     size_t	bytes	= string_wchar_to_utf8(input.c_str(), input.size() * sizeof(wchar_t),
                                            gs_CC_Buffer, sizeof(gs_CC_Buffer));
@@ -324,6 +316,22 @@ const wchar_t*	string_ansi_to_wchar(const std::string& input, size_t*	output_siz
     }
 
     return	gs_CC_WBuffer;
+}
+
+#endif
+
+bool	string_utf8_to_ansi(const std::string& input, std::string& output) {
+    size_t	size	= 0;
+    string_utf8_to_ansi(input, &size);
+    output.assign(gs_CC_Buffer, size);
+    return	true;
+}
+
+bool	string_ansi_to_utf8(const std::string& input, std::string& output) {
+    size_t	size	= 0;
+    string_ansi_to_utf8(input, &size);
+    output.assign(gs_CC_Buffer, size);
+    return	true;
 }
 
 bool string_wchar_to_ansi(const std::wstring& input,std::string& output) {
