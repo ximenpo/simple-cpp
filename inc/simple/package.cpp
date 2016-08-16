@@ -24,8 +24,7 @@ package* package_handler::create_package(int32_t cmd, const void* data, size_t s
 
 void package_handler::destroy_package(package* pkg) {
     if(0 != pkg) {
-        delete	pkg->data;
-        delete	pkg;
+        delete[]    static_cast<char*>(pkg->data);
+        delete      pkg;
     }
 }
-
