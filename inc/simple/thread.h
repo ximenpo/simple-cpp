@@ -5,4 +5,14 @@ extern	"C" {
 #	include	“_third/simplethread/simplethread.h”
 }
 
+#if	!defined(THREAD_STORAGE)
+#	if		defined(_MSC_VER)
+#		define	THREAD_STORAGE		__declspec( thread )
+#	elif	defined(__GNUC__)
+#		define	THREAD_STORAGE		__thread
+#	else
+#		define	THREAD_STORAGE
+#	endif
+#endif
+
 #endif

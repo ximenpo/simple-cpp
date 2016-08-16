@@ -159,9 +159,19 @@ std::string		string_generate(size_t length, bool use_special_chars) {
     return	str;
 }
 
-static	const int	gs_CC_MaxSize	= STRING_CONVERSION_MAX_SIZE;
-static	char		gs_CC_Buffer	[gs_CC_MaxSize * 4];
-static	wchar_t		gs_CC_WBuffer	[gs_CC_MaxSize];
+#if	!defined(THREAD_STORAGE)
+#	if		defined(_MSC_VER)
+#		define	THREAD_STORAGE		__declspec( thread )
+#	elif	defined(__GNUC__)
+#		define	THREAD_STORAGE		__thread
+#	else
+#		define	THREAD_STORAGE
+#	endif
+#endif
+
+static	const int					gs_CC_MaxSize	= STRING_CONVERSION_MAX_SIZE;
+static	THREAD_STORAGE	char		gs_CC_Buffer	[gs_CC_MaxSize * 4];
+static	THREAD_STORAGE	wchar_t		gs_CC_WBuffer	[gs_CC_MaxSize];
 
 #if		defined(WIN32)
 const char*	string_utf16_to_ansi(const std::wstring& input, size_t* output_size) {
