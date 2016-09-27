@@ -1,5 +1,5 @@
 // jRead.cpp 
-// Version 1v5
+// Version 1v6
 //
 // jRead - an in-place JSON element reader
 // =======================================
@@ -90,13 +90,17 @@
 // *NEW in 1v4
 // - fixed a couple of error return values
 // - added #define JREAD_DOUBLE_QUOTE_IN_QUERY
-// *NEW* in 1v5
+// *NEW* in 1v5  (11mar2015)
 // - fixed null ptr if '[*' used when null param passed
+// *NEW* in 1v6  (24sep2016)
+// - fixed handling of empty arrays and objects
 //
-// TonyWilk 11mar2015
+// TonyWilk, 24sep2016 
 // mail at tonywilk . co .uk
 //
 // License: "Free as in You Owe Me a Beer"
+// - actually, since some people really worry about licenses, you are free to apply
+//   whatever licence you want.
 //
 // Note: jRead_atol() and jRead_atof() are modified from original routines
 //       fast_atol() and fast_atof() 09-May-2009 Tom Van Baak (tvb) www.LeapSecond.com
@@ -351,44 +355,52 @@ char * jReadCountObject( char *pJson, struct jReadElement *pResult, int keyIndex
 {
 	struct jReadElement jElement;
 	int jTok;
+	char *sp;
 	pResult->dataType= JREAD_OBJECT;
 	pResult->error= 0;
 	pResult->elements= 0;
 	pResult->pValue= pJson;
-	while( 1 )
+	sp= jReadFindTok( pJson+1, &jTok ); // check for empty object
+	if( jTok == JREAD_EOBJECT )		
 	{
-		pJson= jReadGetString( ++pJson, &jElement, '\"' );
-		if( jElement.dataType != JREAD_STRING )
+		pJson= sp+1;
+	}else
+	{
+		while( 1 )
 		{
-			pResult->error= 3;		// Expected "key"
-			break;
-		}
-		if( pResult->elements == keyIndex )		// if passed keyIndex
-		{
-			*pResult= jElement;		// we return "key" at this index
-			pResult->dataType= JREAD_KEY;
-			return pJson;
-		}
-		pJson= jReadFindTok( pJson, &jTok );
-		if( jTok != JREAD_COLON )
-		{
-			pResult->error= 4;		// Expected ":"
-			break;
-		}
-		pJson= jRead( ++pJson, "", &jElement );
-		if( pResult->error )
-			break;
-		pJson= jReadFindTok( pJson, &jTok );
-		pResult->elements++;
-		if( jTok == JREAD_EOBJECT )
-		{
-			pJson++;
-			break;
-		}
-		if( jTok != JREAD_COMMA )
-		{
-			pResult->error= 6;		// Expected "," in object
-			break;
+			pJson= jReadGetString( ++pJson, &jElement, '\"' );
+			if( jElement.dataType != JREAD_STRING )
+			{
+				pResult->error= 3;		// Expected "key"
+				break;
+			}
+			if( pResult->elements == keyIndex )		// if passed keyIndex
+			{
+				*pResult= jElement;		// we return "key" at this index
+				pResult->dataType= JREAD_KEY;
+				return pJson;
+			}
+			pJson= jReadFindTok( pJson, &jTok );
+			if( jTok != JREAD_COLON )
+			{
+				pResult->error= 4;		// Expected ":"
+				break;
+			}
+			pJson= jRead( ++pJson, "", &jElement );
+			if( pResult->error )
+				break;
+			pJson= jReadFindTok( pJson, &jTok );
+			pResult->elements++;
+			if( jTok == JREAD_EOBJECT )
+			{
+				pJson++;
+				break;
+			}
+			if( jTok != JREAD_COMMA )
+			{
+				pResult->error= 6;		// Expected "," in object
+				break;
+			}
 		}
 	}
 	if( keyIndex >= 0 )
@@ -397,7 +409,7 @@ char * jReadCountObject( char *pJson, struct jReadElement *pResult, int keyIndex
 		pResult->dataType= JREAD_ERROR;
 		pResult->error= 11;			// Object key not found (bad index)
 	}else{
-		pResult->bytelen= (int)(pJson - (char *)pResult->pValue);
+		pResult->bytelen= pJson - (char *)pResult->pValue;
 	}
 	return pJson;
 }
@@ -413,29 +425,37 @@ char * jReadCountArray( char *pJson, struct jReadElement *pResult )
 {
 	struct jReadElement jElement;
 	int jTok;
+	char *sp;
 	pResult->dataType= JREAD_ARRAY;
 	pResult->error= 0;
 	pResult->elements= 0;
 	pResult->pValue= pJson;
-	while( 1 )
+	sp= jReadFindTok( pJson+1, &jTok ); // check for empty array
+	if( jTok == JREAD_EARRAY )		
 	{
-		pJson= jRead( ++pJson, "", &jElement );	// array value
-		if( pResult->error )
-			break;
-		pJson= jReadFindTok( pJson, &jTok );	// , or ]
-		pResult->elements++;
-		if( jTok == JREAD_EARRAY )
+		pJson= sp+1;
+	}else
+	{
+		while( 1 )
 		{
-			pJson++;
-			break;
-		}
-		if( jTok != JREAD_COMMA )
-		{
-			pResult->error= 9;		// Expected "," in array
-			break;
+			pJson= jRead( ++pJson, "", &jElement );	// array value
+			if( pResult->error )
+				break;
+			pJson= jReadFindTok( pJson, &jTok );	// , or ]
+			pResult->elements++;
+			if( jTok == JREAD_EARRAY )
+			{
+				pJson++;
+				break;
+			}
+			if( jTok != JREAD_COMMA )
+			{
+				pResult->error= 9;		// Expected "," in array
+				break;
+			}
 		}
 	}
-	pResult->bytelen= (int)(pJson - (char *)pResult->pValue);
+	pResult->bytelen= pJson - (char *)pResult->pValue;
 	return pJson;
 }
 
