@@ -308,7 +308,7 @@ const char* string_wchar_to_ansi(const std::wstring& input,size_t*	output_size) 
 }
 
 const wchar_t*	string_ansi_to_wchar(const std::string& input, size_t*	output_size) {
-    size_t	bytes	= string_utf8_to_wchar(input.c_str(), input.size() * sizeof(wchar_t),
+    size_t	bytes	= string_utf8_to_wchar(input.c_str(), input.size(),
                                            gs_CC_WBuffer, sizeof(gs_CC_WBuffer))/sizeof(gs_CC_WBuffer[0]);
 
     if(NULL != output_size) {
